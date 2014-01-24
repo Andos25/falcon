@@ -33,7 +33,9 @@ def textTransfer(line):
           
         iText = line.find('html":"')  
         if iText > 0:  
-            transText = line[iText + 7: -12].encode("utf-8").decode('unicode_escape').encode("utf-8").replace("\\", "")  
+            transText = line[iText + 7: -12].decode('utf-8').encode("utf-8").replace("\\", "")  
             return transText  
         else:  
             return None  
+
+            # line 36:transText = line[iText + 7: -12].encode("utf-8").decode('unicode_escape').encode("utf-8").replace("\\", "")  
