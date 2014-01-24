@@ -17,35 +17,16 @@
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
-  <property>    
-    <name>dfs.namenode.name.dir</name>    
-    <value>file:/home/hadoop/dfs/name</value>    
-    <description>Determines where on the local filesystem the DFS name node    
-      should store the name table.  If this is a comma-delimited list    
-      of directories then the name table is replicated in all of the    
-      directories, for redundancy. </description>    
-    <final>true</final>    
-  </property>    
-    
-  <property>    
-    <name>dfs.datanode.data.dir</name>    
-    <value>file:/home/hadoop/dfs/data</value>    
-    <description>Determines where on the local filesystem an DFS data node    
-       should store its blocks.  If this is a comma-delimited    
-       list of directories, then data will be stored in all named    
-       directories, typically on different devices.    
-       Directories that do not exist are ignored.    
-    </description>    
-    <final>true</final>    
-  </property>    
-    
-  <property>    
-    <name>dfs.replication</name>    
-    <value>1</value>    
-  </property>    
-    
-  <property>    
-    <name>dfs.permissions</name>    
-    <value>false</value>    
-  </property> 
+<property>
+   <name>dfs.replication</name>
+   <value>1</value>
+ </property>
+ <property>
+   <name>dfs.namenode.name.dir</name>
+   <value>file:/home/hadoop/dfs/name</value>
+ </property>
+ <property>
+   <name>dfs.datanode.data.dir</name>
+   <value>file:/home/hadoop/dfs/data</value>
+ </property>
 </configuration>

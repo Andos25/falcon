@@ -7,7 +7,8 @@ USER_NAME=hadoop
 GROUP_NAME=hadoop
 HADOOP_TAR=~/hadoop-2.2.0.tar.gz
 CUR_USER_BASHRC=~/.bashrc
-
+PROFILE=/etc/profile
+sudo chmod 777 -R ${HADOOP_PREFIX}
 #extract
 echo "extracting"
 if [ -a ${HADOOP_PREFIX}/hadoop ];then
@@ -52,19 +53,13 @@ echo "create namenode and datanode."
 if [ -a ${HADOOP_PREFIX}/mydata ]; then
     rm -r ${HADOOP_PREFIX}/mydata
 fi
-sudo mkdir -p /tmp/hadoop/hadoop-hadoop
 sudo mkdir -p /home/hadoop/dfs/name
 sudo mkdir -p /home/hadoop/dfs/data
-sudo mkdir -p /home/hadoop/mapred/system
-sudo mkdir -p /home/hadoop/mapred/local
 
 cp core-site.xml yarn-site.xml mapred-site.xml hdfs-site.xml ${HADOOP_PREFIX}/hadoop/etc/hadoop
 
-sudo chmod 777 -R /tmp
 sudo chmod 777 -R ${HADOOP_PREFIX}/hadoop
 sudo chmod 777 -R /home/hadoop/dfs
-sudo chmod 777 -R /home/hadoop/mapred
-sudo chown -R ${USER_NAME}:${GROUP_NAME} /home/hadoop/mapred
 sudo chown -R ${USER_NAME}:${GROUP_NAME} /home/hadoop/dfs
 sudo chown -R ${USER_NAME}:${GROUP_NAME} ${HADOOP_PREFIX}/hadoop
 echo "finished"
