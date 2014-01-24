@@ -55,11 +55,15 @@ fi
 mkdir -p /tmp/hadoop/hadoop-hadoop
 mkdir -p /home/hadoop/dfs/name
 mkdir -p /home/hadoop/dfs/data
+mkdir -p /home/hadoop/mapred/system
+mkdir -p /home/hadoop/mapred/local
 
 cp core-site.xml yarn-site.xml mapred-site.xml hdfs-site.xml ${HADOOP_PREFIX}/hadoop/etc/hadoop
 
 sudo chmod 777 -R ${HADOOP_PREFIX}/hadoop
 sudo chmod 777 -R /home/hadoop/dfs
+sudo chmod 777 -R /home/hadoop/mapred
+sudo chown -R ${USER_NAME}:${GROUP_NAME} /home/hadoop/mapred
 sudo chown -R ${USER_NAME}:${GROUP_NAME} /home/hadoop/dfs
 sudo chown -R ${USER_NAME}:${GROUP_NAME} ${HADOOP_PREFIX}/hadoop
 echo "finished"
