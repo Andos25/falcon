@@ -16,12 +16,12 @@ fi
 if [ ! -a hadoop-2.2.0 ];then
     tar zxvf $HADOOP_TAR
 fi
-mv hadoop-2.2.0 hadoop
-mv hadoop ${HADOOP_PREFIX}/
+#mv hadoop-2.2.0 hadoop
+mv hadoop-2.2.0 ${HADOOP_PREFIX}/hadoop
 
 
 #create keygen
-apt-get install ssh
+sudo apt-get install ssh
 if [ -a ~/.ssh ];then
     rm -r ~/.ssh
 fi
@@ -52,14 +52,15 @@ echo "create namenode and datanode."
 if [ -a ${HADOOP_PREFIX}/mydata ]; then
     rm -r ${HADOOP_PREFIX}/mydata
 fi
-mkdir -p /tmp/hadoop/hadoop-hadoop
-mkdir -p /home/hadoop/dfs/name
-mkdir -p /home/hadoop/dfs/data
-mkdir -p /home/hadoop/mapred/system
-mkdir -p /home/hadoop/mapred/local
+sudo mkdir -p /tmp/hadoop/hadoop-hadoop
+sudo mkdir -p /home/hadoop/dfs/name
+sudo mkdir -p /home/hadoop/dfs/data
+sudo mkdir -p /home/hadoop/mapred/system
+sudo mkdir -p /home/hadoop/mapred/local
 
 cp core-site.xml yarn-site.xml mapred-site.xml hdfs-site.xml ${HADOOP_PREFIX}/hadoop/etc/hadoop
 
+sudo chmod 777 -R /tmp
 sudo chmod 777 -R ${HADOOP_PREFIX}/hadoop
 sudo chmod 777 -R /home/hadoop/dfs
 sudo chmod 777 -R /home/hadoop/mapred
