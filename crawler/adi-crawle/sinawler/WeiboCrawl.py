@@ -88,7 +88,7 @@ class WeiboLogin:
       
       
 class WebCrawl:    
-    def __init__(self, beginUrl, maxThreadNum = 10, maxDepth = 2, thLifetime = 10, saveDir = "." +os.sep + "CrawledPages"):  
+    def __init__(self, beginUrl, maxThreadNum = 10, maxDepth = 3, thLifetime = 10, saveDir = "." +os.sep + "CrawledPages"):  
             "Initialize the class WebCrawl"  
               
             toTryUrl.append(beginUrl)  
@@ -174,13 +174,14 @@ class CrawlThread(threading.Thread):
       
     def __init__(self, url, saveDir, pageNum, logFile):    
             threading.Thread.__init__(self)  
-            self.url = url  
-            self.pageNum = pageNum  
+            self.url = url   
+            self.pageNum = pageNum 
+            self.tmp =  saveDir + os.sep + pageNum + '.tmp'
             self.fileName = saveDir + os.sep + pageNum + '.htm'  
             self.textName = saveDir + os.sep + pageNum + '.txt'  
             self.logFile = logFile  
             self.logLine = 'File: ' + pageNum + '  Url: '+ url    
-      
+            print self.fileName
       
     def run(self):  
             "rewrite the run() function"  
@@ -190,26 +191,30 @@ class CrawlThread(threading.Thread):
             global pagesContent  
             global textContent  
       
-            try:  
-                htmlContent = urllib2.urlopen(self.url).read()              
-                transText = TextAnalyze.textTransfer(htmlContent)  
-                  
-                fOut = open(self.fileName, 'w')  
-                fOut.write(htmlContent)  
-                fOut.close()  
-                tOut = open(self.textName, 'w')  
-                tOut.write(transText)  
-                tOut.close()  
+            # try:  
+            htmlContent = urllib2.urlopen(self.url).read()  
+                # print htmlContent            
+            transText = TextAnalyze.textTransfer(htmlContent) 
+                # print transText 
+                
+            fOut = open(self.fileName, 'w')
+            print fOut
+            fOut.write(htmlContent)
+
+            fOut.close()  
+            tOut = open(self.textName, 'w')  
+            tOut.write(transText)  
+            tOut.close()  
       
-            except:  
-                self.thLock.acquire()  
-                triedUrl.append(self.url)  
-                failedUrl.append(self.url)  
-                sFailed = 'Failed!   ' + self.logLine  
-                print sFailed  
-                self.logFile.write(sFailed + '\n')  
-                self.thLock.release()  
-                return None  
+            # except:  
+            #     self.thLock.acquire()  
+            #     triedUrl.append(self.url)  
+            #     failedUrl.append(self.url)  
+            #     sFailed = 'Failed!   ' + self.logLine  
+            #     print sFailed  
+            #     self.logFile.write(sFailed + '\n')  
+            #     self.thLock.release()  
+            #     return None  
               
             self.thLock.acquire()  
             pagesContent.append(htmlContent)  
