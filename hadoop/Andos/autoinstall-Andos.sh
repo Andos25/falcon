@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #settings !!! before you using, you must set line 4 to 8
-HADOOP_PREFIX=/usr/opt
+HADOOP_PREFIX=/opt
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-i386
 USER_NAME=hadoop
 GROUP_NAME=hadoop
-HADOOP_TAR=./hadoop-2.2.0.tar.gz
+HADOOP_TAR=~/hadoop-2.2.0.tar.gz
 CUR_USER_BASHRC=~/.bashrc
 
 #extract
