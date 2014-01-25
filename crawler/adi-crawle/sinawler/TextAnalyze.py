@@ -1,8 +1,6 @@
 #!/usr/env python
 #coding=utf8
 
-'''''Author: Zheng Yi 
-    Email: zhengyi.bupt@qq.com'''  
       
       
 def textTransfer(htmlContent):  
@@ -32,8 +30,9 @@ def textTransfer(line):
         "Decode the main part"  
           
         iText = line.find('html":"')  
+        print iText
         if iText > 0:  
-            transText = line[iText + 7: -12].decode('utf-8').encode("utf-8").replace("\\", "")  
+            transText = line[iText + 7: -12].decode('utf-8').encode("utf-8").replace("\\", "") 
             return transText  
         else:  
             return None  

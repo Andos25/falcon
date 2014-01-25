@@ -1,10 +1,5 @@
 #!/usr/bin/env python
-#coding=utf8
-
-
-'''''Author: Zheng Yi 
-    Email: zhengyi.bupt@qq.com'''  
-      
+#coding=utf8    
       
 import urllib2 
 import urllib 
@@ -22,6 +17,7 @@ textContent = []            #main text content of downloaded pages
 triedUrl = []               #all tried urls, including failed and success  
 toTryUrl = []               #urls to be try  
 failedUrl = []              #urls that fails to download  
+
 
 client_id = '1000570550' # app key
 app_scret = 'aff4f0ce3b15153bb755042dccb3a922' # app secret
@@ -91,7 +87,8 @@ class WebCrawl:
     def __init__(self, beginUrl, maxThreadNum = 10, maxDepth = 3, thLifetime = 10, saveDir = "." +os.sep + "CrawledPages"):  
             "Initialize the class WebCrawl"  
               
-            toTryUrl.append(beginUrl)  
+            toTryUrl.append(beginUrl) 
+            self.url = beginUrl 
             self.maxThreadNum = maxThreadNum  
             self.saveDir = saveDir  
             self.maxDepth = maxDepth  
@@ -160,10 +157,14 @@ class WebCrawl:
               
             newUrlList = []  
       
-            for textData in textContent:  
-                newUrlList += WeiboSearch.sUrl(textData)  
+            for textData in textContent: 
+                # print textData
+                websize = 'http://weibo.com/yaochen' 
+                newUrlList = WeiboSearch.sUrl(websize)
+                print newUrlList 
               
-            toTryUrl = list(set(newUrlList) - set(triedUrl))  
+            # toTryUrl = list(set(newUrlList) - set(triedUrl)) 
+            # print newUrlList 
             pagesContent = []  
             textContent = []  
       
@@ -191,14 +192,14 @@ class CrawlThread(threading.Thread):
             global pagesContent  
             global textContent  
       
-            # try:  
-            htmlContent = urllib2.urlopen(self.url).read()  
-                # print htmlContent            
+            # try: 
+            print self.url 
+            htmlContent = urllib2.urlopen(self.url).read() 
+            # print htmlContent            
             transText = TextAnalyze.textTransfer(htmlContent) 
                 # print transText 
                 
             fOut = open(self.fileName, 'w')
-            print fOut
             fOut.write(htmlContent)
 
             fOut.close()  
@@ -216,9 +217,13 @@ class CrawlThread(threading.Thread):
             #     self.thLock.release()  
             #     return None  
               
-            self.thLock.acquire()  
-            pagesContent.append(htmlContent)  
-            textContent.append(transText)  
+            self.thLock.acquire() 
+            # print htmlContent 
+            pagesContent.append(htmlContent)
+            # print transText 
+            # print pagesContent 
+            textContent.append(transText)
+            # print textContent  
             triedUrl.append(self.url)  
             sSuccess = 'Success!  ' + self.logLine  
             print sSuccess  
