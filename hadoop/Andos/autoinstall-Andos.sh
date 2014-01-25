@@ -9,6 +9,7 @@ HADOOP_TAR=~/hadoop-2.2.0.tar.gz
 CUR_USER_BASHRC=~/.bashrc
 PROFILE=/etc/profile
 sudo chmod 777 -R ${HADOOP_PREFIX}
+sudo apt-get installl openjdk-7-jdk
 #extract
 echo "extracting"
 if [ -a ${HADOOP_PREFIX}/hadoop ];then
