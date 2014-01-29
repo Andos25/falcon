@@ -36,11 +36,11 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 echo "Add ${HADOOP_FILE} path to ~/.bashrc file"
 echo "export HADOOP_PREFIX="${HADOOP_PREFIX} >> ${CUR_USER_BASHRC} 
 echo "export JAVA_HOME="${JAVA_HOME} >> ${CUR_USER_BASHRC}
-echo "PATH=$PATH:$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin:$JAVA_HOME/bin:$PATH" >> ${CUR_USER_BASHRC}
-echo "export HADOOP_MAPRED_HOME=${HADOOP_PREFIX}" >> ${CUR_USER_BASHRC}      
-echo "export HADOOP_COMMON_HOME=${HADOOP_PREFIX}" >> ${CUR_USER_BASHRC}      
-echo "export HADOOP_HDFS_HOME=${HADOOP_PREFIX}" >> ${CUR_USER_BASHRC}      
-echo "export YARN_HOME=${HADOOP_PREFIX}" >> ${CUR_USER_BASHRC} 
+echo "PATH=$HADOOP_PREFIX/hadoop/bin:$HADOOP_PREFIX/hadoop/sbin:$JAVA_HOME/bin" >> ${CUR_USER_BASHRC}
+echo "export HADOOP_MAPRED_HOME=${HADOOP_PREFIX}/hadoop/share/mapred" >> ${CUR_USER_BASHRC}      
+echo "export HADOOP_COMMON_HOME=${HADOOP_PREFIX}/hadoop/share/common" >> ${CUR_USER_BASHRC}      
+echo "export HADOOP_HDFS_HOME=${HADOOP_PREFIX}/hadoop/share/hdfs" >> ${CUR_USER_BASHRC}      
+echo "export YARN_HOME=${HADOOP_PREFIX}/hadoop/share/yarn" >> ${CUR_USER_BASHRC} 
 echo "export HADOOP_CONF_DIR=${HADOOP_PREFIX}/etc/hadoop" >> ${CUR_USER_BASHRC}
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-i386" >> ${CUR_USER_BASHRC}
 echo "export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:JAVA_HOME/lib/tools.jar" >> ${CUR_USER_BASHRC}
