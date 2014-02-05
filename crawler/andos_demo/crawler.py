@@ -10,6 +10,8 @@ import threading
 import httplib
 import os
 import login
+
+id =0
 class Crawler():
     """docstring for crawler"""
     def __init__(self):
@@ -27,7 +29,11 @@ class Crawler():
         # self.hrefpattern=re.compile('href=\\\\"\\\\/p\\\\/(\d+)')
         self.hrefpattern=re.compile('href=.*?(usercard=.+)\\\\\"')
         # self.listpattern=re.compile('<li class="clearfix S_line1".+\"(uid=\d+)&.+>',re.S)
-        self.listpattern=re.compile('<_li class=\\"clearfix S_line1\\"(.+?)_>',re.S)
+        # self.listpattern=re.compile('<li.+action-type=\\\\"itemClick\\\\"(.+)>',re.S)
+        # self.listpattern=re.compile('<li.+action-type=\\\\"itemClick\\\\"\s(action-data=\\\\.+)&.+>',re.S)
+        self.listpattern=re.compile('<a.*?(\w+=\d+).*?>',re.S)
+        self.fanspattern=re.compile('uid=\d+',re.S)
+
         while(self.getuserurl_db()):
             self.get_limit_pagecount()
                 # self.getfanscontent(i)
@@ -60,7 +66,7 @@ class Crawler():
         # print hrefs
         for href in hrefs:
             splits = href.split(' ')
-            print splits
+            # print splits
             for split in splits:
                 matches = re.match('usercard=\\\\"(\w+=\d+)\\\\\"', split)
                 if matches is not None:
@@ -71,13 +77,29 @@ class Crawler():
 
         return 1
 
-    def get_fans_list(self,content):
-        fanslist = self.listpattern.findall(content)
-        # print content
-        # for fans in fanslist:
-        #     matches = re.match(,fans)
-        print fanslist
-        # subinfo = ''.join(subinfo)
+    def get_fans_list(self,fanstext):
+        # print fanstext
+        pre_fansid = 0
+        fanslist = self.listpattern.findall(fanstext)
+        for fans in fanslist:
+            fans = fans.split(', ')
+            for fan in fans:
+                # print fan
+                matches = re.match('uid=\d+',fan)
+                if matches is not None:
+                    fansid = matches.group()
+
+                    if(fansid!=pre_fansid):
+                        print fansid
+                        fOut = open(self.fanslist,'a')
+                        fOut.write(fansid+'\n')
+                        pre_fansid = fansid
+        #         except:
+        #             print 'Faild to save fanslist! '
+        #             return False
+        # print 'Save fanslist sucess!'
+        # return True
+        # # subinfo = ''.join(subinfo)
         # hrefs = self.hrefpattern.findall(subinfo)
         # for href in hrefs:
         #     splits = href.split(' ')
@@ -93,15 +115,14 @@ class Crawler():
 
     def getfanscontent(self):
         pagecount = 1
-        content = urllib2.urlopen(self.url+"/follow?relate=fans&page="+str(pagecount)+"#place").read()
-        while (content):
-            self.get_fans_list(content)
-            fOut = open(self.fanslist, 'a')
-            fOut.write(content)
-            pagecount = pagecount+1
-            # content = urllib2.urlopen(self.url+"?page="+str(pagecount)+"#place").read()
-            break
-        return content
+        fanstext = urllib2.urlopen(self.url+"/follow?relate=fans&page="+str(pagecount)+"#place").read()
+        while (fanstext):
+            if (self.get_fans_list(fanstext)):
+                pagecount = pagecount+1
+                content = urllib2.urlopen(self.url+"?page="+str(pagecount)+"#place").read()
+            else:
+                break
+        return 1
         # self.svr.Input(content)
         
 class Work(threading.Thread):
