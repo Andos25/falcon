@@ -10,116 +10,143 @@ import threading
 import httplib
 import os
 import login
+import ast
 
 id =0
+fansdic = None
 class Crawler():
     """docstring for crawler"""
     def __init__(self):
-        saveDir = "." +os.sep + "data"
-        self.url = "http://weibo.com/p/1003061266321801"
-        self.pageNum = '1003061266321801' 
-        self.fileName = saveDir + os.sep + self.pageNum + 'content.htm'  
-        self.uidlist = saveDir + os.sep + self.pageNum + 'uidlists.txt'
-        self.fanslist = saveDir + os.sep + self.pageNum + 'fanslists.txt'  
+        self.saveDir = "." +os.sep + "data"
+        pid = '100306'
+        pageNum = '1266321801'
+        source_url = "http://weibo.com/p/1003061266321801"
+        self.fansdic = dict()
+        # self.fileName = saveDir + os.sep + pageNum + 'content.htm'  
+        # self.uidlist = saveDir + os.sep + pageNum + 'uidlists.txt'
+        # self.fanslist = saveDir + os.sep + pageNum + 'fanslists.txt'  
         self.svr=ServerProxy("http://localhost:2310")
         # self.pattern=re.compile(r'<a\s*class=\\"S_func1\\" href=(.*) target=\\"__blank\\">.*?<\/a>', re.S)
         # self.pattern=re.compile("href=\"(.+?)\"",re.S)
         self.pattern=re.compile("<a(.+?)>",re.S)
 
         # self.hrefpattern=re.compile('href=\\\\"\\\\/p\\\\/(\d+)')
+        self.pidpattern=re.compile("CONFIG\['pid'\]='(\d+)'",re.S)
         self.hrefpattern=re.compile('href=.*?(usercard=.+)\\\\\"')
-        # self.listpattern=re.compile('<li class="clearfix S_line1".+\"(uid=\d+)&.+>',re.S)
-        # self.listpattern=re.compile('<li.+action-type=\\\\"itemClick\\\\"(.+)>',re.S)
-        # self.listpattern=re.compile('<li.+action-type=\\\\"itemClick\\\\"\s(action-data=\\\\.+)&.+>',re.S)
         self.listpattern=re.compile('<a.*?(\w+=\d+).*?>',re.S)
         self.fanspattern=re.compile('uid=\d+',re.S)
 
-        while(self.getuserurl_db()):
-            self.get_limit_pagecount()
+        while(source_url):
+            self.get_limit_pagecount(source_url,pageNum)
                 # self.getfanscontent(i)
             print 'get fans list,waiting...... '
-            if self.getfanscontent() is not None:
-                print 'make fans list saved!' 
-            
+            if self.getfanscontent(source_url,pageNum) is not None:
+                print 'make fans list saved!'
             else:
                 print 'faild to save the fans list!'
 
             # break
 
-    def getuserurl_db(self):
+    def getuserfans_db(self,pagecount,fanslist):
         #select a user's url which haven't be crawled, use a flag to sign a user
         #add code here:
-
         #Andos-demo: this code is just for demo, when you code your code ,delete this code
-        self.url = self.url = "http://weibo.com/p/1003061266321801"
-        return True
+        num =0
+        for line in open(fanslist):
+            matches = re.match('uid:(\d+)', line)
+            fansid = matches.group(1)
+            # print dict({pagecount:{'no':num,'uid':fansid,'used':0}})
+            # self.fansdic = dict({pagecount:{'no':num,'uid':fansid,'used':0}}) #focus dict init style!!
+            self.fansdic[num] = dict({'page':pagecount,'uid':fansid,'used':0})
+            num = num+1
+        return self.fansdic
         #if not find user which not crawled, return False
         #if xxxxx:return False
+    def url_make(self):
+        # print self.fansdic
+        for key in self.fansdic:
+            fans = self.fansdic[key]
+            if fans['used']==0:
+                url = 'http://weibo.com/u/'+str(fans['uid'])
+                pageNum = fans['uid']
+                print url
+                fans['used']=1
+                break
+        return pageNum
 
-    def get_limit_pagecount(self):
-        fOut = open(self.fileName, 'w')
-        content = urllib2.urlopen(self.url).read()
+    def get_limit_pagecount(self,url,pageNum):
+        fileName = self.saveDir + os.sep + pageNum + 'content.html'
+        uidlist = self.saveDir + os.sep + pageNum + 'uidlists.txt' 
+        print fileName
+        fOut = open(fileName, 'w')
+        content = urllib2.urlopen(url).read()
+        print content
         fOut.write(content)
-        subinfo = self.pattern.findall(content)
-        subinfo = ''.join(subinfo)
-        hrefs = self.hrefpattern.findall(subinfo)
-        # print hrefs
-        for href in hrefs:
-            splits = href.split(' ')
-            # print splits
-            for split in splits:
-                matches = re.match('usercard=\\\\"(\w+=\d+)\\\\\"', split)
-                if matches is not None:
-                    uid = matches.group(1)
-                    fOut = open(self.uidlist, 'a')
-                    fOut.write(uid+'\n')
-                    print uid
+        if content is not None:
+            print str(url)+'content saved!'
+            self.pid = self.pidpattern.findall(content)[0]
+            print self.pid
+            subinfo = self.pattern.findall(content)
+            subinfo = ''.join(subinfo)
+            hrefs = self.hrefpattern.findall(subinfo)
+            # print hrefs
+            print uidlist
+            for href in hrefs:
+                splits = href.split(' ')
+                # print splits
+                for split in splits:
+                    matches = re.match('usercard=\\\\"(\w+=\d+)\\\\\"', split)
+                    if matches is not None:
+                        uid = matches.group(1)
+                        tmp = re.compile('=')
+                        uid = tmp.sub(':', uid)
+                        fOut = open(uidlist, 'a')
+                        fOut.write(uid+'\n')
+                        print uid
+            
+            print str(url)+'content ids saved!'            
+        return self.pid
 
-        return 1
-
-    def get_fans_list(self,fanstext):
+    def get_fans_list(self,fanstext,pagecount,pageNum):
         # print fanstext
+        fanslist = self.saveDir + os.sep + pageNum + 'fanslists.txt'  
         pre_fansid = 0
-        fanslist = self.listpattern.findall(fanstext)
-        for fans in fanslist:
+        fansre = self.listpattern.findall(fanstext)
+        # print fanslist
+        for fans in fansre:
             fans = fans.split(', ')
             for fan in fans:
-                # print fan
                 matches = re.match('uid=\d+',fan)
                 if matches is not None:
                     fansid = matches.group()
-
+                    tmp = re.compile('=')
+                    fansid = tmp.sub(':', fansid)
                     if(fansid!=pre_fansid):
                         print fansid
-                        fOut = open(self.fanslist,'a')
+                        fOut = open(fanslist,'a')
                         fOut.write(fansid+'\n')
                         pre_fansid = fansid
-        #         except:
-        #             print 'Faild to save fanslist! '
-        #             return False
-        # print 'Save fanslist sucess!'
-        # return True
-        # # subinfo = ''.join(subinfo)
-        # hrefs = self.hrefpattern.findall(subinfo)
-        # for href in hrefs:
-        #     splits = href.split(' ')
-        #     # print splits
-        #     for split in splits:
-        #         matches = re.match('usercard=\\\\\"(\w+=\d+)\\\\\"', split)
-        #         if matches is not None:
-        #             uid = matches.group(1)
-        #             fOut = open(self.uidlist, 'a')
-        #             fOut.write(uid+'\n')
-        #             print uid
 
+        self.getuserfans_db(pagecount,fanslist)
+        return True
 
-    def getfanscontent(self):
+    def getfanscontent(self,url,pageNum):
         pagecount = 1
-        fanstext = urllib2.urlopen(self.url+"/follow?relate=fans&page="+str(pagecount)+"#place").read()
+        fanstext = urllib2.urlopen("http://weibo.com/p/"+str(self.pid)+str(pageNum)+"/follow?relate=fans&page="+str(pagecount)+"#place").read()
+        aa = "http://weibo.com/p/"+str(self.pid)+str(pageNum)+"/follow?relate=fans&page="+str(pagecount)+"#place"
+        print aa
         while (fanstext):
-            if (self.get_fans_list(fanstext)):
+            # print fanstext
+            print '>>>>>>>>>>>>>>>>>>>fans on page '+str(pagecount)
+            if (self.get_fans_list(fanstext,pagecount,pageNum)):
+                pageNum = self.url_make()
+                url = 'http://weibo.com/u/'+str(pageNum)
+                while url:
+                    self.get_limit_pagecount(url,pageNum)
+                    pageNum = self.url_make()
+                    url = 'http://weibo.com/u/'+str(pageNum)
                 pagecount = pagecount+1
-                content = urllib2.urlopen(self.url+"?page="+str(pagecount)+"#place").read()
+                content = urllib2.urlopen(url+"?page="+str(pagecount)+"#place").read()
             else:
                 break
         return 1
