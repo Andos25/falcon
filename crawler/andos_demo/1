@@ -1,0 +1,74 @@
+1
+
+00:05:16.831	0.513	1838	256	GET	200	application/json	
+
+http://weibo.com/p/aj/mblog/mbloglist?domain=100306&pre_page=1&page=1&max_id=3673555805626855&end_id=3679266073819194&count=15&pagebar=0&max_msign=&filtered_min_id=&pl_name=Pl_Official_LeftProfileFeed__21&id=1003061266321801&script_uri=/p/1003061266321801/weibo&feed_type=0&from=page_100306&wvr=5&mod=headweibo&__rnd=1392704247593
+
+header
+(Request-Line)	GET /p/aj/mblog/mbloglist?domain=100306&pre_page=1&page=1&max_id=3673555805626855&end_id=3679266073819194&count=15&pagebar=0&max_msign=&filtered_min_id=&pl_name=Pl_Official_LeftProfileFeed__21&id=1003061266321801&script_uri=/p/1003061266321801/weibo&feed_type=0&from=page_100306&wvr=5&mod=headweibo&__rnd=1392704247593 HTTP/1.1
+Host	weibo.com
+User-Agent	Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:23.0) Gecko/20100101 Firefox/23.0
+Accept	text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language	zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3
+Accept-Encoding	gzip, deflate
+Content-Type	application/x-www-form-urlencoded
+X-Requested-With	XMLHttpRequest
+Referer	http://weibo.com/p/1003061266321801/weibo?from=page_100306&wvr=5&mod=headweibo
+Cookie	UOR=s.share.baidu.com,service.weibo.com,login.sina.com.cn; SINAGLOBAL=8990415287992.35.1390266971977; ULV=1392693790910:13:7:1:8570926767173.631.1392693790903:1391565617700; SUB=AV2yVVvyTV768yzQ6RB9jaiSU5msUhjkc0ZegKkTtdHHXgoErUmDpCcrhxA32X3h9eAdmMEO%2BL4Railgo2reQFVEct%2B7IuSHyMiExXYVunwz; myuid=3228017304; ALF=1395285780; UV5PAGE=usr513_170; SUE=es%3D3cbb2a250695817dcec97b1cf896d8a7%26ev%3Dv1%26es2%3D095d3ff24137d7000c4068db987fc465%26rs0%3DfxO3bmb7LPtuZEJIURy7w%252FMeeWJu%252FDO8ZzEPwD0vGp1GBxFL0j7TIjG%252FnFNCZWgJjuCTwYaXGguYYVXRQNm2PlAYiz%252B%252FZ3bvi%252BSE9t2kyPGPN5aMUrM1BP8zn1f%252BltGPNB6zde8RCrQLOts4NUlsNYUSBRcWWpUD1KsH9wEzjFw%253D%26rv%3D0; SUP=cv%3D1%26bt%3D1392693781%26et%3D1392780181%26d%3Dc909%26i%3Dc28e%26us%3D1%26vf%3D0%26vt%3D0%26ac%3D2%26st%3D0%26uid%3D3228017304%26name%3D15056012759%26nick%3Dadiking2013%26fmp%3D%26lcp%3D; SUS=SID-3228017304-1392693781-JA-bpg56-c488a639f7c08683ed899dafd50247a8; SSOLoginState=1392693781; UUG=usr1460; _s_tentry=login.sina.com.cn; Apache=8570926767173.631.1392693790903
+Connection	keep-alive
+
+query string 
+domain	100306
+pre_page	1
+page	1
+max_id	3673555805626855
+end_id	3679266073819194
+count	15
+pagebar	0
+max_msign	
+filtered_min_id	
+pl_name	Pl_Official_LeftProfileFeed__21
+id	1003061266321801
+script_uri	/p/1003061266321801/weibo
+feed_type	0
+from	page_100306
+wvr	5
+mod	headweibo
+__rnd	1392704247593
+
+
+2
+00:08:21.375	0.471	1838	256	GET	200	application/json	
+http://weibo.com/p/aj/mblog/mbloglist?domain=100306&pre_page=1&page=1&max_id=3669864297933395&end_id=3679266073819194&count=15&pagebar=1&max_msign=&filtered_min_id=&pl_name=Pl_Official_LeftProfileFeed__21&id=1003061266321801&script_uri=/p/1003061266321801/weibo&feed_type=0&from=page_100306&wvr=5&mod=headweibo&__rnd=1392704432134
+
+header
+(Request-Line)	GET /p/aj/mblog/mbloglist?domain=100306&pre_page=1&page=1&max_id=3669864297933395&end_id=3679266073819194&count=15&pagebar=1&max_msign=&filtered_min_id=&pl_name=Pl_Official_LeftProfileFeed__21&id=1003061266321801&script_uri=/p/1003061266321801/weibo&feed_type=0&from=page_100306&wvr=5&mod=headweibo&__rnd=1392704432134 HTTP/1.1
+Host	weibo.com
+User-Agent	Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:23.0) Gecko/20100101 Firefox/23.0
+Accept	text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language	zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3
+Accept-Encoding	gzip, deflate
+Content-Type	application/x-www-form-urlencoded
+X-Requested-With	XMLHttpRequest
+Referer	http://weibo.com/p/1003061266321801/weibo?from=page_100306&wvr=5&mod=headweibo
+Cookie	UOR=s.share.baidu.com,service.weibo.com,login.sina.com.cn; SINAGLOBAL=8990415287992.35.1390266971977; ULV=1392693790910:13:7:1:8570926767173.631.1392693790903:1391565617700; SUB=AV2yVVvyTV768yzQ6RB9jaiSU5msUhjkc0ZegKkTtdHHXgoErUmDpCcrhxA32X3h9eAdmMEO%2BL4Railgo2reQFVEct%2B7IuSHyMiExXYVunwz; myuid=3228017304; ALF=1395285780; UV5PAGE=usr513_170; SUE=es%3D3cbb2a250695817dcec97b1cf896d8a7%26ev%3Dv1%26es2%3D095d3ff24137d7000c4068db987fc465%26rs0%3DfxO3bmb7LPtuZEJIURy7w%252FMeeWJu%252FDO8ZzEPwD0vGp1GBxFL0j7TIjG%252FnFNCZWgJjuCTwYaXGguYYVXRQNm2PlAYiz%252B%252FZ3bvi%252BSE9t2kyPGPN5aMUrM1BP8zn1f%252BltGPNB6zde8RCrQLOts4NUlsNYUSBRcWWpUD1KsH9wEzjFw%253D%26rv%3D0; SUP=cv%3D1%26bt%3D1392693781%26et%3D1392780181%26d%3Dc909%26i%3Dc28e%26us%3D1%26vf%3D0%26vt%3D0%26ac%3D2%26st%3D0%26uid%3D3228017304%26name%3D15056012759%26nick%3Dadiking2013%26fmp%3D%26lcp%3D; SUS=SID-3228017304-1392693781-JA-bpg56-c488a639f7c08683ed899dafd50247a8; SSOLoginState=1392693781; UUG=usr1460; _s_tentry=login.sina.com.cn; Apache=8570926767173.631.1392693790903
+Connection	keep-alive
+
+query string
+domain	100306
+pre_page	1
+page	1
+max_id	3669864297933395
+end_id	3679266073819194
+count	15
+pagebar	1
+max_msign	
+filtered_min_id	
+pl_name	Pl_Official_LeftProfileFeed__21
+id	1003061266321801
+script_uri	/p/1003061266321801/weibo
+feed_type	0
+from	page_100306
+wvr	5
+mod	headweibo
+__rnd	1392704432134
