@@ -11,8 +11,10 @@ import httplib
 import os
 import login
 import ast
+import getWeiboPage
 
 id =0
+pagecount = 1
 fansdic = None
 class Crawler():
     """docstring for crawler"""
@@ -20,7 +22,7 @@ class Crawler():
         self.saveDir = "." +os.sep + "data"
         pid = '100306'
         pageNum = '1266321801'
-        source_url = "http://weibo.com/p/1003061266321801"
+        source_url = "http://weibo.com/p/1003061266321801/weibo?is_search=0&visible=0&is_tag=0&profile_ftype=1&page=1#feedtop"
         self.fansdic = dict()
         # self.fileName = saveDir + os.sep + pageNum + 'content.htm'  
         # self.uidlist = saveDir + os.sep + pageNum + 'uidlists.txt'
@@ -32,12 +34,13 @@ class Crawler():
 
         # self.hrefpattern=re.compile('href=\\\\"\\\\/p\\\\/(\d+)')
         self.pidpattern=re.compile("CONFIG\['pid'\]='(\d+)'",re.S)
+        self.stimepattern=re.compile("CONFIG\['servertime'\]='(\d+)'",re.S)
         self.hrefpattern=re.compile('href=.*?(usercard=.+)\\\\\"')
         self.listpattern=re.compile('<a.*?(\w+=\d+).*?>',re.S)
         self.fanspattern=re.compile('uid=\d+',re.S)
 
         while(source_url):
-            self.get_limit_pagecount(source_url,pageNum)
+            self.get_limit_pagecount(source_url,pageNum,pid)
                 # self.getfanscontent(i)
             print 'get fans list,waiting...... '
             if self.getfanscontent(source_url,pageNum) is not None:
@@ -73,19 +76,25 @@ class Crawler():
                 fans['used']=1
                 break
         return pageNum
+        # http://weibo.com/p/1003061266321801/weibo?from=page_100306&wvr=5&mod=headweibo
 
-    def get_limit_pagecount(self,url,pageNum):
+    def get_limit_pagecount(self,url,pageNum,pid):
         fileName = self.saveDir + os.sep + pageNum + 'content.html'
         uidlist = self.saveDir + os.sep + pageNum + 'uidlists.txt' 
-        print fileName
-        fOut = open(fileName, 'w')
-        content = urllib2.urlopen(url).read()
-        print content
-        fOut.write(content)
+        # print fileName
+        # fOut = open(fileName, 'w')
+        # content = urllib2.urlopen(url).read()
+        # print content
+        # fOut.write(content)
+        WBpage = getWeiboPage.getWeiboPage()
+        content = WBpage.get_msg(pageNum,pid,fileName,pagecount)
+
         if content is not None:
             print str(url)+'content saved!'
             self.pid = self.pidpattern.findall(content)[0]
             print self.pid
+            self.servertime = self.stimepattern.findall(content)[0]
+            print self.servertime
             subinfo = self.pattern.findall(content)
             subinfo = ''.join(subinfo)
             hrefs = self.hrefpattern.findall(subinfo)
@@ -106,6 +115,7 @@ class Crawler():
             
             print str(url)+'content ids saved!'            
         return self.pid
+
 
     def get_fans_list(self,fanstext,pagecount,pageNum):
         # print fanstext
