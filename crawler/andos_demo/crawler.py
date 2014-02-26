@@ -72,14 +72,12 @@ class Crawler():
 
     def crawler(self,uname,uid):
         page_num = self.get_page_count(uid)
-        # print page_num
-        fileName = self.saveDir + os.sep + uid + 'content.html'
-        uidlist = self.saveDir + os.sep + uid + 'uidlists.txt' 
+        print uname+"  has  "+str(page_num)+"  pages  fans"
         url = "http://weibo.com/u/"+str(uid)+"?source=webim"
         req = urllib2.Request(url)
         text = urllib2.urlopen(req).read()
         pid = self.pidpattern.findall(text)[0]
-        print pid
+        # print pid
         WBpage = getWeiboPage.getWeiboPage()
         content = WBpage.get_msg(uname,uid,pid,page_num)      
         return 1
@@ -95,7 +93,7 @@ class Crawler():
         for c in count:
             weibo_num = string.atoi(c)
             page_num = weibo_num/45+1
-            print page_num
+            # print page_num
         return page_num
 
     def get_fans_store(self,uname,pid,uid):
@@ -107,7 +105,7 @@ class Crawler():
         for c in count:
             fans_num = string.atoi(c)
             page_num = fans_num/20+1
-            print page_num
+            print uname+"  has  "+str(page_num)+"  pages  fans"
         for num in range(1,page_num):
             fans_url = "http://weibo.com/p/"+str(pid)+str(uid)+"/follow?relate=fans&page="+str(num)+"#place" 
             req = urllib2.Request(fans_url)
