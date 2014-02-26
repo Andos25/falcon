@@ -13,7 +13,8 @@ var app = express();
 
 nunjucks.configure('views', {
   autoescape: true,
-  express   : app
+  express: app,
+  watch: true
 });
 
 app.set('port', process.env.PORT || 3000);
