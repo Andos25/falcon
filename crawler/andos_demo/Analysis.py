@@ -46,6 +46,7 @@ class Analysis():
 		# fread = open(filename,'r')
 		# content = fread.read()
 		# print content
+		weibo_count = 0
 		content = content.encode("utf-8")
 		# print content
 		contents = re.split(self.divs_tyle,content)
@@ -76,22 +77,22 @@ class Analysis():
 				record = dict(own_weibo=own_weibo,media_weibo=media_weibo,media_time=mdate,weibo_time=date)
 				store = Store()
 				store.weibo_store(uname,uid,own_weibo,media_weibo,mdate,date)
-				print 'one page stored!'
+				weibo_count = weibo_count+1
 				break
+		print "stroe weibo count:"+str(weibo_count)
 
 class Store:
 	"store weibo text into mongodb"
 	def __init__(self):
 		conn = pymongo.Connection("localhost",27017)
-		print conn
 		self.db = conn.sina
-		if(self.db):
-			print 'mongodb connected!'
+		# if(self.db):
+		# 	print 'mongodb connected!'
 
 	def weibo_store(self,uname,uid,own_weibo,media_weibo,mdate,date):
 		result = self.db.weibo.save({'uname':uname,'uid':uid,'weibo':{'own_weibo':own_weibo,'media_weibo':media_weibo,'media_time':mdate,'weibo_time':date}})  
 		if(result):
-			print "a record stored!"
+			print "1 record stored!"
 		else:
 			print "store faild!"
 
