@@ -1,0 +1,13 @@
+hadoopauto部分包含一下内容：
+1.创建hadoop user以及hadoop group；
+2.安装jdk
+3.安装ssh
+4.安装配置hadoop-2.2.0
+5.配置jdk和hadoop环境变量
+
+注意：
+1.运行hadoopinst_leong.sh之前将文件夹中所有文件cp到/opt路径下
+2.运行完hadoopinst_leong.sh之后执行以下命令：
+sudo chmod -R hadoop:hadoop hadoop-2.2.0
+su hadoop
+hadoop namenode -format（完成）
