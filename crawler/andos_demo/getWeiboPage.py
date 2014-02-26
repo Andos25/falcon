@@ -6,22 +6,13 @@ import urllib2
 import sys
 import time
 import Analysis
+import login
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 class getWeiboPage:
 	body = {
-		# '__rnd':'',
-		# '_k':'',
-		# '_t':'0',
-		# 'count':'50',
-		# 'end_id':'',
-		# 'max_id':'',
-		# 'page':1,
-		# 'pagebar':'',
-		# 'pre_page':'0',
-		# 'uid':''
 			'domain':'100306',
 			'pre_page':'1',
 			'page':'1',
@@ -40,6 +31,7 @@ class getWeiboPage:
 			'mod':'headweibo',
 			'__rnd':''
 		}
+
    	charset = 'utf-8'
 
 	def __init__(self):
@@ -50,11 +42,12 @@ class getWeiboPage:
 	def get_msg(self,uname,uid,pid,page_num):
 		print page_num
 		for num in range(1,page_num):
-			print num
+			print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>page"+str(num)
 			url = self.weibo_url(uid,pid)
 			text = self.get_firstpage(url)
-			# self.get_secondpage()
-			# self.get_thirdpage()
+			text += self.get_secondpage(pid,uid,num)
+			text += self.get_thirdpage(pid,uid,num)
+			# print text
 			analy = Analysis.Analysis()
 			analy.get_weibo_div(text,uname,uid)
 			url = self.next_url(uid,pid,num)
@@ -70,33 +63,58 @@ class getWeiboPage:
 		# self.writefile('./result1',eval("u'''"+text+"'''"))
 		return text
 		
-	def get_secondpage(self):
+	def get_secondpage(self,pid,uid,num):
 	#	getWeiboPage.body['end_id'] = '3679266073819194'
 	#	getWeiboPage.body['max_id'] = '3487344294660278'
-		getWeiboPage.body['pagebar'] = '0'
-		getWeiboPage.body['pre_page'] = getWeiboPage.body['page']
-
+		getWeiboPage.body['pagebar'] = 0
+		getWeiboPage.body['pre_page'] = num
+		getWeiboPage.body['page'] = num
+		getWeiboPage.body['domain'] = pid
+		getWeiboPage.body['id'] = str(pid)+str(uid)
+		getWeiboPage.body['script_uri'] = '/p/'+str(pid)+str(uid)+'/weibo'
+		getWeiboPage.body['from'] = 'page_'+str(pid)
+		if (page_num>1):
+			getWeiboPage.body['is_search'] = 0
+			getWeiboPage.body['visible'] = 0
+			getWeiboPage.body['is_tag'] = 0
+			getWeiboPage.body['profile_ftype'] = 1
+		# print getWeiboPage.body
+		# getWeiboPage.body['pre_page'] = getWeiboPage.body['page']
 		url = self.ajax_url +urllib.urlencode(getWeiboPage.body)
-		print url
+		# print url
 		req = urllib2.Request(url)
 		result = urllib2.urlopen(req)
 		text = result.read()
-		text = text.encode("UTF-8")
-		self.writefile('./text2',text)		
+		# text = text.encode("UTF-8")		
 		# self.writefile('./result2',eval("u'''"+text+"'''"))
-	def get_thirdpage(self):
-		getWeiboPage.body['count'] = '15'
-		getWeiboPage.body['pagebar'] = '1'
-		getWeiboPage.body['pre_page'] = getWeiboPage.body['page']
-
+		# print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.AJAX 1"
+		# print text
+		return text
+	def get_thirdpage(self,pid,uid,num):
+		getWeiboPage.body['pagebar'] = 1
+		# getWeiboPage.body['pre_page'] = getWeiboPage.body['page']
+		getWeiboPage.body['pre_page'] = num
+		getWeiboPage.body['page'] = num
+		getWeiboPage.body['domain'] = pid
+		getWeiboPage.body['id'] = str(pid)+str(uid)
+		getWeiboPage.body['script_uri'] = '/p/'+str(pid)+str(uid)+'/weibo'
+		getWeiboPage.body['from'] = 'page_'+str(pid)
+		if (page_num>1):
+			getWeiboPage.body['is_search'] = 0
+			getWeiboPage.body['visible'] = 0
+			getWeiboPage.body['is_tag'] = 0
+			getWeiboPage.body['profile_ftype'] = 1		
+		# print getWeiboPage.body
 		url = self.ajax_url +urllib.urlencode(getWeiboPage.body)
-		print url
+		# print url
 		req = urllib2.Request(url)
 		result = urllib2.urlopen(req)
 		text = result.read()
-		text = text.encode("UTF-8")
-		self.writefile('./text3',text)		
+		# print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.AJAX 2"
+		# print text
+		# text = text.encode("UTF-8")		
 		# self.writefile('./result3',eval("u'''"+text+"'''"))
+		return text
 	def weibo_url(self,uid,pageid):
 		url = 'http://weibo.com/p/' + pageid+uid + '/weibo?from=page_'+pageid+'&wvr=5&mod=headweibo'
 		# http://weibo.com/p/1003061266321801/weibo?from=page_100306&wvr=5&mod=headweibo
@@ -119,3 +137,14 @@ class getWeiboPage:
 		fw = open(filename,'a')
 		fw.write(content)
 		fw.close()
+
+# if __name__=='__main__':
+# 	login.weiboLogin()
+# 	ob = getWeiboPage()
+# 	# ob.get_weibo_text(filename)
+# 	uname = 'Kafka桑'
+# 	pid = '100505'
+# 	uid = '1766325471'
+# 	page_num =10
+# 	ob.get_msg(uname,uid,pid,page_num)
+# 	# ss = Store()
