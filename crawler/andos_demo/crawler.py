@@ -12,6 +12,8 @@ import os
 import login
 import ast
 import getWeiboPage
+import Analysis
+import string
 
 id =0
 pagecount = 1
@@ -20,147 +22,122 @@ class Crawler():
     """docstring for crawler"""
     def __init__(self):
         self.saveDir = "." +os.sep + "data"
-        pid = '100306'
-        pageNum = '1266321801'
+        uname = 'Kafka桑'
+        pid = '100505'
+        uid = '1766325471'
         source_url = "http://weibo.com/p/1003061266321801/weibo?is_search=0&visible=0&is_tag=0&profile_ftype=1&page=1#feedtop"
         self.fansdic = dict()
-        # self.fileName = saveDir + os.sep + pageNum + 'content.htm'  
-        # self.uidlist = saveDir + os.sep + pageNum + 'uidlists.txt'
-        # self.fanslist = saveDir + os.sep + pageNum + 'fanslists.txt'  
+        # self.fileName = saveDir + os.sep + uid + 'content.htm'  
+        # self.uidlist = saveDir + os.sep + uid + 'uidlists.txt'
+        # self.fanslist = saveDir + os.sep + uid + 'fanslists.txt'  
         self.svr=ServerProxy("http://localhost:2310")
-        # self.pattern=re.compile(r'<a\s*class=\\"S_func1\\" href=(.*) target=\\"__blank\\">.*?<\/a>', re.S)
-        # self.pattern=re.compile("href=\"(.+?)\"",re.S)
         self.pattern=re.compile("<a(.+?)>",re.S)
 
         # self.hrefpattern=re.compile('href=\\\\"\\\\/p\\\\/(\d+)')
         self.pidpattern=re.compile("CONFIG\['pid'\]='(\d+)'",re.S)
         self.stimepattern=re.compile("CONFIG\['servertime'\]='(\d+)'",re.S)
         self.hrefpattern=re.compile('href=.*?(usercard=.+)\\\\\"')
-        self.listpattern=re.compile('<a.*?(\w+=\d+).*?>',re.S)
-        self.fanspattern=re.compile('uid=\d+',re.S)
-
-        while(source_url):
-            self.get_limit_pagecount(source_url,pageNum,pid)
-                # self.getfanscontent(i)
-            print 'get fans list,waiting...... '
-            if self.getfanscontent(source_url,pageNum) is not None:
-                print 'make fans list saved!'
-            else:
-                print 'faild to save the fans list!'
+        self.listpattern=re.compile('(<li class=\\\\"clearfix S_line1\\\\".*?>)',re.S)
+        self.fansid_pattern=re.compile('<li.*?uid=(\d+).*?>',re.S)
+        self.fansname_pattern=re.compile('<li.*?\d+&fnick=(.*?)&.*?>',re.S)
+        self.weiboc_pattern = re.compile('<strong.*?weibo.*?(\d+)<\\\/strong>',re.S)
+        self.fansc_pattern = re.compile('<strong.*?fans.*?(\d+)<\\\/strong>',re.S)
+       
+        self.crawler(uname,uid)
+        self.craw_fans(uname,pid,uid)
 
             # break
 
-    def getuserfans_db(self,pagecount,fanslist):
+    def get_uncrawed_fans(self):    #cong db qu fans zhuanhuan cheng dic
         #select a user's url which haven't be crawled, use a flag to sign a user
         #add code here:
         #Andos-demo: this code is just for demo, when you code your code ,delete this code
-        num =0
-        for line in open(fanslist):
-            matches = re.match('uid:(\d+)', line)
-            fansid = matches.group(1)
-            # print dict({pagecount:{'no':num,'uid':fansid,'used':0}})
-            # self.fansdic = dict({pagecount:{'no':num,'uid':fansid,'used':0}}) #focus dict init style!!
-            self.fansdic[num] = dict({'page':pagecount,'uid':fansid,'used':0})
-            num = num+1
-        return self.fansdic
-        #if not find user which not crawled, return False
-        #if xxxxx:return False
-    def url_make(self):
+        store = Analysis.Store()
+        fans = store.get_uncrawed_fans()
+        return fans
+
+
+    def url_make(self):      #qu fans id
         # print self.fansdic
         for key in self.fansdic:
             fans = self.fansdic[key]
             if fans['used']==0:
                 url = 'http://weibo.com/u/'+str(fans['uid'])
-                pageNum = fans['uid']
+                uid = fans['uid']
                 print url
                 fans['used']=1
                 break
-        return pageNum
+        return uid
         # http://weibo.com/p/1003061266321801/weibo?from=page_100306&wvr=5&mod=headweibo
 
-    def get_limit_pagecount(self,url,pageNum,pid):
-        fileName = self.saveDir + os.sep + pageNum + 'content.html'
-        uidlist = self.saveDir + os.sep + pageNum + 'uidlists.txt' 
-        # print fileName
-        # fOut = open(fileName, 'w')
-        # content = urllib2.urlopen(url).read()
-        # print content
-        # fOut.write(content)
+    def crawler(self,uname,uid):
+        page_num = self.get_page_count(uid)
+        # print page_num
+        fileName = self.saveDir + os.sep + uid + 'content.html'
+        uidlist = self.saveDir + os.sep + uid + 'uidlists.txt' 
+        url = "http://weibo.com/u/"+str(uid)+"?source=webim"
+        req = urllib2.Request(url)
+        text = urllib2.urlopen(req).read()
+        pid = self.pidpattern.findall(text)[0]
+        print pid
         WBpage = getWeiboPage.getWeiboPage()
-        content = WBpage.get_msg(pageNum,pid,fileName,pagecount)
+        content = WBpage.get_msg(uname,uid,pid,page_num)      
+        return 1
 
-        if content is not None:
-            print str(url)+'content saved!'
-            self.pid = self.pidpattern.findall(content)[0]
-            print self.pid
-            self.servertime = self.stimepattern.findall(content)[0]
-            print self.servertime
-            subinfo = self.pattern.findall(content)
-            subinfo = ''.join(subinfo)
-            hrefs = self.hrefpattern.findall(subinfo)
-            # print hrefs
-            print uidlist
-            for href in hrefs:
-                splits = href.split(' ')
-                # print splits
-                for split in splits:
-                    matches = re.match('usercard=\\\\"(\w+=\d+)\\\\\"', split)
-                    if matches is not None:
-                        uid = matches.group(1)
-                        tmp = re.compile('=')
-                        uid = tmp.sub(':', uid)
-                        fOut = open(uidlist, 'a')
-                        fOut.write(uid+'\n')
-                        print uid
-            
-            print str(url)+'content ids saved!'            
-        return self.pid
+    def get_page_count(self,uid):  
+        url = "http://weibo.com/u/"+str(uid)+"?source=webim"
+        print url
+        req = urllib2.Request(url)
+        result = urllib2.urlopen(req)
+        content = result.read()
+        content = content.encode("utf-8")
+        count = self.weiboc_pattern.findall(content)
+        for c in count:
+            weibo_num = string.atoi(c)
+            page_num = weibo_num/45+1
+            print page_num
+        return page_num
 
+    def get_fans_store(self,uname,pid,uid):
+        store = Analysis.Store()
+        url = url = "http://weibo.com/u/"+str(uid)+"?source=webim"
+        req = urllib2.Request(url)
+        result = urllib2.urlopen(req).read()
+        count = self.fansc_pattern.findall(result)
+        for c in count:
+            fans_num = string.atoi(c)
+            page_num = fans_num/20+1
+            print page_num
+        for num in range(1,page_num):
+            fans_url = "http://weibo.com/p/"+str(pid)+str(uid)+"/follow?relate=fans&page="+str(num)+"#place" 
+            req = urllib2.Request(fans_url)
+            content = urllib2.urlopen(req).read().encode("utf-8")
+            fanslists = self.listpattern.findall(content)
+            for li in fanslists:
+                print li
+                fansname = self.fansname_pattern.findall(li)[0]
+                fansid = self.fansid_pattern.findall(li)[0]
+                print fansname.encode("utf-8")
+                print fansid
+                store.fans_store(uname,uid,fansid,fansname)
 
-    def get_fans_list(self,fanstext,pagecount,pageNum):
-        # print fanstext
-        fanslist = self.saveDir + os.sep + pageNum + 'fanslists.txt'  
-        pre_fansid = 0
-        fansre = self.listpattern.findall(fanstext)
-        # print fanslist
-        for fans in fansre:
-            fans = fans.split(', ')
-            for fan in fans:
-                matches = re.match('uid=\d+',fan)
-                if matches is not None:
-                    fansid = matches.group()
-                    tmp = re.compile('=')
-                    fansid = tmp.sub(':', fansid)
-                    if(fansid!=pre_fansid):
-                        print fansid
-                        fOut = open(fanslist,'a')
-                        fOut.write(fansid+'\n')
-                        pre_fansid = fansid
-
-        self.getuserfans_db(pagecount,fanslist)
         return True
 
-    def getfanscontent(self,url,pageNum):
-        pagecount = 1
-        fanstext = urllib2.urlopen("http://weibo.com/p/"+str(self.pid)+str(pageNum)+"/follow?relate=fans&page="+str(pagecount)+"#place").read()
-        aa = "http://weibo.com/p/"+str(self.pid)+str(pageNum)+"/follow?relate=fans&page="+str(pagecount)+"#place"
-        print aa
-        while (fanstext):
-            # print fanstext
-            print '>>>>>>>>>>>>>>>>>>>fans on page '+str(pagecount)
-            if (self.get_fans_list(fanstext,pagecount,pageNum)):
-                pageNum = self.url_make()
-                url = 'http://weibo.com/u/'+str(pageNum)
-                while url:
-                    self.get_limit_pagecount(url,pageNum)
-                    pageNum = self.url_make()
-                    url = 'http://weibo.com/u/'+str(pageNum)
-                pagecount = pagecount+1
-                content = urllib2.urlopen(url+"?page="+str(pagecount)+"#place").read()
-            else:
-                break
-        return 1
-        # self.svr.Input(content)
+    def craw_fans(self,uname,pid,uid):
+        store = Analysis.Store()
+        self.get_fans_store(uname,pid,uid)
+        fans_info = store.get_uncrawed_fans()
+        while (fans_info):
+            uid = fans_info['fans']['fansid']
+            print uid
+            uname = fans_info['fans']['fansname']
+            print uname
+            ob_id = fans_info['_id']
+            if(self.crawler(uname,uid)):
+                store.fans_mark(ob_id)
+            self.get_fans_store(uname,pid,uid)
+            fans_info = self.get_uncrawed_fans()
+
         
 class Work(threading.Thread):
     def __init__(self):
@@ -189,7 +166,6 @@ class Work(threading.Thread):
 
     def run(self):
         crawler = Crawler()
-
 
 
 

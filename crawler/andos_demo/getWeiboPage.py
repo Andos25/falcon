@@ -5,6 +5,7 @@ import urllib
 import urllib2
 import sys
 import time
+import Analysis
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -44,27 +45,28 @@ class getWeiboPage:
 	def __init__(self):
 		self.ajax_url = 'http://weibo.com/p/aj/mblog/mbloglist?'
 		uid_list = []
-		pagecount = 1
 
 
-	def get_msg(self,uid,pageid,filename,pagecount):
-		url = self.weibo_url(uid,pageid)
-		text = self.get_firstpage(url,filename)
-		while(text):
+	def get_msg(self,uname,uid,pid,page_num):
+		print page_num
+		for num in range(1,page_num):
+			print num
+			url = self.weibo_url(uid,pid)
+			text = self.get_firstpage(url)
 			# self.get_secondpage()
 			# self.get_thirdpage()
-			pagecount = pagecount+1
-			url = self.next_url(uid,pageid,pagecount)
-			text = self.get_firstpage(url,filename)
-	def get_firstpage(self,url,filename):
+			analy = Analysis.Analysis()
+			analy.get_weibo_div(text,uname,uid)
+			url = self.next_url(uid,pid,num)
+			text = self.get_firstpage(url)
+	def get_firstpage(self,url):
 		# getWeiboPage.body['pre_page'] = getWeiboPage.body['page']-1
 		# url = self.weibo_url(uid,pageid)
 		print url
 		req = urllib2.Request(url)
 		result = urllib2.urlopen(req)
 		text = result.read()
-		# print text
-		self.writefile(filename,text)		
+		# print text	
 		# self.writefile('./result1',eval("u'''"+text+"'''"))
 		return text
 		
