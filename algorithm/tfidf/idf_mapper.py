@@ -19,9 +19,8 @@ def idf_mapper(ip, dbName, collectionName, sortBy, skip, limit):
 if __name__ == '__main__':
 	ip = 'localhost'
 	dbName = 'weibo'
-	collectionName = 'text'
+	collectionName = 'test'
 	sortBy = '_id'
 	skip = 0
-	limit = 10
-	for i in range(0, 101, limit):
-		idf_mapper(ip, dbName, collectionName, sortBy, skip, limit)
+	limit = 5
+	idf_mapper(ip, dbName, collectionName, sortBy, skip, limit)

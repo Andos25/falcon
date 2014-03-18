@@ -21,13 +21,13 @@ def idf_reducer(ip, dbName, collectionName, fileSum):
             wordlist[word] += 1
         else:
             wordlist[word] = 1
-        for i in range(len(wordlist)):
-            #rint 'word', wordlist.keys()[i], ' idf', math.log(fileSum/(wordlist.values()[i] + 1), 10)
-            collection.save({'word':wordlist.keys()[i], 'idf':math.log(fileSum/(wordlist.values()[i] + 1), 10)})
+    for i in range(len(wordlist)):
+        print 'word', wordlist.keys()[i], ' idf', math.log(fileSum/(wordlist.values()[i] + 1), 10)
+        collection.save({'word':wordlist.keys()[i], 'idf':math.log(fileSum/(wordlist.values()[i] + 1), 10)})
 
 if __name__ == '__main__':
     ip = 'localhost'
     dbName = 'weibo'
     collectionName = 'idf_test'
-    fileSum = 50
+    fileSum = 5.0
     idf_reducer(ip, dbName, collectionName, fileSum)
