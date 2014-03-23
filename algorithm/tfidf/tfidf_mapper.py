@@ -15,7 +15,7 @@ def get_collection():
 def run():
     stopword = [i.rstrip() for i in open('stopword')]
     collection = get_collection()
-    cursor = collection.find()
+    cursor = collection.find().limit(5)
     for item in cursor:
         words = jieba.cut(item["text"], cut_all=False)
         wordlist = dict()

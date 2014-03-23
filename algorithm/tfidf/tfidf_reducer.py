@@ -14,6 +14,7 @@ def get_collection():
     return collection
 
 def run():
+    collection = get_collection()
     filesum = float(collection.count())
     wordlist = dict()
     for line in sys.stdin:
