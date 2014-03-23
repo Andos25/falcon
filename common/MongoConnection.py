@@ -10,15 +10,21 @@ class MongoConnection():
         config.read("settings.ini")
         self.conn = pymongo.Connection(config.get("mongodb", "host"), int(config.get("mongodb", "port")))
 
-    def getConn(self):
+    def get_connection(self):
         return self.conn
 
-    def getdbname(self, dbname):
+    def get_database(self, dbname):
         try:
             return self.conn[dbname]
         except:
             print "open database failed!"
 
+    def get_collection(self, dbname, collection_name):
+        try:
+            return self.conn[dbname][collection_name]
+        except:
+            print "get collection failed!"
+
 if __name__ == '__main__':
     mc = MongoConnection()
-    conn = mc.getConn()
+    conn = mc.get_connection()
