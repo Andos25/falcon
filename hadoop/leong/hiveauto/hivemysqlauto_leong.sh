@@ -6,9 +6,9 @@ CONNECTOR=mysql-connector-java-5.1.18-bin.jar
 
 #install mysql
 if [ ! -e /etc/init.d/mysql ];then
-	sudo apt-get install mysql-server mysql-client
+sudo apt-get install mysql-server mysql-client
 else
-	echo "mysql is already installed"
+echo "mysql is already installed"
 fi
 sudo cp my.cnf /etc/mysql/my.cnf
 
@@ -28,11 +28,12 @@ show tables;"
 
 #extract hive
 if [ ! -e $HIVE_TAR ]; then
-	echo "downloading hive,please wait..."
-	wgget -O $HIVE_PATH/$HIVE_TAR "http://apache.dataguru.cn/hive/stable/hive-0.11.0.tar.gz"
+echo "downloading hive,please wait..."
+wgget -O $HIVE_PATH/$HIVE_TAR "http://apache.dataguru.cn/hive/stable/hive-0.11.0.tar.gz"
 fi
 echo "extracting hive"
-sudo tar -zxvf $HIVE_TAR
+tar -zxvf $HIVE_TAR
+mv hive-0.11.0 /opt
 sudo chown -R hadoop:hadoop hive-0.11.0
 #export hive path
 sudo echo "export HIVE_HOME="${HIVE_PATH}/hive-0.11.0 >> /etc/profile
@@ -42,6 +43,7 @@ source /etc/profile
 
 #copy mysql connection jar
 sudo cp $CONNECTOR $HIVE_PATH/hive-0.11.0/lib
-
+sudo chown hadoop:hadoop $HIVE_PATH/hive-0.11.0/lib/$CONNECTOR
 #config hive
 sudo cp hive-site.xml $HIVE_PATH/hive-0.11.0/conf/
+sudo chown hadoop:hadoop $HIVE_PATH/hive-0.11.0/conf/hive-site.xml
