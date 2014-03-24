@@ -1,0 +1,23 @@
+1. 64位ubuntu12.04编译安装hadoop-2.2.0步骤：
+   https://app.yinxiang.com/Home.action#b=2ac23e5b-6f5c-4dd8-bfef-a01bc5f3aa   ab&st=p&n=c911a212-7eac-41bf-a5b2-9de69798d855
+   编译好的包将尽快上传网盘，此包配置仍然是wei分布。在hadoop-env.sh文件中的J   AVA_HOME需要按自己的情况配置!
+
+2. mongodb-hadoop-connector
+   https://github.com/mongodb/mongo-hadoopeb http://ftp.ctex.org/mirrors/CRA   N  /bin/linux/ubuntu precise/
+   tips: a）hive子目录很重要，mongodb和hive的数据传输就是在此目录下有详细说             明
+        b) 若无法完成编译，可参照：
+           https://github.com/mongodb/mongo-hadoop/releases/tag/r1.2.0-rc1
+           编译好的不同haodoop版本的jar包，打包在此。
+
+3. mongodb-hive-handler
+   https://github.com/yc-huang/Hive-mongo
+   tips：a）This is a quick&dirty implementation of a MongoDB storage handle            rf or Apache HIVE.
+        b）可利用此handler用hive向mongo写入数据
+           编译好的会尽快整理上传到git
+
+4.rhadoop安装请参考：
+   http://blog.fens.me/rhadoop-rhadoop/，遇到问题可以和梁婷讨论
+
+5.r，rhive的配置请参考：
+   http://blog.csdn.net/liangtingac/article/details/18968989，遇到问题可以和梁婷讨论。
+
