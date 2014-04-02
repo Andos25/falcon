@@ -5,19 +5,21 @@ import sys
 sys.path.append("../../")
 sys.path.append("../../common/")
 import jieba
-from common.MongoConnection import MongoConnection
+import pymongo
 
 def get_collection():
-    mongo = MongoConnection()
-    collection = mongo.get_collection("weibo", "text")
-    return collection
+    mongo = pymongo.Connection("127.0.0.1", 27017)["weibo"]
+    return mongo["text"] 
 
 def run():
-    stopword = [i.rstrip() for i in open('stopword')]
+    stopword = [i.rstrip() for i in open('/home/hadoop/falcon/algorithm/tfidf/stopword')]
     collection = get_collection()
     cursor = collection.find()
     for item in cursor:
-        words = jieba.cut(item["text"], cut_all=False)
+        try:
+            words = jieba.cut(item["text"], cut_all=False)
+        except:
+            continue
         wordlist = dict()
         count = 0
         for word in words:
@@ -33,6 +35,7 @@ def run():
         for word in wordlist.keys():
             wordlist[word] = wordlist[word]/count
             print "{0}\t{1}".format(word, 1)
+        print item["_id"]
         collection.update({"_id":item["_id"]}, {"$set": {"tf": wordlist}})
 
 if __name__ == '__main__':

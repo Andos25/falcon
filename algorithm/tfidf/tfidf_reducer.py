@@ -5,20 +5,22 @@ import sys
 import math
 sys.path.append("../../")
 sys.path.append("../../common/")
-from common.MongoConnection import MongoConnection
+import pymongo
 
 def get_collection():
-    mongo = MongoConnection()
-    collection = mongo.get_collection("weibo", "text")
+    mongo = pymongo.Connection("127.0.0.1", 27017)["weibo"]
     # cursor = collection.find()
-    return collection
+    return mongo["text"]
 
 def run():
     collection = get_collection()
     filesum = float(collection.count())
     wordlist = dict()
     for line in sys.stdin:
-        word, value = line.rstrip().split('\t', 1)
+        try:
+            word, value = line.rstrip().split('\t', 1)
+        except:
+            continue
         if wordlist.has_key(word):
             wordlist[word] += 1
         else:
