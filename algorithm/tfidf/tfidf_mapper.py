@@ -24,7 +24,7 @@ def run():
         count = 0
         for word in words:
             word = word.encode('utf-8')
-            if word in stopword:
+            if word in stopword or word.isspace():
                 continue
             count += 1
             if wordlist.has_key(word):

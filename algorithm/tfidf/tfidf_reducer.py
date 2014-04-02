@@ -7,14 +7,15 @@ sys.path.append("../../")
 sys.path.append("../../common/")
 import pymongo
 
-def get_collection():
+def get_collection(collectionname):
     mongo = pymongo.Connection("127.0.0.1", 27017)["weibo"]
     # cursor = collection.find()
-    return mongo["text"]
+    return mongo[collectionname]
 
 def run():
-    collection = get_collection()
-    filesum = float(collection.count())
+    collection = get_collection("idf")
+    filesum = float(get_collection("text").count())
+    print filesum
     wordlist = dict()
     for line in sys.stdin:
         try:
