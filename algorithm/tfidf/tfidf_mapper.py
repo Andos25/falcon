@@ -35,8 +35,7 @@ def run():
         for word in wordlist.keys():
             wordlist[word] = wordlist[word]/count
             print "{0}\t{1}".format(word, 1)
-        print item["_id"]
-        collection.update({"_id":item["_id"]}, {"$set": {"tf": wordlist}})
+        collection.update({"_id":item["_id"]}, {"$set": {"tf": wordlist}},True)
 
 if __name__ == '__main__':
     run()
