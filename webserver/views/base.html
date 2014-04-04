@@ -2,23 +2,23 @@
 <html lang="">
 <head>
 	<meta charset="utf-8">
-	<title>{% block title %}{% end %}</title>
+	<title>{% block title %}{% endblock %}</title>
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<meta name="robots" content="" />
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
-	<link rel="stylesheet" href="{{ static_url("css/style.css")}}" media="all" />
+	<link rel="stylesheet" href="css/style.css" media="all" />
 	<link rel="stylesheet" href="css/dropzone.css" media="all" />
 
-	<script src="{{static_url("js/jquery.min.js")}}"></script>
-	<script src="{{static_url("js/jquery.wysiwyg.js")}}"></script>
-	<script src="{{static_url("js/custom.js")}}"></script>
-	<script src="{{static_url("js/cycle.js")}}"></script>
-	<script src="{{static_url("js/jquery.checkbox.min.js")}}"></script>
-	<script src="{{static_url("js/jquery.tablesorter.min.js")}}"></script>
-	<script src="{{static_url("js/highcharts.js")}}"></script>
-	<script src="{{static_url("js/modules/exporting.js")}}"></script>
- 	{% block head %}{% end %}
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.wysiwyg.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/cycle.js"></script>
+	<script src="js/jquery.checkbox.min.js"></script>
+	<script src="js/jquery.tablesorter.min.js"></script>
+	<script src="js/highcharts.js"></script>
+	<script src="js/modules/exporting.js"></script>
+ 	{% block head %}{% endblock %}
 </head>
 <body>
 <header class="main">
@@ -27,7 +27,7 @@
 </header>
 <section class="user">
 	<div class="profile-img">
-		<p><img src="{{static_url("images/pso.jpg")}}" alt="" height="40" width="40" /> Welcome back Andos he</p>
+		<p><img src="images/pso.jpg" alt="" height="40" width="40" /> Welcome back Andos he</p>
 	</div>
 	<div class="buttons">
 		<button class="ico-font">&#59157;</button>
@@ -46,7 +46,7 @@
 	</ul>
 </nav>
 
-{% block body %}{% end %}
+{% block body %}{% endblock %}
 
 </body>
 </html>

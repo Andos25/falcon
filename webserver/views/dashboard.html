@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}安全事件基础信息统计{% end %}
+{% block title %}安全事件基础信息统计{% endblock%}
 {% block head%}
 
 <script type="text/javascript">
@@ -71,7 +71,7 @@
     });
 	};
 </script>
-{% end %}
+{% endblock %}
 {% block body %}
 <section class="alert">
 	<div class="green">	
@@ -92,7 +92,7 @@
               <select id="multiSelect" onchange="selectevent()">
                 {% for item in local['count'] %}
                 <option>{{item}}</option>
-                {% end %}
+                {% endfor %}
               </select>
 			</aside>
 		</header>
@@ -167,4 +167,4 @@
 	</section>
 	</div>
 </section>
-{% end %}
+{% endblock %}

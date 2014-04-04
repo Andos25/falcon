@@ -8,6 +8,7 @@ exports.index = function(req, res){
 };
 
 exports.dashboard = function(req, res){
+  console.log("dashboard");
   res.render('dashboard.html');
 };
 
@@ -15,7 +16,7 @@ exports.files = function(req, res){
   res.render('files.html');
 };
 
-exports.blog = function(req, res){
+exports.file = function(req, res){
   res.render('blog.html');
 };
 

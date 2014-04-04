@@ -11,12 +11,13 @@ var path = require('path');
 var nunjucks  = require('nunjucks');
 var app = express();
 
+// nunjucks configure
 nunjucks.configure('views', {
   autoescape: true,
   express: app,
   watch: true
 });
-
+// all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.favicon());
@@ -24,6 +25,8 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+// app.use(express.cookieParser('your secret here'));
+// app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -32,8 +35,15 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+//normal page
+app.get('^/$', routes.index)
+app.get('^/index$', routes.index)
+app.get('^/dashboard', routes.dashboard)
+app.get('^/files', routes.files)
+app.get('^/blog-new', routes.blog)
+app.get('^/users', routes.users)
+app.get('^/topology', routes.topology)
+app.get('^/page-new', routes.page)
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
