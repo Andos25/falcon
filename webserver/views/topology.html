@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}安全事件传导视图{% end %}
+{% block head%}
+<script src="{{static_url("js/arbor.js")}}"></script>
+<script src="{{static_url("js/graphics.js")}}"></script>
+<script src="{{static_url("js/jquery.address-1.4.min.js")}}"></script>
+<script src="{{static_url("js/parseur.js")}}"></script>
+<script src="{{static_url("js/renderer.js")}}"></script>
+<script type="text/javascript">
+  
+  trace = arbor.etc.trace
+  objmerge = arbor.etc.objmerge
+  objcopy = arbor.etc.objcopy
+
+  //parse the input
+  var parse = Parseur().parse
+
+  //input the element pass in
+  var DependGraph = function(elt, doc){
+    //get the object of element
+    var dom = $(elt)
+    var _btn = dom.find('#btn')
+
+    sys = arbor.ParticleSystem(1000,500,0.95)
+    sys.renderer = Renderer("#viewport")
+    sys.screenPadding(20)
+
+
+    var that = {
+
+      init:function(){
+
+        $(window).resize(that.resize)
+        that.resize() 
+        that.getData()
+        _btn.bind('click',that.btnclick)
+
+        return that
+      },//end of init
+
+
+      // resize the 
+      resize:function(){
+        sys.renderer.redraw()
+      },
+
+      getData:function(){
+         //set the system parameters is there is
+         if (doc.sys){
+            sys.parameters(doc.sys)
+         }
+
+         //parse the input network
+         var network = parse(doc.src)
+
+         //set the network information
+         $.each(network.nodes, function(nname, ndata){
+            if (ndata.label===undefined) ndata.label = nname
+         })
+
+         //merge the network
+         sys.merge(network)
+         // that.resize()
+
+        //end of get json
+
+      }//end of get data
+
+    }//end of that
+
+    
+    return that.init()
+  }
+  function gettopologydata(){
+    $.getJSON("/ajax/topology_gettopologydata/", {"selectinfo":$("select#multiSelect").val()}, function(data) {
+        var mcp = DependGraph("#halfviz", data['graphinfo']);
+        $("img#static").attr("src", data['img_url'])
+    })
+  }
+  $(document).ready(function(){
+    // var mcp = DependGraph("#halfviz");
+    gettopologydata();
+    $("li#5").addClass('section');
+  })
+  function change(){
+    $.getJSON("/ajax/topology_gettopologydata/", {"selectinfo":$("select#multiSelect").val()}, function(data) {
+      doc = data['graphinfo'];
+     if (doc.sys){
+        sys.parameters(doc.sys)
+     }
+
+     //parse the input network
+     var network = parse(doc.src)
+
+     //set the network information
+     $.each(network.nodes, function(nname, ndata){
+        if (ndata.label===undefined) ndata.label = nname
+     })
+
+     //merge the network
+     sys.merge(network)
+    $("img#static").attr("src", data['img_url'])
+    })
+     //set the system parameters is there is
+
+     // that.resize()
+
+    //end of get json
+
+  }
+
+
+
+</script>
+{% end %}
+{% block body %}
+<section class="alert">
+  <div class="green"> 
+    <p>欢迎使用安全事件传导视图模块</p>
+    <span class="close">&#10006;</span>
+  </div>
+</section>
+<section class="content">
+  <section class="widget">
+    <header>
+      <span class="icon">&#127748;</span>
+      <hgroup>
+        <h1>安全事件传导视图</h1>
+        <h2>点击右侧下拉菜单选择不同事件id进行查看</h2>
+      </hgroup>
+      <aside>
+        <select id="multiSelect" onchange="change()">
+          {% for item in local['count'] %}
+          <option>{{item}}</option>
+          {% end %}
+        </select>
+      </aside>
+    </header>
+    <div class="content">
+      <div id="dropzone" class="dropzone gallery">
+          <div id="halfviz">
+            <canvas id="viewport" width="1000" height="500"></canvas>
+            <div id="grabber"></div>
+          </div>  
+      </div>
+    </div>
+  </section>
+ <section class="widget">
+    <div class="content">
+      <div id="dropzone" class="dropzone gallery">
+        <img id="static" src="" width="900" height="400"/>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+{% end %}

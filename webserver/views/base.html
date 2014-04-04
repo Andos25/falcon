@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}{% end %}</title>
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="robots" content="" />
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="{{ static_url("css/style.css")}}" media="all" />
+	<link rel="stylesheet" href="css/dropzone.css" media="all" />
+
+	<script src="{{static_url("js/jquery.min.js")}}"></script>
+	<script src="{{static_url("js/jquery.wysiwyg.js")}}"></script>
+	<script src="{{static_url("js/custom.js")}}"></script>
+	<script src="{{static_url("js/cycle.js")}}"></script>
+	<script src="{{static_url("js/jquery.checkbox.min.js")}}"></script>
+	<script src="{{static_url("js/jquery.tablesorter.min.js")}}"></script>
+	<script src="{{static_url("js/highcharts.js")}}"></script>
+	<script src="{{static_url("js/modules/exporting.js")}}"></script>
+ 	{% block head %}{% end %}
+</head>
+<body>
+<header class="main">
+	<h1><strong>网络安全事件关联分析系统</strong></h1>
+	<input type="text" value="search" />
+</header>
+<section class="user">
+	<div class="profile-img">
+		<p><img src="{{static_url("images/pso.jpg")}}" alt="" height="40" width="40" /> Welcome back Andos he</p>
+	</div>
+	<div class="buttons">
+		<button class="ico-font">&#59157;</button>
+		<span class="button blue"><a href="index.html">Logout</a></span>
+	</div>
+</section>
+</div>
+<nav>
+	<ul>
+		<li id='1'><a href="dashboard"><span class="icon">&#128202;</span>基础信息统计</a></li>
+		<li id='2'><a href="files"><span class="icon">&#128101;</span> 流量时间关系变化图 </a></li>
+		<li id='3'><a href="blog-new"><span class="icon">&#127748;</span> 节点时间关系变化图 </a></li>
+		<li id='4'><a href="users"><span class="icon">&#59160;</span> 分析结果查看 </a></li>
+		<li id='5'><a href="topology"><span class="icon">&#128196;</span> 传导视图查看 </a></li>
+		<li id='6'><a href="page-new"><span class="icon">&#59176;</span> 安全事件关联分析 </a></li>
+	</ul>
+</nav>
+
+{% block body %}{% end %}
+
+</body>
+</html>

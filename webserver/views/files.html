@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}时间-流量分析{% end %}
+{% block head%}
+<script type="text/javascript">
+$(document).ready(function(){
+	getnodecount();
+	$("li#2").addClass('section');
+})
+function getnodecount(){
+    $.getJSON("/ajax/files_getnodecount/", {"selectinfo":$("select#multiSelect").val()}, function(data) {
+        showchart(data, "container");
+    }
+)}
+function showchart(data, container) {
+        $("#"+container+"").highcharts({
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: '安全事件流量与时间关系图'
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                categories: data['categories']
+            },
+            yAxis: {
+                title: {
+                    text: 'flow count'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value
+                    }
+                }
+            },
+            tooltip: {
+                crosshairs: true,
+                shared: true
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        radius: 4,
+                        lineColor: '#666666',
+                        lineWidth: 1
+                    }
+                }
+            },
+            series: [{
+                name: 'Botnet',
+                data: data['Botnet']
+    
+            }, {
+                name: 'Worm',
+                data: data['Worm']
+            }, {
+                name: 'Ddos',
+                data: data['Ddos']
+            }
+            ]
+        });
+    };
+</script>
+{% end %}
+{% block body %}
+<section class="alert">
+	<div class="green">	
+		<p>欢迎使用流量时间分析!时间流量分析模块运算量较大，请稍等</p>
+		<span class="close">&#10006;</span>
+	</div>
+</section>
+<section class="content">
+	<section class="widget">
+		<header>
+			<span class="icon">&#127748;</span>
+			<hgroup>
+				<h1>流量时间关系图</h1>
+				<h2>点击右侧下拉菜单选择不同事件id进行查看</h2>
+			</hgroup>
+			<aside>
+              <select id="multiSelect" onchange="getnodecount()">
+                
+                {% for item in local['count'] %}
+                <option>{{item}}</option>
+                {% end %}
+              </select>
+			</aside>
+		</header>
+		<div class="content">
+			<div id="dropzone" class="dropzone gallery">
+				<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+			</div>
+		</div>
+	</section>
+{% end %}
