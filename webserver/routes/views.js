@@ -16,7 +16,7 @@ exports.files = function(req, res){
   res.render('files.html');
 };
 
-exports.file = function(req, res){
+exports.blog= function(req, res){
   res.render('blog.html');
 };
 

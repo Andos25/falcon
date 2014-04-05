@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}安全事件传导视图{% end %}
+{% block title %}安全事件传导视图{% endblock %}
 {% block head%}
-<script src="{{static_url("js/arbor.js")}}"></script>
-<script src="{{static_url("js/graphics.js")}}"></script>
-<script src="{{static_url("js/jquery.address-1.4.min.js")}}"></script>
-<script src="{{static_url("js/parseur.js")}}"></script>
-<script src="{{static_url("js/renderer.js")}}"></script>
+<script src="js/arbor.js"></script>
+<script src="js/graphics.js"></script>
+<script src="js/jquery.address-1.4.min.js"></script>
+<script src="js/parseur.js"></script>
+<script src="js/renderer.js"></script>
 <script type="text/javascript">
   
   trace = arbor.etc.trace
@@ -113,7 +113,7 @@
 
 
 </script>
-{% end %}
+{% endblock %}
 {% block body %}
 <section class="alert">
   <div class="green"> 
@@ -133,7 +133,7 @@
         <select id="multiSelect" onchange="change()">
           {% for item in local['count'] %}
           <option>{{item}}</option>
-          {% end %}
+          {% endfor %}
         </select>
       </aside>
     </header>
@@ -156,4 +156,4 @@
 
 </section>
 
-{% end %}
+{% endblock %}

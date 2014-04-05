@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}时间-流量分析{% end %}
+{% block title %}时间-流量分析{% endblock%}
 {% block head%}
 <script type="text/javascript">
 $(document).ready(function(){
@@ -64,7 +64,7 @@ function showchart(data, container) {
         });
     };
 </script>
-{% end %}
+{% endblock %}
 {% block body %}
 <section class="alert">
 	<div class="green">	
@@ -85,7 +85,7 @@ function showchart(data, container) {
                 
                 {% for item in local['count'] %}
                 <option>{{item}}</option>
-                {% end %}
+                {% endfor %}
               </select>
 			</aside>
 		</header>
@@ -95,4 +95,4 @@ function showchart(data, container) {
 			</div>
 		</div>
 	</section>
-{% end %}
+{% endblock %}
