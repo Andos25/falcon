@@ -6,6 +6,7 @@ sys.path.append("../../")
 sys.path.append("../../common/")
 import jieba
 import pymongo
+import re
 
 def get_collection():
     mongo = pymongo.Connection("127.0.0.1", 27017)["weibo"]
@@ -15,9 +16,11 @@ def run():
     stopword = [i.rstrip() for i in open('/home/hadoop/falcon/algorithm/tfidf/stopword')]
     collection = get_collection()
     cursor = collection.find()
+    pattern = re.compile(r'http[:\.\/a-zA-Z0-9]*', re.S)
     for item in cursor:
+        info = pattern.sub('', item["text"])
         try:
-            words = jieba.cut(item["text"], cut_all=False)
+            words = jieba.cut(info, cut_all=False)
         except:
             continue
         wordlist = dict()
