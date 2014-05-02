@@ -1,7 +1,9 @@
+var dbsetting = require('./settings')
+
 var server_options={'auto_reconnect':true,poolSize:5};
 var MongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server;
-module.exports = new MongoClient(new Server("192.168.40.170", 27017), {native_parser: true});
+module.exports = new MongoClient(new Server(dbsetting.HOST, 27017), {native_parser: true});
 
 
 // mongoclient.open(function(err, mongoclient) {

@@ -20,11 +20,24 @@ exports.dashboard = function(req, res){
         item.push(data[i]["name"]);
         selectitems.push(item);
       }
-      res.render("dashboard.html", {"selectitems":selectitems});
-      mongoclient.close();
+        var collection1 = db.collection('provinces');
+        collection1.count(function(err, count) {
+          var provnum = count;
+          var collection2 = db.collection('users');
+          collection2.count(function(err, count) {
+            var usernum = count;
+            var collection3 = db.collection('text');
+            collection3.count(function(err, count) {
+              var textnum = count;
+              var sum = textnum+usernum+provnum;
+              res.render("dashboard.html", {"selectitems":selectitems,"sum":sum,"usernum":usernum,"textnum":textnum,"provnum":provnum});
+              mongoclient.close();
+            });
+         });
+       });
+     });
     });
-  });
-};
+  };
 
 exports.files = function(req, res){
   res.render('files.html');
