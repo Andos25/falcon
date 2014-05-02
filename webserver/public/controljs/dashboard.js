@@ -117,13 +117,11 @@ $(document).ready(function(){
                 title: {
                     text: null
                 },
-                // labels: {
-                //     formatter: function(){
-                //         return (Math.abs(this.value) / 1000000) + 'M';
-                //     }
-                // },
-                // min: -4000000,
-                // max: 4000000
+                labels: {
+                    formatter: function(){
+                        return (Math.abs(this.value)/1000) + 'K';
+                    }
+                },
             },
     
             plotOptions: {
