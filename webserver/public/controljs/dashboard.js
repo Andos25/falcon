@@ -49,7 +49,7 @@ $(document).ready(function(){
       buildsexchart(data);
         }
     )}
-  function buildsexchart(data) {
+  function buildsexchart(info) {
     var chart;
     $('#container').highcharts({
         chart: {
@@ -81,16 +81,7 @@ $(document).ready(function(){
         series: [{
             type: 'pie',
             name: '所占比例',
-            data: [
-                ['Botnet', data['Botnet']],
-                {
-                    name: 'Worm',
-                    y: data['Worm'],
-                    sliced: true,
-                    selected: true
-                },
-                ['Ddos', data['Ddos']],
-            ]
+            data: info
         }]
     });
   };
