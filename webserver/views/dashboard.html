@@ -2,169 +2,91 @@
 
 {% block title %}安全事件基础信息统计{% endblock%}
 {% block head%}
-
-<script type="text/javascript">
-	$(document).ready(function(){
-		selectevent();
-		$("li#1").addClass('section');
-		tabledata();
-	})
-	function tabledata(){
-		$.getJSON("/ajax/dashboard_tabledata/", {}, function(data){
-			var string;
-			for (var i = 0; i < data.length; i++) {
-				string += "<tr><th>"+data[i].id+"</th><th>"+data[i].routercount+"</th><th>"+data[i].attackcount+"</th><th>"+data[i].hostcount+"</th><th>"+data[i].datacount+"</th></tr>"
-			};
-			$("tbody").html(string);
-
-		})
-
-	}
-	function selectevent(){
-		$.getJSON("/ajax/dashboard_selectevent/", {"selectinfo":$("select#multiSelect").val()}, function(data) {
-			buildbaseinfo(data);
-        }
-    )}
-	function buildbaseinfo(data) {
-    var chart;
-    $('#container').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false
-        },
-        title: {
-            text: '安全事件类型比例统计'
-        },
-        tooltip:{
-                formatter:function(){
-                    return'<b>'+this.point.name+'</b>: '+Highcharts.numberFormat(this.percentage, 2)+' %';
-                }
-            },
-        plotOptions:{
-            pie:{
-                allowPointSelect:true,
-                cursor:'pointer',
-                dataLabels:{
-                    enabled:false
-                },
-                showInLegend: true
-            }
-        },
-        credits: {
-            enabled: false
-        },
-        series: [{
-            type: 'pie',
-            name: '所占比例',
-            data: [
-                ['Botnet', data['Botnet']],
-                {
-                    name: 'Worm',
-                    y: data['Worm'],
-                    sliced: true,
-                    selected: true
-                },
-                ['Ddos', data['Ddos']],
-            ]
-        }]
-    });
-	};
-</script>
+<script type="text/javascript" src="controljs/dashboard.js"></script>
 {% endblock %}
 {% block body %}
 <section class="alert">
-	<div class="green">	
-		<p>欢迎使用安全事件关联分析系统，当前系统含有{{local['length']}}个事件</p>
-		<span class="close">&#10006;</span>
-	</div>
+  <div class="green"> 
+    <p>欢迎使用安全事件关联分析系统，当前系统含有{{local['length']}}个事件</p>
+    <span class="close">&#10006;</span>
+  </div>
 </section>
 <section class="content">
-	<div class="widget-container">
-		<section class="widget small">
-		<header>
-			<span class="icon">&#128200;</span>
-			<hgroup>
-				<h1>事件比例统计</h1>
-				<h2>请使用右侧的下拉菜单选择事件id</h2>
-			</hgroup>
-			<aside>
-              <select id="multiSelect" onchange="selectevent()">
-                {% for item in local['count'] %}
-                <option>{{item}}</option>
-                {% endfor %}
-              </select>
-			</aside>
-		</header>
-		<div class="content cycle">
-			<div id="container" style="min-width: 300px; height: 300px; margin: 0 auto"></div>
-		</div>
-		</section>
-		<section class="widget small">
-			<header> 
-				<span class="icon">&#128318;</span>
-				<hgroup>
-					<h1>数据库状态</h1>
-					<h2>数据总量 &amp; 各事件数据量</h2>
-				</hgroup>
-				<aside>
-				</aside>
-			</header>
-			<div class="content">
-				<section class="stats-wrapper">
-					<div class="stats">
-						<p><span>{{local['Total']}}</span></p>
-						<p>数据总量</p>
-					</div>
-					<div class="stats">
-						<p><span>{{local['Botnet']}}</span></p>
-						<p>Botnet数据量</p>
-					</div>
-				</section>
-				<section class="stats-wrapper">
-					<div class="stats">
-						<p><span>{{local['Worm']}}</span></p>
-						<p>Worm数据量</p>
-					</div>
-					<div class="stats">
-						<p><span>{{local['Ddos']}}</span></p>
-						<p>Ddos数据量</p>
-					</div>
-				</section>
-			</div>
-		</section>
-	</div>
-	
-	<div class="widget-container">
-	<section class="widget">
-		<header>
-			<span class="icon">&#128196;</span>
-			<hgroup>
-				<h1>库存信息表</h1>
-				<h2>库存安全事件概略统计</h2>
-			</hgroup>
-			<aside>
-				<span>
-					<a href="#">&#9881;</a>
-				</span>
-			</aside>
-		</header>
-		<div class="content">
-			<table id="myTable" border="0" width="100">
-				<thead>
-					<tr>
-						<th>事件id</th>
-						<th>路由个数</th>
-						<th>攻击节点数</th>
-						<th>被感染主机数</th>
-						<th>数据发送量</th>
-					</tr>
-				</thead>
-					<tbody>
-					</tbody>
-				</table>
-		</div>
-	</section>
-	</div>
+  <div class="widget-container">
+    <section class="widget small">
+    <header>
+      <span class="icon">&#128200;</span>
+      <hgroup>
+        <h1>事件比例统计</h1>
+        <h2>请使用右侧的下拉菜单选择事件id</h2>
+      </hgroup>
+      <aside>
+        <select id="multiSelect1" onchange="select_sexinfo()">
+          {% for province, name in selectitems %}
+          <option name={{province}}>{{name}}</option>
+          {% endfor %}
+        </select>
+      </aside>
+    </header>
+    <div class="content cycle">
+      <div id="container" style="min-width: 300px; height: 300px; margin: 0 auto"></div>
+    </div>
+    </section>
+    <section class="widget small">
+      <header> 
+        <span class="icon">&#128318;</span>
+        <hgroup>
+          <h1>数据库状态</h1>
+          <h2>数据总量 &amp; 各事件数据量</h2>
+        </hgroup>
+        <aside>
+        </aside>
+      </header>
+      <div class="content">
+        <section class="stats-wrapper">
+          <div class="stats">
+            <p><span>{{local['Total']}}</span></p>
+            <p>数据总量</p>
+          </div>
+          <div class="stats">
+            <p><span>{{local['Botnet']}}</span></p>
+            <p>Botnet数据量</p>
+          </div>
+        </section>
+        <section class="stats-wrapper">
+          <div class="stats">
+            <p><span>{{local['Worm']}}</span></p>
+            <p>Worm数据量</p>
+          </div>
+          <div class="stats">
+            <p><span>{{local['Ddos']}}</span></p>
+            <p>Ddos数据量</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+  
+  <div class="widget-container">
+  <section class="widget">
+    <header>
+      <span class="icon">&#128196;</span>
+      <hgroup>
+        <h1>库存信息表</h1>
+        <h2>库存安全事件概略统计</h2>
+      </hgroup>
+      <aside>
+        <select id="multiSelect2" onchange="select_popinfo()">
+          {% for province, name in selectitems %}
+          <option name={{province}}>{{name}}</option>
+          {% endfor %}
+        </select>
+      </aside>
+    </header>
+    <div class="content" id="popinfo">
+      
+    </div>
+  </section>
+  </div>
 </section>
 {% endblock %}

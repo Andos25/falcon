@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -6,9 +5,10 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
+var ajax = require('./routes/ajax')
 var http = require('http');
 var path = require('path');
-var nunjucks  = require('nunjucks');
+var nunjucks = require('nunjucks');
 var app = express();
 
 // nunjucks configure
@@ -36,15 +36,21 @@ if ('development' == app.get('env')) {
 }
 
 //normal page
-app.get('^/$', routes.index)
-app.get('^/index$', routes.index)
-app.get('^/dashboard', routes.dashboard)
-app.get('^/files', routes.files)
-app.get('^/blog-new', routes.blog)
-app.get('^/users', routes.users)
-app.get('^/topology', routes.topology)
-app.get('^/page-new', routes.page)
+app.get('^/$', routes.index);
+app.get('^/index$', routes.index);
+app.get('^/dashboard', routes.dashboard);
+app.get('^/files', routes.files);
+app.get('^/blog-new', routes.blog);
+app.get('^/users', routes.users);
+app.get('^/topology', routes.topology);
+app.get('^/page-new', routes.page);
 
-http.createServer(app).listen(app.get('port'), function(){
+//ajax request
+
+//dashboard
+app.get('^/ajax/dashboard_select_sexinfo/', ajax.select_sexinfo);
+app.get('^/ajax/dashboard_select_popinfo/', ajax.select_popinfo);
+
+http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
