@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}安全事件基础信息统计{% endblock%}
+{% block title %}基础信息统计{% endblock%}
 {% block head%}
 <script type="text/javascript" src="controljs/dashboard.js"></script>
 {% endblock %}
 {% block body %}
 <section class="alert">
   <div class="green"> 
-    <p>欢迎使用安全事件关联分析系统，当前系统含有{{local['length']}}个事件</p>
+      <p>欢迎使用Falcon分析系统，当前数据库含有{{textcount}}条微博，{{userscount}}条用户信息</p>
     <!-- <span class="close">&#10006;</span> -->
   </div>
 </section>
@@ -17,7 +17,7 @@
     <header>
       <span class="icon">&#128200;</span>
       <hgroup>
-        <h1>事件比例统计</h1>
+        <h1>全国（各省）用户性别比例统计</h1>
         <h2>请使用下拉菜单选择</h2>
       </hgroup>
       <aside>
@@ -33,45 +33,11 @@
     </div>
     </section>
 
-    <!-- <section class="widget small">
-      <header> 
-        <span class="icon">&#128318;</span>
-        <hgroup>
-          <h1>数据库状态</h1>
-          <h2>数据总量 &amp; 各数据量</h2>
-        </hgroup>
-        <aside>
-        </aside>
-      </header>
-      <div class="content">
-        <section class="stats-wrapper">
-          <div class="stats">
-            <p><span>{{local['Total']}}</span></p>
-            <p>数据1总量</p>
-          </div>
-          <div class="stats">
-            <p><span>{{local['Botnet']}}</span></p>
-            <p>Botnet数据量</p>
-          </div>
-        </section>
-        <section class="stats-wrapper">
-          <div class="stats">
-            <p><span>{{local['Worm']}}</span></p>
-            <p>Worm数据量</p>
-          </div>
-          <div class="stats">
-            <p><span>{{local['Ddos']}}</span></p>
-            <p>Ddos数据量</p>
-          </div>
-        </section>
-      </div>
-    </section> -->
-
     <section class="widget" style="width: 65%; float:right">
       <header> 
         <span class="icon">&#128318;</span>
         <hgroup>
-          <h1>数据库状态</h1>
+          <h1>各市（省）用户性别数量统计</h1>
           <h2>数据总量 &amp; 各数据量</h2>
         </hgroup>
         <aside>
@@ -88,8 +54,8 @@
     <header>
       <span class="icon">&#128196;</span>
       <hgroup>
-        <h1>库存信息表</h1>
-        <h2>库存安全事件概略统计</h2>
+        <h1>全国用户统计</h1>
+        <h2>各省用户比例统计</h2>
       </hgroup>
       <aside>
         <select id="multiSelect2" onchange="select_popinfo()">

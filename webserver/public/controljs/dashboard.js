@@ -22,7 +22,7 @@ $(document).ready(function(){
             enabled: false
         },
         title: {
-            text: 'Browser market shares at a specific website, 2014'
+            text: '全国各省（市）用户比例'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -40,7 +40,7 @@ $(document).ready(function(){
         },
         series: [{
             type: 'pie',
-            name: 'Browser share',
+            name: '用户比例为',
             data: info
         }]
     });
@@ -61,7 +61,7 @@ $(document).ready(function(){
             plotShadow: false
         },
         title: {
-            text: '安全事件类型比例统计'
+            text: '各省用户性别比例'
         },
         tooltip:{
                 formatter:function(){
@@ -96,10 +96,7 @@ $(document).ready(function(){
                 enabled: false
             },
             title: {
-                text: 'Population pyramid for Germany, midyear 2010'
-            },
-            subtitle: {
-                text: 'Source: www.census.gov'
+                text: '各市（省）用户性别统计'
             },
             xAxis: [{
                 categories: categories,
@@ -137,7 +134,7 @@ $(document).ready(function(){
     
             tooltip: {
                 formatter: function(){
-                    return '<b>'+ this.series.name +', age '+ this.point.category +'</b><br/>'+
+                    return '<b>'+ this.series.name + this.point.category +'</b><br/>'+
                         'Population: '+ Highcharts.numberFormat(Math.abs(this.point.y), 0);
                 }
             },

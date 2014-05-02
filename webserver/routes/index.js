@@ -11,8 +11,11 @@ exports.index = function(req, res){
 exports.dashboard = function(req, res){
   mongoclient.open(function(err, mongoclient){
     var db = mongoclient.db("weibo");
+    var selectitems = new Array();
+    var textcount;
+    var userscount;
     db.collection('provinces').find().toArray(function(err, data) {
-      var selectitems = new Array();
+      
       selectitems.push([0,"全国"]);
       for(i in data){
         var item = new Array();
@@ -20,24 +23,17 @@ exports.dashboard = function(req, res){
         item.push(data[i]["name"]);
         selectitems.push(item);
       }
-        var collection1 = db.collection('provinces');
-        collection1.count(function(err, count) {
-          var provnum = count;
-          var collection2 = db.collection('users');
-          collection2.count(function(err, count) {
-            var usernum = count;
-            var collection3 = db.collection('text');
-            collection3.count(function(err, count) {
-              var textnum = count;
-              var sum = textnum+usernum+provnum;
-              res.render("dashboard.html", {"selectitems":selectitems,"sum":sum,"usernum":usernum,"textnum":textnum,"provnum":provnum});
-              mongoclient.close();
-            });
+      db.collection('text').count(function(err, data){
+        textcount = data;
+        db.collection('users').count(function(err, data){
+          userscount = data;
+          mongoclient.close();
+          res.render('dashboard.html', {"selectitems": selectitems, "textcount": textcount, "userscount": userscount});
          });
-       });
-     });
+        });
+      });
     });
-  };
+};
 
 exports.files = function(req, res){
   res.render('files.html');
