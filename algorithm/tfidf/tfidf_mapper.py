@@ -7,9 +7,10 @@ sys.path.append("../../common/")
 import jieba
 import pymongo
 import re
+from string import punctuation
 
 def get_collection():
-    mongo = pymongo.Connection("127.0.0.1", 27017)["weibo"]
+    mongo = pymongo.Connection("192.168.40.161", 27017)["weibo"]
     return mongo["text"] 
 
 def run():
@@ -19,6 +20,7 @@ def run():
     pattern = re.compile(r'http[:\.\/a-zA-Z0-9]*', re.S)
     for item in cursor:
         info = pattern.sub('', item["text"])
+        info = "".join([i for i in info if i not in punctuation])
         try:
             words = jieba.cut(info, cut_all=False)
         except:
