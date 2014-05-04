@@ -44,6 +44,7 @@ app.get('^/blog-new', routes.blog);
 app.get('^/users', routes.users);
 app.get('^/topology', routes.topology);
 app.get('^/page-new', routes.page);
+app.get('^/retrieve', routes.retrieve);
 
 //ajax request
 

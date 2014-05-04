@@ -8,24 +8,30 @@
 	<meta name="robots" content="" />
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
 	<link rel="stylesheet" href="css/style.css" media="all" />
-<script src="public/js/jquery.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+  $("button").click(function(){
+    $(this).parent().children("#block").slideToggle();
+  });
+});
  function check(id){
   if(id=="email"){
     var email=$("#email").val();
     if(email==""){
       alert("erroe");
-      $("#email").append("<span class="help-inline">Please enter the email</span>");
+      $("#email").append("<span class='help-inline'>Please enter the email</span>");
     }
   }else if(id=="pwd"){
     var pwd=$("#pwd").val();
     if(pwd=="" || pwd.length<6){
-      $("#pwd").append("<span class="help-inline">Please enter the 6 digit password</span>");
+      $("#pwd").append("<span class='help-inline'>Please enter the 6 digit password</span>");
     }
   }else if(id=="pwd2"){
     var pwd2=$("#pwd2").val();
     if (pwd2!=pwd) {
-      $("#pwd2").append("<span class="help-inline">Different with password before</span>");
+      $("#pwd2").append("<span class='help-inline'>Different with password before</span>");
     }
   }
 }
@@ -33,12 +39,12 @@
 </head>
 <body class="login">
 	<section>
-		<h1><strong>Begin&nbsp</strong>your tour</h1>
+		<h1><strong>Reset&nbsp;</strong>password</h1>
 		<form method="link" action="dashboard">
 			<input type="text" id="email"  placeholder="Email" onblur="check(id)"/>
 			<input type="password" id="pwd" placeholder="password" onblur="check(id)" />
 			<input type="password"  id="pwd2" placeholder="password again" onblur="check(id)" />
-			<button type="blue" class="blue">Commit</button>
+			<li><button class="blue"  data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover on top">Reset</button><div class="popover fade top in" style="top: -58px; left: 58px; display: block;"><div class="arrow"></div><h3 class="popover-title">Popover on top</h3><div class="popover-content">Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</div></div></li>
 		</form>
 	</section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>

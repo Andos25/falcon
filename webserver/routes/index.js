@@ -54,3 +54,6 @@ exports.topology = function(req, res){
 exports.page = function(req, res){
   res.render('page.html');
 };
+exports.retrieve = function(req, res){
+  res.render('retrieve.html');
+};
