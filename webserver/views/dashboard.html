@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+w{% extends "base.html" %}
 
 {% block title %}基础信息统计{% endblock%}
 {% block head%}
@@ -17,15 +17,10 @@
     <header>
       <span class="icon">&#128200;</span>
       <hgroup>
-        <h1>全国（各省）用户性别比例统计</h1>
+        <h1>用户性别比例统计</h1>
         <h2>请使用下拉菜单选择</h2>
       </hgroup>
       <aside>
-        <select id="multiSelect1" onchange="select_sexinfo()">
-          {% for province, name in selectitems %}
-          <option name={{province}}>{{name}}</option>
-          {% endfor %}
-        </select>
       </aside>
     </header>
     <div class="content cycle">
@@ -41,6 +36,11 @@
           <h2>数据总量 &amp; 各数据量</h2>
         </hgroup>
         <aside>
+        <select id="multiSelect1" onchange="select_sexinfo()">
+          {% for province, name in selectitems %}
+          <option name={{province}}>{{name}}</option>
+          {% endfor %}
+        </select>
         </aside>
       </header>
       <div class="content">
