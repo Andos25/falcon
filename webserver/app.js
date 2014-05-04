@@ -45,6 +45,8 @@ app.get('^/users', routes.users);
 app.get('^/topology', routes.topology);
 app.get('^/page-new', routes.page);
 app.get('^/retrieve', routes.retrieve);
+app.get('^/register',routes.register);
+app.get('^/userboard',routes.userboard);
 
 //ajax request
 

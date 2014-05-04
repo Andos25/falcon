@@ -57,3 +57,9 @@ exports.page = function(req, res){
 exports.retrieve = function(req, res){
   res.render('retrieve.html');
 };
+exports.register = function(req, res){
+  res.render('register.html');
+};
+exports.userboard = function(req, res){
+  res.render('userboard.html');
+};

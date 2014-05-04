@@ -8,78 +8,127 @@
   <meta name="robots" content="" />
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="css/style.css" media="all" />
-<script src="public/js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <script type="text/javascript">
- function check(){
-    var pwd = $("#pwd").val();
-    if (pwd=="" || pwd.length<6) {
-      var msg = "Please enter the 6 digit password";
-      alert(msg);
-    }
-  }
-  function verify(){
-    var pwd2 = $("#pwd2").val();
-    if(pwd2 != pwd){
-      var email = $("#email").val();
-      alert("Different  with first enter!")
-    }else{
-      $.getJSON("/ajax/dashboard_select_sexinfo/",{"email":email,"password":pwd2},function(result){
-      alert(result);
+ function checkeuser(id){
+    if(id=="email"){
+      email=$("#email").val();
+      if(email==""){
+        $('div#checkemail').html("<span style=\"color:white\">email can't be empty</span>");
+      }else{
+        $('div#checkemail').html("<span style=\"color:white\">correct form</span>");
+      }
+    }else if (id=="name") {
+      name=$("#name").val();
+      if(name==""){
+        $('div#checkemail').html("<span style=\"color:white\">name can't be empty</span>");
+      }else{
+        $('div#checkemail').html("<span style=\"color:white\">correct form</span>");
       }
     }
 }
+
+  function checkpasswd(id){
+    if(id=="old"){    
+      oldpwd=$("#old").val();
+      $.getJSON("ajax/pwd_vertify",{"email":email,"password":oldpwd},function(data){
+        if(data["result"]==1){
+          $('div#old').html("<span style=\"color:white\">Wrong password</span>");
+      }else{
+          $('div#old').html("<span style=\"color:white\">Correct password</span>");
+          }
+        });
+    }
+    else if(id=="new"){
+        newpwd=$("#new").val();
+        if(newpwd=="" || newpwd.length<6 || newpwd==oldpwd){
+          $('div#new').html("<span style=\"color:white\">Wrong form</span>");
+        }else{
+          $("div#new").html("<span style=\"color:white\">Correct form</span>");
+        }
+      }
+    else if(id=="again"){
+      newpwd2=$("#again").val();
+      if(newpwd2 != newpwd){
+        $('div#checkpasswd2').html("<span style=\"color:white\">Different with thr enter before</span>");}
+      else{
+          $('div#checkpasswd2').html("<span style=\"color:white\">Accord with before </span>");
+        }
+     }
+  }
+
+    function verify(){
+    password2=$("#password2").val();
+    load = $(this).attr("href");
+    if(password2 != password){
+      $('div#checkpasswd2').html("<span style=\"color:white\">Different with enter before </span>");
+    }
+    else{
+      $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
+      $.getJSON("/ajax/user_register/", {"email":email,"password":password}, function(data){
+        if(data["result"] == 1){
+          alert("Regiser faild!");
+        }else{
+          alert("Regiser sucess! Begin you tour......");
+          window.location.href="index";
+        }
+        });
+    }
+  }
+
 </script>>
 </head>
 <body class="login">
   <section>
-    <h1><strong>Basic&nbsp;&nbsp;</strong>Information</h1>
-    <form method="link" action="dashboard">
-
-      <input type="text" id="email" value="Email" />
-      <input type="text" id="name" value="Name" />
-      <input type="password" id="oldpwd" placeholder="Old password" onblur="check()" />
-      <input type="password" id="pwd" placeholder="New password" onblur="check()" />
-      <input type="password"  id="pwd2" placeholder="Enter password again" onblur="verify()" />
-      <button type="blue" class="blue">Commit</button>
-    </form>
+    <h1><strong>Begin&nbsp</strong>your tour</h1>
+    <table>
+      <tr >
+        <td style="min-width:300px;max-width=300px">
+          <input type="text" id="email"  placeholder="Email" onblur="checkeuser()"/>
+        </td>
+        <td  style="min-width:150px;max-width=150px">
+          <div id="checkemail"></div>
+        </td>
+      </tr>
+      <tr>
+          <td>
+            <input type="text" id="name" placeholder="name" onblur="checkeuser()" />
+          </td>
+          <td>
+            <div id="checkname"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="password" id="old" placeholder="old password" onblur="checkpasswd(id)" />
+          </td>
+          <td>
+            <div id="oldcheck"></div>
+          </td>
+        </tr>
+      <tr>
+        <td>
+          <input type="password" id="new" placeholder="new password " onblur="checkpasswd(id)" />
+        </td>
+        <td>
+          <div id="newcheck"></div>
+        </td>
+      </tr>
+      <tr>
+          <td>
+            <input type="password" id="again" placeholder="password again" onblur="checkpasswd(id)" />
+          </td>
+          <td>
+            <div id="checkpasswd2"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button  class="blue"  onclick="verify()" href="index">Commit</button>
+          </td>
+          <td></td>
+       </tr>
+      </table>
   </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-<script type="text/javascript">
-// Page load delay by Curtis Henson - http://curtishenson.com/articles/quick-tip-delay-page-loading-with-jquery/
-$(function(){
-  $('.login button').click(function(e){ 
-    // Get the url of the link 
-    var toLoad = $(this).attr('href');  
- 
-    // Do some stuff 
-    $(this).addClass("loading"); 
- 
-      // Stop doing stuff  
-      // Wait 700ms before loading the url 
-      setTimeout(function(){window.location = toLoad}, 10000);    
- 
-    // Don't let the link do its natural thing 
-    e.preventDefault
-  });
-  
-  $('input').each(function() {
-
-       var default_value = this.value;
-
-       $(this).focus(function(){
-               if(this.value == default_value) {
-                       this.value = '';
-               }
-       });
-
-       $(this).blur(function(){
-               if(this.value == '') {
-                       this.value = default_value;
-               }
-       });
-
-});
-});
-</script>
 </body>
 </html>
