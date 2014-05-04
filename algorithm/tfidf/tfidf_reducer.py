@@ -8,7 +8,7 @@ sys.path.append("../../common/")
 import pymongo
 
 def get_collection(collectionname):
-    mongo = pymongo.Connection("127.0.0.1", 27017)["weibo"]
+    mongo = pymongo.Connection("192.168.40.161", 27017)["weibo"]
     # cursor = collection.find()
     return mongo[collectionname]
 
