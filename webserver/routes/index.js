@@ -3,8 +3,7 @@
  * GET home page.
  */
 mongoclient = require('../dbengine');
-exports.index = function(req, res){
-  
+exports.index = function(req, res){ 
   res.render('index.html');
 };
 
@@ -50,7 +49,6 @@ exports.users = function(req, res){
 exports.topology = function(req, res){
   res.render('topology.html');
 };
-
 exports.page = function(req, res){
   res.render('page.html');
 };
@@ -59,9 +57,6 @@ exports.retrieve = function(req, res){
 };
 exports.register = function(req, res){
   res.render('register.html');
-};
-exports.index = function(req, res){
-  res.render('index.html');
 };
 exports.userboard = function(req, res){
   res.render('userboard.html');

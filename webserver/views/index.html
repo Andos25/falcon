@@ -23,8 +23,13 @@
     }else{
       //$('div#checkpasswd').html("<span style=\"color:white\">enter is ok</span>");
        $.getJSON("/ajax/user_login", {"email":email,"password":password}, function(data){
-        if(data == 1){
-        $('div#checkpasswd').html("<span style=\"color:white\">Password is wrong!</span>");  
+        if(data == 0){
+          alert("Welcome!");
+          window.location="Dashboard";
+        // $('div#checkpasswd').html("<span style=\"color:white\">password is wrong!</span>");  
+        }
+        else{
+          alert("Wrong password!");
         }
         });
     }
@@ -54,7 +59,7 @@
       </tr>
       <tr>
       <td>
-       <button  class="blue" onclick="verify()" href="dashboard">Commit</button>
+       <button  class="blue" onclick="verify()">Commit</button>
        </td>
        <td></td>
        </tr>

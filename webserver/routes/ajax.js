@@ -2,7 +2,8 @@
 ALL ajax request
 */
 mongoclient = require('../dbengine');
-
+express = require('express');
+app = express(); 
 //dashboard
 exports.select_sexinfo = function(req, res){
   mongoclient.open(function(err, mongoclient){
@@ -115,25 +116,24 @@ exports.select_popinfo = function(req, res){
     });
   }
 
-exports.user_login = function(req, res){
+  exports.user_login = function(req, res){
   mongoclient.open(function(err, mongoclient){
     var db = mongoclient.db("falcon");
     var collection = db.collection("users");
     var email = req.query.email;
-    var passwd = req.query.password;
-      collection.find({"email":email}).toArray(function(err, data){
-        console.log(data);
-        user = data;
-        if(data.length!=0 && data["passwd"]==passwd){
-          result = 0;
-        }
-        else{
-          result = 1;
-          res.json(result);
+    var passwd = req.query.password.toString();
+      collection.find({"email":email}).toArray(function(err, user){
+        console.log(passwd);
+        mongoclient.close();
+        if(user.length != 0 && user[0]["passwd"]==passwd){
+              // express.session({ user: user });
+              app.use(express.session({ user: user }));
+              result = 0;
+              res.json(result);
+          }else{
+            result = 1;
+            res.json(result);
         }
       });
     });
-      mongoclient.close();
-      if(result==0)
-        res.render('dashboard.html',{"user":user});
   }
