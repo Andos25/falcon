@@ -10,91 +10,78 @@
   <link rel="stylesheet" href="css/style.css" media="all" />
 <script src="/js/jquery.min.js"></script>
 <script type="text/javascript">
- function checkeuser(id){
-    if(id=="email"){
-      email=$("#email").val();
-      if(email==""){
-        $('div#checkemail').html("<span style=\"color:white\">email can't be empty</span>");
-      }else{
-        $('div#checkemail').html("<span style=\"color:white\">correct form</span>");
-      }
-    }else if (id=="name") {
+
+ function checkname(){
       name=$("#name").val();
       if(name==""){
-        $('div#checkemail').html("<span style=\"color:white\">name can't be empty</span>");
+        $('div#checkname').html("<span style=\"color:white\">Name can't be empty</span>");
       }else{
-        $('div#checkemail').html("<span style=\"color:white\">correct form</span>");
+        $('div#checkname').html("<span style=\"color:white\">Correct name form</span>");
       }
-    }
-}
+  }
 
   function checkpasswd(id){
     if(id=="old"){    
       oldpwd=$("#old").val();
-      $.getJSON("ajax/pwd_vertify",{"email":email,"password":oldpwd},function(data){
-        if(data["result"]==1){
-          $('div#old').html("<span style=\"color:white\">Wrong password</span>");
+      $.getJSON("ajax/user_old_passwd",{"password":oldpwd},function(data){
+        if(data==0){
+          $('div#oldcheck').html("<span style=\"color:white\">Correct password</span>");
       }else{
-          $('div#old').html("<span style=\"color:white\">Correct password</span>");
+          $('div#oldcheck').html("<span style=\"color:white\">Wrong password</span>");
           }
         });
     }
     else if(id=="new"){
         newpwd=$("#new").val();
-        if(newpwd=="" || newpwd.length<6 || newpwd==oldpwd){
-          $('div#new').html("<span style=\"color:white\">Wrong form</span>");
-        }else{
-          $("div#new").html("<span style=\"color:white\">Correct form</span>");
+        if(newpwd=="" || newpwd.length<6 ){
+          $('div#newcheck').html("<span style=\"color:white\">Wrong form</span>");
+        }else if (newpwd==oldpwd){
+          $('div#newcheck').html("<span style=\"color:white\">New password can't be same with the old one!</span>");
+        }
+        else{
+          $("div#newcheck").html("<span style=\"color:white\">Correct form</span>");
         }
       }
     else if(id=="again"){
       newpwd2=$("#again").val();
       if(newpwd2 != newpwd){
-        $('div#checkpasswd2').html("<span style=\"color:white\">Different with thr enter before</span>");}
+        $('div#checkpasswd2').html("<span style=\"color:white\">Different with enter before</span>");}
       else{
-          $('div#checkpasswd2').html("<span style=\"color:white\">Accord with before </span>");
+          $('div#checkpasswd2').html("<span style=\"color:white\">Right </span>");
         }
      }
   }
 
     function verify(){
-    password2=$("#password2").val();
-    load = $(this).attr("href");
+    password2=$("#new").val();
+    password=$("#again").val();
     if(password2 != password){
       $('div#checkpasswd2').html("<span style=\"color:white\">Different with enter before </span>");
     }
     else{
       $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
-      $.getJSON("/ajax/user_register/", {"email":email,"password":password}, function(data){
-        if(data["result"] == 1){
-          alert("Regiser faild!");
-        }else{
-          alert("Regiser sucess! Begin you tour......");
-          window.location.href="index";
-        }
+          $.getJSON("ajax/user_passwd_change",{"password":password2},function(data){
+            if(data==null){
+              alert("New password saved!");
+            }else{
+              alert("New password saved faild!");
+              }
         });
     }
+    window.location="Dashboard";
   }
 
 </script>>
 </head>
 <body class="login">
   <section>
-    <h1><strong>Begin&nbsp</strong>your tour</h1>
+    <h1><strong>Personal&nbsp;</strong>setting</h1>
     <table>
-      <tr >
-        <td style="min-width:300px;max-width=300px">
-          <input type="text" id="email"  placeholder="Email" onblur="checkeuser()"/>
-        </td>
-        <td  style="min-width:150px;max-width=150px">
-          <div id="checkemail"></div>
-        </td>
-      </tr>
       <tr>
-          <td>
-            <input type="text" id="name" placeholder="name" onblur="checkeuser()" />
+          <td  style="min-width:300px;max-width=300px">
+            <input type="text" id="name" placeholder="name" onblur="checkname()" />
           </td>
-          <td>
+          <td  style="min-width:150px;max-width=150px">
             <div id="checkname"></div>
           </td>
         </tr>

@@ -127,7 +127,7 @@ exports.select_popinfo = function(req, res){
         mongoclient.close();
         if(user.length != 0 && user[0]["passwd"]==passwd){
               // express.session({ user: user });
-              app.use(express.session({ user: user }));
+              req.session.user = user[0];
               result = 0;
               res.json(result);
           }else{
@@ -136,4 +136,40 @@ exports.select_popinfo = function(req, res){
         }
       });
     });
+  }
+
+exports.user_old_passwd = function(req, res){
+  var user = req.session.user;
+  mongoclient.open(function(err, mongoclient){
+    var db = mongoclient.db("falcon");
+    var collection = db.collection("users");
+    var passwd = req.query.password;
+      collection.find({"email":user["email"]}).toArray(function(err, data){
+        if(data.length!=0 && data[0]["passwd"]==passwd.toString()){
+              result = 0;
+              res.json(result);
+          }else{
+            result = 1;
+            res.json(result);
+        }
+        mongoclient.close();
+      });
+    });
+  }
+
+
+  exports.user_passwd_change = function(req, res){
+  var user = req.session.user;
+  mongoclient.open(function(err, mongoclient){
+    var db = mongoclient.db("falcon");
+    var collection = db.collection("users");
+    var email = user["email"];
+    var passwd = req.query.password.toString();
+    collection.update({"email": user["email"]}, {$set: {"passwd": passwd}}, {w:1}, function(err,result) {
+      if (err) console.warn(err.message);
+      console.log(result);
+      res.json(result);
+        });
+      mongoclient.close();
+      });
   }

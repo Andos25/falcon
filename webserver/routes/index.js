@@ -8,6 +8,7 @@ exports.index = function(req, res){
 };
 
 exports.dashboard = function(req, res){
+  var user = req.session.user;
   mongoclient.open(function(err, mongoclient){
     var db = mongoclient.db("weibo");
     var selectitems = new Array();
