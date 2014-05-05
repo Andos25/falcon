@@ -1,6 +1,7 @@
 $(document).ready(function(){
     select_sexinfo();
     $("li#1").addClass('section');
+    //change the icon name with get_username
     select_popinfo();
   })
   function select_popinfo(){
@@ -8,6 +9,11 @@ $(document).ready(function(){
       buildpopchart(data);
         }
     )}
+    function get_username(){
+    $.getJSON("/ajax/user_name", {}, function(data) {
+      return data;
+      }
+    )
   function buildpopchart(info){
     $('#popinfo').highcharts({
         chart: {

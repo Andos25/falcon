@@ -55,20 +55,22 @@
     function verify(){
     password2=$("#new").val();
     password=$("#again").val();
+    name=$("#name").val();
     if(password2 != password){
       $('div#checkpasswd2').html("<span style=\"color:white\">Different with enter before </span>");
     }
     else{
       $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
-          $.getJSON("ajax/user_passwd_change",{"password":password2},function(data){
+          $.getJSON("ajax/user_passwd_change",{"name":name,"password":password2},function(data){
             if(data==null){
-              alert("New password saved!");
+              alert("New information saved!");
+              window.location="Dashboard";
             }else{
-              alert("New password saved faild!");
+              alert("New information saved faild!");
+              window.location="userboard";
               }
         });
     }
-    window.location="Dashboard";
   }
 
 </script>>

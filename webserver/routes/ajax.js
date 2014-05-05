@@ -165,7 +165,7 @@ exports.user_old_passwd = function(req, res){
     var collection = db.collection("users");
     var email = user["email"];
     var passwd = req.query.password.toString();
-    collection.update({"email": user["email"]}, {$set: {"passwd": passwd}}, {w:1}, function(err,result) {
+    collection.update({"email": user["email"]}, {$set: {"name":name,"passwd": passwd}}, {w:1}, function(err,result) {
       if (err) console.warn(err.message);
       console.log(result);
       res.json(result);
@@ -173,3 +173,8 @@ exports.user_old_passwd = function(req, res){
       mongoclient.close();
       });
   }
+  
+  exports.user_name = function(req, res){
+   res.json(req.session.user["name"]);
+  }
+
