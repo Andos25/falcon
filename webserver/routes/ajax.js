@@ -84,3 +84,56 @@ exports.select_popinfo = function(req, res){
     }
   });
   } 
+
+  exports.user_register = function(req, res){
+  mongoclient.open(function(err, mongoclient){
+    var db = mongoclient.db("falcon");
+    var collection = db.collection("users");
+    var email = req.query.email;
+    var passwd = req.query.password;
+      collection.find({"email":email}).toArray(function(err, data){
+        if(data.length!=0){
+              var result = 1;
+              res.json(result);
+          }else{
+              collection.insert({"email": email,"passwd":passwd}, {w:1,safe:true}, function(err, data) {
+                console.log();
+                if(err){
+                    // if (err && err.message.indexOf('E11000 ') !== -1) 
+                        // this _id was already inserted in the database
+                        console.log(data);
+                        res.json(data);
+                }
+                else{
+                  console.log(data);
+                  res.json(data);
+                }
+          });
+        }
+        mongoclient.close();
+      });
+    });
+  }
+
+exports.user_login = function(req, res){
+  mongoclient.open(function(err, mongoclient){
+    var db = mongoclient.db("falcon");
+    var collection = db.collection("users");
+    var email = req.query.email;
+    var passwd = req.query.password;
+      collection.find({"email":email}).toArray(function(err, data){
+        console.log(data);
+        user = data;
+        if(data.length!=0 && data["passwd"]==passwd){
+          result = 0;
+        }
+        else{
+          result = 1;
+          res.json(result);
+        }
+      });
+    });
+      mongoclient.close();
+      if(result==0)
+        res.render('dashboard.html',{"user":user});
+  }

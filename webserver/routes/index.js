@@ -60,6 +60,9 @@ exports.retrieve = function(req, res){
 exports.register = function(req, res){
   res.render('register.html');
 };
+exports.index = function(req, res){
+  res.render('index.html');
+};
 exports.userboard = function(req, res){
   res.render('userboard.html');
 };

@@ -5,7 +5,7 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
-var ajax = require('./routes/ajax')
+var ajax = require('./routes/ajax');
 var http = require('http');
 var path = require('path');
 var nunjucks = require('nunjucks');
@@ -53,6 +53,10 @@ app.get('^/userboard',routes.userboard);
 //dashboard
 app.get('^/ajax/dashboard_select_sexinfo/', ajax.select_sexinfo);
 app.get('^/ajax/dashboard_select_popinfo/', ajax.select_popinfo);
+
+//user basic operate
+app.get('^/ajax/user_register',ajax.user_register);
+app.get('^/ajax/user_login',ajax.user_login);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

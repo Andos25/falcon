@@ -22,9 +22,9 @@
       $('div#checkpasswd').html("<span style=\"color:white\">password is 6 digit number!</span>");
     }else{
       //$('div#checkpasswd').html("<span style=\"color:white\">enter is ok</span>");
-       $.getJSON("/ajax/user_login/", {"email":email,"password":password}, function(data){
-        if(data["result"] == 1){
-        $('div#checkpasswd').html("<span style=\"color:white\">password is wrong!</span>");  
+       $.getJSON("/ajax/user_login", {"email":email,"password":password}, function(data){
+        if(data == 1){
+        $('div#checkpasswd').html("<span style=\"color:white\">Password is wrong!</span>");  
         }
         });
     }
@@ -34,7 +34,7 @@
 </head>
 <body class="login">
   <section>
-    <h1><strong>Begin&nbsp</strong>your tour</h1>
+    <h1><strong>Begin&nbsp;</strong>your tour</h1>
     <table>
       <tr >
       <td style="min-width:300px;max-width=300px">
@@ -57,6 +57,12 @@
        <button  class="blue" onclick="verify()" href="dashboard">Commit</button>
        </td>
        <td></td>
+       </tr>
+       <tr>
+          <td>
+         <a href="register">Register</a>&nbsp;&nbsp;&nbsp;&nbsp;
+         <a href="retrieve">Forgot your password?</a>
+         </td>
        </tr>
       </table>
   </section>

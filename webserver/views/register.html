@@ -44,12 +44,12 @@
     }
     else{
       $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
-      $.getJSON("/ajax/user_register/", {"email":email,"password":password}, function(data){
-        if(data["result"] == 1){
-          alert("Regiser faild!");
-        }else{
+      $.getJSON("/ajax/user_register", {"email":email,"password":password}, function(data){
+        if(data == null){
           alert("Regiser sucess! Begin you tour......");
           window.location.href="index";
+        }else {
+          alert("User already exist,regiser faild!");
         }
         });
     }
@@ -59,7 +59,7 @@
 </head>
 <body class="login">
   <section>
-    <h1><strong>Begin&nbsp</strong>your tour</h1>
+    <h1><strong>Begin&nbsp;</strong>your tour</h1>
     <table>
       <tr >
         <td style="min-width:300px;max-width=300px">
