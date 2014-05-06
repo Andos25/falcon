@@ -68,6 +68,7 @@ app.get('^/ajax/user_login',ajax.user_login);
 app.get('^/ajax/user_old_passwd',ajax.user_old_passwd);
 app.get('^/ajax/user_passwd_change',ajax.user_passwd_change);
 app.get('^/ajax/user_name',ajax.user_name);
+app.get('^/ajax/user_logout',ajax.user_logout);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

@@ -197,3 +197,7 @@ exports.sensitiveinfo = function(req, res){
     });
   });
 }
+  exports.user_logout = function(req, res){
+    req.session.user=null;
+    res.json(0);
+  }
