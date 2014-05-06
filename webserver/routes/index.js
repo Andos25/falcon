@@ -13,6 +13,7 @@ exports.dashboard = function(req, res) {
     var selectitems = new Array();
     var textcount;
     var userscount;
+    var username = req.session.user["name"];
     db.collection('provinces').find().toArray(function(err, data) {
 
       selectitems.push([0, "全国"]);
@@ -33,7 +34,8 @@ exports.dashboard = function(req, res) {
           res.render('dashboard.html', {
             "selectitems": selectitems,
             "textcount": textcount,
-            "userscount": userscount
+            "userscount": userscount,
+            "username":username
           });
         });
       });

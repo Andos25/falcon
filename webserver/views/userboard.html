@@ -11,68 +11,6 @@
 <script src="/js/jquery.min.js"></script>
 <script type="text/javascript">
 
- function checkname(){
-      name=$("#name").val();
-      if(name==""){
-        $('div#checkname').html("<span style=\"color:white\">Name can't be empty</span>");
-      }else{
-        $('div#checkname').html("<span style=\"color:white\">Correct name form</span>");
-      }
-  }
-
-  function checkpasswd(id){
-    if(id=="old"){    
-      oldpwd=$("#old").val();
-      $.getJSON("ajax/user_old_passwd",{"password":oldpwd},function(data){
-        if(data==0){
-          $('div#oldcheck').html("<span style=\"color:white\">Correct password</span>");
-      }else{
-          $('div#oldcheck').html("<span style=\"color:white\">Wrong password</span>");
-          }
-        });
-    }
-    else if(id=="new"){
-        newpwd=$("#new").val();
-        if(newpwd=="" || newpwd.length<6 ){
-          $('div#newcheck').html("<span style=\"color:white\">Wrong form</span>");
-        }else if (newpwd==oldpwd){
-          $('div#newcheck').html("<span style=\"color:white\">New password can't be same with the old one!</span>");
-        }
-        else{
-          $("div#newcheck").html("<span style=\"color:white\">Correct form</span>");
-        }
-      }
-    else if(id=="again"){
-      newpwd2=$("#again").val();
-      if(newpwd2 != newpwd){
-        $('div#checkpasswd2').html("<span style=\"color:white\">Different with enter before</span>");}
-      else{
-          $('div#checkpasswd2').html("<span style=\"color:white\">Right </span>");
-        }
-     }
-  }
-
-    function verify(){
-    password2=$("#new").val();
-    password=$("#again").val();
-    name=$("#name").val();
-    if(password2 != password){
-      $('div#checkpasswd2').html("<span style=\"color:white\">Different with enter before </span>");
-    }
-    else{
-      $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
-          $.getJSON("ajax/user_passwd_change",{"name":name,"password":password2},function(data){
-            if(data==null){
-              alert("New information saved!");
-              window.location="Dashboard";
-            }else{
-              alert("New information saved faild!");
-              window.location="userboard";
-              }
-        });
-    }
-  }
-
 </script>>
 </head>
 <body class="login">
@@ -81,7 +19,7 @@
     <table>
       <tr>
           <td  style="min-width:300px;max-width=300px">
-            <input type="text" id="name" placeholder="name" onblur="checkname()" />
+            <input type="text" id="name" placeholder="name" onblur="user_checkname()" />
           </td>
           <td  style="min-width:150px;max-width=150px">
             <div id="checkname"></div>
@@ -89,7 +27,7 @@
         </tr>
         <tr>
           <td>
-            <input type="password" id="old" placeholder="old password" onblur="checkpasswd(id)" />
+            <input type="password" id="old" placeholder="old password" onblur="user_checkpasswd(id)" />
           </td>
           <td>
             <div id="oldcheck"></div>
@@ -97,7 +35,7 @@
         </tr>
       <tr>
         <td>
-          <input type="password" id="new" placeholder="new password " onblur="checkpasswd(id)" />
+          <input type="password" id="new" placeholder="new password " onblur="user_checkpasswd(id)" />
         </td>
         <td>
           <div id="newcheck"></div>
@@ -113,7 +51,7 @@
         </tr>
         <tr>
           <td>
-            <button  class="blue"  onclick="verify()" href="index">Commit</button>
+            <button  class="blue"  onclick="user_verify()" href="index">Commit</button>
           </td>
           <td></td>
        </tr>

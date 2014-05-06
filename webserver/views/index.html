@@ -9,59 +9,33 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="css/style.css" media="all" />
 <script src="/js/jquery.min.js"></script>
-<script type="text/javascript">
- function checkemail(){
-    email=$("#email").val();
-    if(email==""){
-      $('div#checkemail').html("<span style=\"color:white\">email can't be empty</span>");
-    }
-  }
-  function verify(){
-    password=$("#password").val();
-    if(password=="" || password.length<6){
-      $('div#checkpasswd').html("<span style=\"color:white\">password is 6 digit number!</span>");
-    }else{
-      //$('div#checkpasswd').html("<span style=\"color:white\">enter is ok</span>");
-       $.getJSON("/ajax/user_login", {"email":email,"password":password}, function(data){
-        if(data == 0){
-          alert("Welcome!");
-          window.location="Dashboard";
-        // $('div#checkpasswd').html("<span style=\"color:white\">password is wrong!</span>");  
-        }
-        else{
-          alert("Wrong password!");
-        }
-        });
-    }
-  }
-
-</script>>
+<script type="text/javascript" src="controljs/user.js"></script>
 </head>
 <body class="login">
   <section>
     <h1><strong>Begin&nbsp;</strong>your tour</h1>
     <table>
       <tr >
-      <td style="min-width:300px;max-width=300px">
-      <input type="text" id="email"  placeholder="Email" onblur="checkemail()"/>
-      </td>
-      <td  style="min-width:150px;max-width=150px">
-      <div id="checkemail"></div>
-      </td>
+        <td style="min-width:300px;max-width=300px">
+        <input type="text" id="email"  placeholder="Email" onblur="in_checkemail()"/>
+        </td>
+        <td  style="min-width:150px;max-width=150px">
+        <div id="checkemail"></div>
+        </td>
       </tr>
       <tr>
-      <td>
-      <input type="password" id="password" placeholder="password" />
-      </td>
-      <td>
-      <div id="checkpasswd"></div>
-      </td>
+        <td>
+        <input type="password" id="password" placeholder="password" />
+        </td>
+        <td>
+        <div id="checkpasswd"></div>
+        </td>
       </tr>
       <tr>
-      <td>
-       <button  class="blue" onclick="verify()">Commit</button>
-       </td>
-       <td></td>
+        <td>
+        <button  class="blue" onclick="in_verify()">Commit</button>
+        </td>
+        <td></td>
        </tr>
        <tr>
           <td>
@@ -71,43 +45,5 @@
        </tr>
       </table>
   </section>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
-<script type="text/javascript">
-// // Page load delay by Curtis Henson - http://curtishenson.com/articles/quick-tip-delay-page-loading-with-jquery/
-// $(function(){
-//   $('.login button').click(function(e){ 
-//     // Get the url of the link 
-//     var toLoad = $(this).attr('href');  
-//     alert(toLoad);
-//     // Do some stuff 
-//     $(this).addClass("loading"); 
- 
-//       // Stop doing stuff  
-//       // Wait 700ms before loading the url 
-//       setTimeout(function(){window.location = toLoad}, 10000);    
- 
-//     // Don't let the link do its natural thing 
-//     e.preventDefault
-//   });
-  
-//   $('input').each(function() {
-
-//        var default_value = this.value;
-
-//        $(this).focus(function(){
-//                if(this.value == default_value) {
-//                        this.value = '';
-//                }
-//        });
-
-//        $(this).blur(function(){
-//                if(this.value == '') {
-//                        this.value = default_value;
-//                }
-//        });
-
-// });
-// });
-// </script> -->
 </body>
 </html>
