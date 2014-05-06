@@ -171,13 +171,14 @@ exports.user_old_passwd = function(req, res) {
   });
 }
 
-
+//return 1 when update sucess
 exports.user_passwd_change = function(req, res) {
   var user = req.session.user;
   mongoclient.open(function(err, mongoclient) {
     var db = mongoclient.db("falcon");
     var collection = db.collection("users");
     var email = user["email"];
+    var name = req.query.name;
     var passwd = req.query.password.toString();
     collection.update({
       "email": user["email"]

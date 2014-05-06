@@ -49,16 +49,21 @@ function reg_checkname(){
       }
     else{
       $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
-      $.getJSON("/ajax/user_register", {"uname":uname,"email":email,"password":password}, function(data){
-        if(data == null){
-          alert("Email already exist,regiser faild!");
-        }else if(data==0){
-          alert("Regiser sucess! Begin you tour......");
-          window.location.href="index";
-          }else{
-            alert("Register faild ,check your network!");
-          }
-        });
+      var r = confirm("Will your regiser?");
+      if (r==true){
+          $.getJSON("/ajax/user_register", {"uname":uname,"email":email,"password":password}, function(data){
+            if(data == null){
+              alert("Email already exist,regiser faild!");
+            }else if(data==0){
+              alert("Regiser sucess! Begin you tour......");
+              window.location.href="index";
+              }else{
+                alert("Register faild ,check your network!");
+              }
+            });
+        }else{
+          window.location.href="regiser";
+        }
     }
   }
 // index.htm js code 
@@ -76,12 +81,18 @@ function reg_checkname(){
       //$('div#checkpasswd').html("<span style=\"color:white\">enter is ok</span>");
        $.getJSON("/ajax/user_login", {"email":email,"password":password}, function(data){
         if(data == 0){
+          var r = confirm("Wil you login?");
+          if (r==true){
           alert("Welcome!");
           window.location="Dashboard";
         // $('div#checkpasswd').html("<span style=\"color:white\">password is wrong!</span>");  
+          }else{
+            window.location="/";
+          }
         }
         else{
           alert("Wrong password!");
+          window.location="/";
         }
         });
     }
@@ -131,6 +142,7 @@ function reg_checkname(){
         });
     }
   }
+
 // userboard js code
 function user_checkname(){
       name=$("#name").val();
@@ -140,6 +152,7 @@ function user_checkname(){
         $('div#checkname').html("<span style=\"color:white\">Correct name form</span>");
       }
   }
+
 
   function user_checkpasswd(id){
     if(id=="old"){    
@@ -182,8 +195,10 @@ function user_checkname(){
     }
     else{
       $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
+          var r=confirm("Will you reset?");
+          if(r==true){
           $.getJSON("ajax/user_passwd_change",{"name":name,"password":password2},function(data){
-            if(data==null){
+            if(data==1){
               alert("New information saved!");
               window.location="Dashboard";
             }else{
@@ -191,5 +206,19 @@ function user_checkname(){
               window.location="userboard";
               }
         });
+        }else{
+          window.location="Dashboard";
+        }
     }
   }
+  
+  function logout(){
+    var r=confirm("Will you logout?");
+    if (r==true){
+      $.getJSON("/ajax/user_logout",{},function(result){
+        if (result==0) 
+          alert("Logout sucess");
+        window.location="/"
+      });
+    }
+}
