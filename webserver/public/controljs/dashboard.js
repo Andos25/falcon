@@ -1,7 +1,6 @@
 $(document).ready(function(){
     select_sexinfo();
-    $("li#1").addClass('section');
-    //change the icon name with get_username
+    $("li#1").addClass('section');  
     select_popinfo();
 });
 function select_popinfo(){

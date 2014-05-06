@@ -92,21 +92,19 @@ exports.select_popinfo = function(req, res){
     var collection = db.collection("users");
     var email = req.query.email;
     var passwd = req.query.password;
+    var name = req.query.uname;
       collection.find({"email":email}).toArray(function(err, data){
         if(data.length!=0){
               var result = 1;
               res.json(result);
           }else{
-              collection.insert({"email": email,"passwd":passwd}, {w:1,safe:true}, function(err, data) {
-                console.log();
+              collection.insert({"name":name,"email": email,"passwd":passwd}, {w:1,safe:true}, function(err, data) {
                 if(err){
                     // if (err && err.message.indexOf('E11000 ') !== -1) 
                         // this _id was already inserted in the database
-                        console.log(data);
                         res.json(data);
                 }
                 else{
-                  console.log(data);
                   res.json(data);
                 }
           });
@@ -123,7 +121,6 @@ exports.select_popinfo = function(req, res){
     var email = req.query.email;
     var passwd = req.query.password.toString();
       collection.find({"email":email}).toArray(function(err, user){
-        console.log(passwd);
         mongoclient.close();
         if(user.length != 0 && user[0]["passwd"]==passwd){
               // express.session({ user: user });
@@ -175,7 +172,7 @@ exports.user_old_passwd = function(req, res){
   }
   
   exports.user_name = function(req, res){
-   res.json(req.session.user["name"]);
+    res.json(req.session.user);
   }
 
 
