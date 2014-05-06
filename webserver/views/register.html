@@ -10,6 +10,12 @@
   <link rel="stylesheet" href="css/style.css" media="all" />
 <script src="/js/jquery.min.js"></script>
 <script type="text/javascript">
+ function checkname(){
+    email=$("#name").val();
+    if(email==""){
+      $('div#checkname').html("<span style=\"color:white\">name can't be empty</span>");
+    }
+  }
  function checkemail(){
     email=$("#email").val();
     if(email==""){
@@ -37,6 +43,7 @@
     }
   }
     function verify(){
+    uname=$("#name").val();
     password2=$("#password2").val();
     load = $(this).attr("href");
     if(password2 != password){
@@ -44,12 +51,12 @@
     }
     else{
       $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
-      $.getJSON("/ajax/user_register", {"email":email,"password":password}, function(data){
+      $.getJSON("/ajax/user_register", {"uname":uname,"email":email,"password":password}, function(data){
         if(data == null){
           alert("Regiser sucess! Begin you tour......");
           window.location.href="index";
         }else {
-          alert("User already exist,regiser faild!");
+          alert("Email already exist,regiser faild!");
         }
         });
     }
@@ -61,6 +68,14 @@
   <section>
     <h1><strong>Begin&nbsp;</strong>your tour</h1>
     <table>
+        <tr >
+        <td style="min-width:300px;max-width=300px">
+          <input type="text" id="name"  placeholder="Name" onblur="checkename()"/>
+        </td>
+        <td  style="min-width:150px;max-width=150px">
+          <div id="checkname"></div>
+        </td>
+      </tr>
       <tr >
         <td style="min-width:300px;max-width=300px">
           <input type="text" id="email"  placeholder="Email" onblur="checkemail()"/>

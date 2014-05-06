@@ -28,6 +28,9 @@ exports.dashboard = function(req, res){
         db.collection('users').count(function(err, data){
           userscount = data;
           mongoclient.close();
+          if(!req.session.user){
+            return res.redirect('/');
+            }
           res.render('dashboard.html', {"selectitems": selectitems, "textcount": textcount, "userscount": userscount});
          });
         });
@@ -36,29 +39,58 @@ exports.dashboard = function(req, res){
 };
 
 exports.files = function(req, res){
-  res.render('files.html');
+  if(!req.session.user){
+    return res.redirect('/');
+  }
+   res.render('files.html'); 
 };
 
 exports.blog = function(req, res){
+  if(!req.session.user){
+    return res.redirect('/');
+  }
   res.render('blog.html');
 };
 
 exports.sensitive = function(req, res){
+  if(!req.session.user){
+    return res.redirect('/');
+  }
   res.render('sensitive.html');
 };
 
 exports.topology = function(req, res){
+  if(!req.session.user){
+    return res.redirect('/');
+  }
   res.render('topology.html');
 };
+<<<<<<< HEAD
 exports.panel = function(req, res){
   res.render('panel.html');
+=======
+exports.page = function(req, res){
+  if(!req.session.user){
+    return res.redirect('/');
+  }
+  res.render('page.html');
+>>>>>>> 189dd443b344fca0f8114a9e215716a95dcc79f5
 };
 exports.retrieve = function(req, res){
+  if(!req.session.user){
+    return res.redirect('/');
+  }
   res.render('retrieve.html');
 };
 exports.register = function(req, res){
+  if(!req.session.user){
+    return res.redirect('/');
+  }
   res.render('register.html');
 };
 exports.userboard = function(req, res){
+  if(!req.session.user){
+    return res.redirect('/');
+  }
   res.render('userboard.html');
 };
