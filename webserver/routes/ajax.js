@@ -89,7 +89,7 @@ exports.select_popinfo = function(req, res) {
     }
   });
 }
-
+//user
 exports.user_register = function(req, res) {
   mongoclient.open(function(err, mongoclient) {
     var db = mongoclient.db("falcon");
@@ -205,6 +205,14 @@ exports.user_name = function(req, res) {
 }
 
 
+
+
+exports.user_logout = function(req, res) {
+  req.session.user = null;
+  res.json(0);
+}
+
+//sensitive
 exports.sensitiveinfo = function(req, res) {
   mongoclient.open(function(err, mongoclient) {
     var db = mongoclient.db("weibo");
@@ -234,7 +242,12 @@ exports.sensitiveinfo = function(req, res) {
   });
 }
 
-exports.user_logout = function(req, res) {
-  req.session.user = null;
-  res.json(0);
+//panel
+exports.execute = function(req, res) {
+  sleep(5000);
+  res.json(1);
+}
+
+function sleep(d) {
+  for (var t = Date.now(); Date.now() - t <= d;);
 }

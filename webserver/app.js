@@ -60,7 +60,10 @@ app.get('^/userboard', routes.userboard);
 //dashboard
 app.get('^/ajax/dashboard_select_sexinfo/', ajax.select_sexinfo);
 app.get('^/ajax/dashboard_select_popinfo/', ajax.select_popinfo);
+//sensitive
 app.get('^/ajax/sensitiveinfo/', ajax.sensitiveinfo);
+//panel
+app.get('^/ajax/panel_execute/', ajax.execute);
 
 //user basic operate
 app.get('^/ajax/user_register', ajax.user_register);
