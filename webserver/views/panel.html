@@ -1,0 +1,91 @@
+{% extends "base.html" %} {% block title %}分析结果查看{% endblock %} {% block head%}
+<script type="text/javascript" src="controljs/panel.js"></script>
+{% endblock %} {% block body %}
+<section class="alert">
+  <div class="green">
+    <p>分析模块分析运算量十分巨大，请耐心等待分析结果,</p>
+    <span class="close">&#10006;</span>
+  </div>
+</section>
+<section class="content">
+  <section class="widget">
+    <header>
+      <span class="icon">&#59168;</span>
+      <hgroup>
+        <h1>分析测试</h1>
+        <h2>请提交分析请求</h2>
+      </hgroup>
+      <aside>
+      </aside>
+    </header>
+    <div class="content no-padding timeline">
+      <div class="tl-post comments">
+        <button type="button" class="btn btn-default btn-lg">BaseInfo Statistics</button>
+        <div class="null" id="block">
+          <br></br>
+          <div class="controls controls-row">
+            <span class="span8">
+              <div class="progress">
+                <div class="bar" style="width: 0%;"></div>
+              </div>
+            </span>
+            <span class="span2">
+              <span class="label" id="status1">Default</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-post comments">
+        <button type="button" class="btn btn-default btn-lg">Large button</button>
+        <div id="block">
+          <br></br>
+          <div class="controls controls-row">
+            <span class="span8">
+              <div class="progress">
+                <div class="bar" style="width: 0%;"></div>
+              </div>
+            </span>
+            <span class="span2">
+              <span class="label" id="status2">Default</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-post comments">
+        <button type="button" class="btn btn-default btn-lg">Large button</button>
+        <div id="block">
+          <br></br>
+          <div class="controls controls-row">
+            <span class="span8">
+              <div class="progress">
+                <div class="bar" style="width: 0%;"></div>
+              </div>
+            </span>
+            <span class="span2">
+              <span class="label" id="status3">Default</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-post comments">
+        <button type="button" class="btn btn-default btn-lg">Large button</button>
+        <div id="block">
+          <br></br>
+          <div class="controls controls-row">
+            <span class="span8">
+              <div class="progress">
+                <div class="bar" style="width: 0%;"></div>
+              </div>
+            </span>
+            <span class="span2">
+              <span class="label" id="status4">Default</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+
+{% endblock %}
