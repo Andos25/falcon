@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}分析结果查看{% endblock %}
+{% block head%}
+<script type="text/javascript" src="controljs/sensitive.js"></script>
+{% endblock %}
+{% block body %}
+<section class="alert">
+  <div class="green"> 
+    <p>欢迎查看分析结果列表!点击列进入查看时间变化数据，再次点击返回</p>
+    <span class="close">&#10006;</span>
+  </div>
+</section>
+<section class="content">
+  <section class="widget">
+    <header>
+      <span class="icon">&#128196;</span>
+      <hgroup>
+        <h1>分析结果列表</h1>
+        <h2>点击列进入查看时间变化数据，再次点击返回</h2>
+      </hgroup>
+      <aside>
+      </aside>
+    </header>
+    <form class="form-search well">
+      <div class="span9" >
+        <i class="icon-cog"></i>
+          <input type="text" class="input-medium search-query" id="everypage" placeholder="设置每页显示的条数" onkeyup="getsensitiveinfo(0)"/>
+          </div>
+          <div class="span3">
+        <i class="icon-search"></i>
+        <input type="text" class="input-medium search-query" id="searchinfo" placeholder="请输入要搜索的用户信息" onkeyup="getsensitiveinfo(0)"/>
+      </div>
+    </form>
+      <table class="table table-striped well">
+        <thead>
+          <tr>
+            <th style="width:15%">用户ID</th>
+            <th style="width:70%">微博</th>
+            <th style="width:15%">敏感词</th>
+          </tr>
+        </thead>
+        <tbody id="sensitiveinfo">
+        </tbody>
+      </table>
+      <div class="row-fluid">
+        <div class="span9" style="text-align:center"><p id="pagecount"></p></div>
+        <div class="span3" id="button"><div>
+      </div>
+  </section>
+</section>
+{% endblock %}

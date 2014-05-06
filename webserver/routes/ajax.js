@@ -178,3 +178,25 @@ exports.user_old_passwd = function(req, res){
    res.json(req.session.user["name"]);
   }
 
+
+exports.sensitiveinfo = function(req, res){
+  mongoclient.open(function(err, mongoclient){
+    var db = mongoclient.db("weibo");
+    var textcollection = db.collection("text");
+    // var usercollection = db.collection("users");
+    var everypage = parseInt(req.query.everypage);
+    var pagecount = parseInt(req.query.pagecount);
+    var result = new Array();
+    textcollection.find({"text": {"$regex": '.*'+req.query.searchinfo+'.*'}, "kwords":{"$exists": true}}).skip(everypage*pagecount).limit(everypage).toArray(function(err, data){
+        for(i in data){
+          tmp = {};
+          tmp["user_id"] = data[i]["user_id"];
+          tmp["text"] = data[i]["text"];
+          tmp["kwords"] = data[i]["kwords"];
+          result.push(tmp);
+        }
+        mongoclient.close();
+        res.json(result);
+    });
+  });
+}

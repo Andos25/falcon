@@ -27,6 +27,7 @@ def run():
         for match in tree.findall(item):
             word = item[match[0]:match[1]]
             if word.decode("utf-8") in words:
+                print word
                 tmp.append(word)
                 flag = 1
 

@@ -6,11 +6,11 @@ import sys
 import json
 
 def get_incollection():
-    mongo = pymongo.Connection("192.168.40.161", 27017)["weibo"]
+    mongo = pymongo.Connection("localhost", 27017)["weibo"]
     return mongo["idf"]
 
 def get_outcollection():
-    mongo = pymongo.Connection("192.168.40.161", 27017)["weibo"]
+    mongo = pymongo.Connection("localhost", 27017)["weibo"]
     return mongo["text"]
 
 def run():
@@ -43,9 +43,9 @@ def run():
         # print i
         # print int(float(res.keys()[i])), res.values()[i]
         key = int(float(res.keys()[i]))
-        print key, res.values()[i]
-        # value = json.dumps(res.values()[i])
-        # outCollection.update({"_id": key}, {"$set": {"v": value}}, upsert = True)
+        # print key, res.values()[i]
+        value = json.dumps(res.values()[i])
+        outCollection.update({"_id": key}, {"$set": {"v": value}}, upsert = True)
 
 
 if __name__ == '__main__':

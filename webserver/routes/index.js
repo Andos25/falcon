@@ -43,8 +43,8 @@ exports.blog = function(req, res){
   res.render('blog.html');
 };
 
-exports.users = function(req, res){
-  res.render('users.html');
+exports.sensitive = function(req, res){
+  res.render('sensitive.html');
 };
 
 exports.topology = function(req, res){

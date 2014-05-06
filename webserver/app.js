@@ -48,7 +48,7 @@ app.get('^/index$', routes.index);
 app.get('^/dashboard', routes.dashboard);
 app.get('^/files', routes.files);
 app.get('^/blog-new', routes.blog);
-app.get('^/users', routes.users);
+app.get('^/sensitive', routes.sensitive);
 app.get('^/topology', routes.topology);
 app.get('^/page-new', routes.page);
 app.get('^/retrieve', routes.retrieve);
@@ -60,6 +60,7 @@ app.get('^/userboard',routes.userboard);
 //dashboard
 app.get('^/ajax/dashboard_select_sexinfo/', ajax.select_sexinfo);
 app.get('^/ajax/dashboard_select_popinfo/', ajax.select_popinfo);
+app.get('^/ajax/sensitiveinfo/', ajax.sensitiveinfo);
 
 //user basic operate
 app.get('^/ajax/user_register',ajax.user_register);
