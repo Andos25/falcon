@@ -70,28 +70,23 @@ exports.topology = function(req, res) {
   res.render('topology.html');
 };
 exports.panel = function(req, res) {
+  if (!req.session.user) {
+    return res.redirect('/');
+  }
   res.render('panel.html');
-  exports.page = function(req, res) {
-    if (!req.session.user) {
-      return res.redirect('/');
-    }
-    res.render('page.html');
-  };
-  exports.retrieve = function(req, res) {
-    if (!req.session.user) {
-      return res.redirect('/');
-    }
-    res.render('retrieve.html');
-  };
-  exports.register = function(req, res) {
-    if (!req.session.user) {
-      return res.redirect('/');
-    }
-    res.render('register.html');
-  };
-  exports.userboard = function(req, res) {
-    if (!req.session.user) {
-      return res.redirect('/');
-    }
-    res.render('userboard.html');
-  };
+};
+exports.retrieve = function(req, res) {
+  if (!req.session.user) {
+    return res.redirect('/');
+  }
+  res.render('retrieve.html');
+};
+exports.register = function(req, res) {
+  res.render('register.html');
+};
+exports.userboard = function(req, res) {
+  if (!req.session.user) {
+    return res.redirect('/');
+  }
+  res.render('userboard.html');
+};

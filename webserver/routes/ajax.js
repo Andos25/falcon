@@ -228,8 +228,9 @@ exports.sensitiveinfo = function(req, res) {
       res.json(result);
     });
   });
-} << << << < Updated upstream
+}
+
 exports.user_logout = function(req, res) {
   req.session.user = null;
   res.json(0);
-} === === = >>> >>> > Stashed changes
+}
