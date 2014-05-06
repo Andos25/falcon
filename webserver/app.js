@@ -50,7 +50,7 @@ app.get('^/files', routes.files);
 app.get('^/blog-new', routes.blog);
 app.get('^/sensitive', routes.sensitive);
 app.get('^/topology', routes.topology);
-app.get('^/page-new', routes.page);
+app.get('^/page-new', routes.panel);
 app.get('^/retrieve', routes.retrieve);
 app.get('^/register',routes.register);
 app.get('^/userboard',routes.userboard);

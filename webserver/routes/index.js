@@ -50,8 +50,8 @@ exports.sensitive = function(req, res){
 exports.topology = function(req, res){
   res.render('topology.html');
 };
-exports.page = function(req, res){
-  res.render('page.html');
+exports.panel = function(req, res){
+  res.render('panel.html');
 };
 exports.retrieve = function(req, res){
   res.render('retrieve.html');
