@@ -101,7 +101,7 @@ exports.user_register = function(req, res) {
       "email": email
     }).toArray(function(err, data) {
       if (data.length != 0) {
-        var result = 1;
+        var result = null;
         res.json(result);
       } else {
         collection.insert({
@@ -111,17 +111,17 @@ exports.user_register = function(req, res) {
         }, {
           w: 1,
           safe: true
-        }, function(err, data) {
-          if (err) {
-            // if (err && err.message.indexOf('E11000 ') !== -1) 
-            // this _id was already inserted in the database
-            res.json(data);
+        }, function(err, result) {
+          console.log(result);
+          if (email==result[0]["email"]) {
+            mongoclient.close();
+            res.json(0);
           } else {
-            res.json(data);
+            mongoclient.close();
+            res.json(1);
           }
         });
       }
-      mongoclient.close();
     });
   });
 }
@@ -160,12 +160,13 @@ exports.user_old_passwd = function(req, res) {
     }).toArray(function(err, data) {
       if (data.length != 0 && data[0]["passwd"] == passwd.toString()) {
         result = 0;
+        mongoclient.close();
         res.json(result);
       } else {
         result = 1;
+        mongoclient.close();
         res.json(result);
       }
-      mongoclient.close();
     });
   });
 }
@@ -190,14 +191,16 @@ exports.user_passwd_change = function(req, res) {
     }, function(err, result) {
       if (err) console.warn(err.message);
       console.log(result);
+      mongoclient.close();
       res.json(result);
     });
-    mongoclient.close();
   });
 }
 
 exports.user_name = function(req, res) {
-  res.json(req.session.user);
+  var user = req.session.user;
+  console.log(user);
+  res.json(user);
 }
 
 

@@ -9,61 +9,15 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="css/style.css" media="all" />
 <script src="/js/jquery.min.js"></script>
-<script type="text/javascript">
- function checkemail(){
-    email=$("#email").val();
-    if(email==""){
-      $('div#checkemail').html("<span style=\"color:white\">email can't be empty</span>");
-    }
-  }
-
-  function checkpasswd(){
-    password=$("#password").val();
-    if(password=="" || password.length<6){
-      $('div#checkpasswd').html("<span style=\"color:white\">password is 6 digit number!</span>");
-    }else{
-      $('div#checkpasswd').html("<span style=\"color:white\">enter is ok</span>");
-    }
-  }
-
-  function checkpasswd2(){
-    var toLoad = $(this).attr('href');  
-    password2=$("#password2").val();
-    if(password2 != password){
-      $('div#checkpasswd2').html("<span style=\"color:white\">Different with enter before </span>");
-    }
-    else{
-      $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
-    }
-  }
-    function verify(){
-    password2=$("#password2").val();
-    load = $(this).attr("href");
-    if(password2 != password){
-      $('div#checkpasswd2').html("<span style=\"color:white\">Different with enter before </span>");
-    }
-    else{
-      $('div#checkpasswd2').html("<span style=\"color:white\">Right! </span>");
-      $.getJSON("/ajax/user_register/", {"email":email,"password":password}, function(data){
-        if(data["result"] == 1){
-          alert("Regiser faild!");
-        }else{
-          alert("Regiser sucess! Begin you tour......");
-          window.location.href="index";
-        }
-        });
-    }
-  }
-
-</script>>
+<script type="text/javascript" src="controljs/user.js"></script>
 </head>
 <body class="login">
   <section>
-    <h1><strong>Begin&nbsp</strong>your tour</h1>
+    <h1><strong>Begin&nbsp;</strong>your tour</h1>
     <table>
       <tr >
         <td style="min-width:300px;max-width=300px">
-          <input type="text" id="email"  placeholder="Email" onblur="checkemail()"/>
+          <input type="text" id="email"  placeholder="Email" onblur="re_checkemail()"/>
         </td>
         <td  style="min-width:150px;max-width=150px">
           <div id="checkemail"></div>
@@ -71,7 +25,7 @@
       </tr>
         <tr>
           <td>
-            <input type="password" id="password" placeholder="password" onblur="checkpasswd()" />
+            <input type="password" id="password" placeholder="password" onblur="re_checkpasswd()" />
           </td>
           <td>
             <div id="checkpasswd"></div>
@@ -79,7 +33,7 @@
         </tr>
       <tr>
         <td>
-          <input type="password" id="password2" placeholder="password again" onblur="checkpasswd2()" />
+          <input type="password" id="password2" placeholder="password again" onblur="re_checkpasswd2()" />
         </td>
         <td>
           <div id="checkpasswd2"></div>
@@ -87,7 +41,7 @@
       </tr>
         <tr>
           <td>
-            <button  class="blue"  onclick="verify()" href="index">Commit</button>
+            <button  class="blue"  onclick="re_verify()" href="index">Commit</button>
           </td>
           <td></td>
        </tr>
