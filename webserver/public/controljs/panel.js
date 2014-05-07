@@ -4,7 +4,8 @@ $(document).ready(function() {
     var result = confirm("are you sure to begin this execute?");
     if (result == true) {
       // $(this).parent().children("#block").show(700);
-      $("div#" + this.name + "bar").html("");
+        $("button").attr("disabled", "true");
+        $("div#" + this.name + "bar").html("");
       $("span#" + this.name).text("Running");
       execute(this.name);
     } else {
@@ -15,22 +16,36 @@ $(document).ready(function() {
 
 var execute = function(execute_type) {
   flag[execute_type] = true;
-  status[execute_type] = true;
+  state[execute_type] = true;
   count(execute_type);
+  checkschedule(execute_type);
   $.getJSON("/ajax/panel_execute/", {
       "execute_type": execute_type
     },
     function(data) {
       flag[execute_type] = false;
+      console.log(typeof(data));
       if (data) {
         return;
       } else {
-        status[execute_type] = false;
+        state[execute_type] = false;
       }
-
     }
   )
 };
+
+var checkschedule = function(execute_type) {
+  $.getJSON("/ajax/panel_checkschedule/", {}, function(data) {
+    data = parseInt(data);
+    if (data != 0) {
+      schedule[execute_type] = parseInt(data);
+    }
+    if (flag[execute_type])
+      setTimeout(function() {
+        checkschedule(execute_type);
+      }, 1500);
+  });
+}
 
 var flag = {
   "statistics": true,
@@ -38,11 +53,17 @@ var flag = {
   "tfidf": true,
   "kmeans": true
 }
-var status = {
+var state = {
   "statistics": true,
   "ahocorasick": true,
   "tfidf": true,
   "kmeans": true
+}
+var schedule = {
+  "statistics": 0,
+  "ahocorasick": 0,
+  "tfidf": 0,
+  "kmeans": 0
 }
 
 var count = function(name) {
@@ -121,14 +142,12 @@ var lightLoader = function(c, cw, ch, execute_type) {
   /* Update Loader
   /*========================================================*/
   this.updateLoader = function() {
-    console.log(this.execute_type);
-    if (this.loaded < 100) {
-      this.loaded += this.loaderSpeed;
-    } else if (flag[this.execute_type]) {
-      this.loaded = 0;
+    if (flag[this.execute_type]) {
+      this.loaded = schedule[this.execute_type];
     } else {
       this.loaded = 100;
-      $("span#" + this.execute_type).text(status[this.execute_type] ? "Finished" : "Error");
+      $("button").removeAttr("disabled");
+      $("span#" + this.execute_type).text(state[this.execute_type] ? "Finished" : "Error");
     }
   };
 
@@ -258,7 +277,7 @@ var setupRAF = function() {
       var timeToCall = Math.max(0, 16 - (currTime - lastTime));
       var id = window.setTimeout(function() {
         callback(currTime + timeToCall);
-      }, timeToCall);
+      }, 1500);
       lastTime = currTime + timeToCall;
       return id;
     };

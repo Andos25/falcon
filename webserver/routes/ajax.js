@@ -5,7 +5,10 @@ var mongoclient = require('../dbengine');
 var express = require('express');
 var fs = require('fs');
 var path = require('path');
-var spawn = require("child_process").spawn;
+var exec = require("child_process").exec;
+var zerorpc = require("zerorpc");
+var cilent = new zerorpc.Client();
+cilent.connect("tcp://127.0.0.1:4242");
 app = express();
 //dashboard
 exports.select_sexinfo = function(req, res) {
@@ -250,17 +253,18 @@ exports.execute = function(req, res) {
   var str = fs.realpathSync('.');
   var location = path.dirname(str);
   location += "/algorithm/" + req.query.execute_type + "/run.sh";
-  sh = spawn('/bin/bash', [location]);
-  sh.stdout.on('data', function(data) {
-    var pattern = new RegExp("completed successfully")
-    if (pattern.test(data.toString()))
+  exec(location, function(error, stdout, stderr) {
+    var pattern = new RegExp('completed successfully');
+    if (pattern.test(stdout) || pattern.test(stderr)) {
       res.json(true);
-    else
+    } else {
       res.json(false);
+    }
   });
-
 }
 
-function sleep(d) {
-  for (var t = Date.now(); Date.now() - t <= d;);
+exports.checkschedule = function(req, res) {
+  cilent.invoke("checkschedule", function(error, response, more) {
+    res.json(response);
+  });
 }

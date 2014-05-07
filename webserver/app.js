@@ -64,6 +64,7 @@ app.get('^/ajax/dashboard_select_popinfo/', ajax.select_popinfo);
 app.get('^/ajax/sensitiveinfo/', ajax.sensitiveinfo);
 //panel
 app.get('^/ajax/panel_execute/', ajax.execute);
+app.get('^/ajax/panel_checkschedule/', ajax.checkschedule);
 
 //user basic operate
 app.get('^/ajax/user_register', ajax.user_register);
