@@ -1,8 +1,11 @@
 /*
 ALL ajax request
 */
-mongoclient = require('../dbengine');
-express = require('express');
+var mongoclient = require('../dbengine');
+var express = require('express');
+var fs = require('fs');
+var path = require('path');
+var spawn = require("child_process").spawn;
 app = express();
 //dashboard
 exports.select_sexinfo = function(req, res) {
@@ -113,7 +116,7 @@ exports.user_register = function(req, res) {
           safe: true
         }, function(err, result) {
           console.log(result);
-          if (email==result[0]["email"]) {
+          if (email == result[0]["email"]) {
             mongoclient.close();
             res.json(0);
           } else {
@@ -244,8 +247,18 @@ exports.sensitiveinfo = function(req, res) {
 
 //panel
 exports.execute = function(req, res) {
-  sleep(5000);
-  res.json(1);
+  var str = fs.realpathSync('.');
+  var location = path.dirname(str);
+  location += "/algorithm/" + req.query.execute_type + "/run.sh";
+  sh = spawn('/bin/bash', [location]);
+  sh.stdout.on('data', function(data) {
+    var pattern = new RegExp("completed successfully")
+    if (pattern.test(data.toString()))
+      res.json(true);
+    else
+      res.json(false);
+  });
+
 }
 
 function sleep(d) {

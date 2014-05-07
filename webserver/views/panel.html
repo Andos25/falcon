@@ -1,9 +1,10 @@
 {% extends "base.html" %} {% block title %}分析结果查看{% endblock %} {% block head%}
 <script type="text/javascript" src="controljs/panel.js"></script>
+<script src="js/prefixfree.min.js"></script>
 {% endblock %} {% block body %}
 <section class="alert">
   <div class="green">
-    <p>分析模块分析运算量十分巨大，请耐心等待分析结果,</p>
+    <p>分析模块分析运算量十分巨大，请耐心等待分析结果,<a href="http://127.0.0.1:8088">点击此处可以进入集群管理页面</a></p>
     <span class="close">&#10006;</span>
   </div>
 </section>
@@ -25,8 +26,7 @@
           <br></br>
           <div class="controls controls-row">
             <span class="span8">
-              <div class="progress">
-                <div class="bar" id="statisticsbar" style="width: 0%;"></div>
+              <div id="statisticsbar">
               </div>
             </span>
             <span class="span2">
@@ -41,8 +41,7 @@
           <br></br>
           <div class="controls controls-row">
             <span class="span8">
-              <div class="progress">
-                <div class="bar" style="width: 0%;" id="ahocorasickbar"></div>
+              <div id="ahocorasickbar">
               </div>
             </span>
             <span class="span2">
@@ -57,8 +56,7 @@
           <br></br>
           <div class="controls controls-row">
             <span class="span8">
-              <div class="progress">
-                <div class="bar" style="width: 0%;" id="tfidfbar"></div>
+              <div id="tfidfbar">
               </div>
             </span>
             <span class="span2">
@@ -73,8 +71,7 @@
           <br></br>
           <div class="controls controls-row">
             <span class="span8">
-              <div class="progress">
-                <div class="bar" style="width: 0%;" id="kmeansbar"></div>
+              <div id="kmeansbar">
               </div>
             </span>
             <span class="span2">
