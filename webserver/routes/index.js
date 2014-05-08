@@ -35,7 +35,7 @@ exports.dashboard = function(req, res) {
             "selectitems": selectitems,
             "textcount": textcount,
             "userscount": userscount,
-            "username":username
+            "username": username
           });
         });
       });
@@ -77,6 +77,7 @@ exports.panel = function(req, res) {
   }
   res.render('panel.html');
 };
+
 exports.retrieve = function(req, res) {
   if (!req.session.user) {
     return res.redirect('/');

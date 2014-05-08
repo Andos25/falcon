@@ -1,58 +1,29 @@
 $(document).ready(function() {
+
+  if (checkCookie()) {
+    $("button").attr("disabled", true);
+    var execute_state = getCookie("execute_state");
+    count(execute_state);
+    checkschedule(execute_state);
+    $("span#" + execute_state).text("Running");
+  }
   // $("div#block").hide();
   $("button").click(function() {
     var result = confirm("are you sure to begin this execute?");
     if (result == true) {
       // $(this).parent().children("#block").show(700);
-        $("button").attr("disabled", "true");
-        $("div#" + this.name + "bar").html("");
+      $("button").attr("disabled", "true");
+      $("div#" + this.name + "bar").html("");
       $("span#" + this.name).text("Running");
+      setCookie("execute_state", this.name);
+      var now = new Date();
+      addCookie("begin_time", now.getTime());
       execute(this.name);
     } else {
       return;
     }
   });
 });
-
-var execute = function(execute_type) {
-  flag[execute_type] = true;
-  state[execute_type] = true;
-  count(execute_type);
-  checkschedule(execute_type);
-  $.getJSON("/ajax/panel_execute/", {
-      "execute_type": execute_type
-    },
-    function(data) {
-      flag[execute_type] = false;
-      console.log(typeof(data));
-      if (data) {
-        return;
-      } else {
-        state[execute_type] = false;
-      }
-    }
-  )
-};
-
-var checkschedule = function(execute_type) {
-  $.getJSON("/ajax/panel_checkschedule/", {}, function(data) {
-    data = parseInt(data);
-    if (data != 0) {
-      schedule[execute_type] = parseInt(data);
-    }
-    if (flag[execute_type])
-      setTimeout(function() {
-        checkschedule(execute_type);
-      }, 1500);
-  });
-}
-
-var flag = {
-  "statistics": true,
-  "ahocorasick": true,
-  "tfidf": true,
-  "kmeans": true
-}
 var state = {
   "statistics": true,
   "ahocorasick": true,
@@ -64,6 +35,69 @@ var schedule = {
   "ahocorasick": 0,
   "tfidf": 0,
   "kmeans": 0
+}
+
+  function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+      c_start = document.cookie.indexOf(c_name + "=")
+      if (c_start != -1) {
+        c_start = c_start + c_name.length + 1
+        c_end = document.cookie.indexOf("&", c_start)
+        if (c_end == -1) c_end = document.cookie.length
+        return unescape(document.cookie.substring(c_start, c_end))
+      }
+    }
+    return ""
+  }
+
+  function setCookie(c_name, value) {
+    document.cookie = c_name + "=" + escape(value);
+  }
+
+  function addCookie(c_name, value) {
+    document.cookie += ("&" + c_name + "=" + escape(value));
+  }
+
+  function checkCookie() {
+    execute_state = getCookie('execute_state')
+    if (execute_state != null && execute_state != "") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+var execute = function(execute_type) {
+  state[execute_type] = true;
+  count(execute_type);
+  checkschedule(execute_type);
+  $.getJSON("/ajax/panel_execute/", {
+      "execute_type": execute_type
+    },
+    function(data) {
+      setCookie("execute_state", "");
+      if (!data) {
+        state[execute_type] = false;
+      }
+    }
+  )
+};
+
+var checkschedule = function(execute_type) {
+  $.getJSON("/ajax/panel_checkschedule/", {}, function(data) {
+    data = parseInt(data);
+    var now = new Date();
+    var begin_time = parseInt(getCookie("begin_time"));
+    if (data != -1) {
+      schedule[execute_type] = data;
+    } else if (schedule[execute_type] != 0 || now.getTime() - begin_time > 60000) {
+      setCookie("execute_state", "");
+    }
+    if (checkCookie())
+      setTimeout(function() {
+        checkschedule(execute_type);
+      }, 1500);
+  });
 }
 
 var count = function(name) {
@@ -142,7 +176,7 @@ var lightLoader = function(c, cw, ch, execute_type) {
   /* Update Loader
   /*========================================================*/
   this.updateLoader = function() {
-    if (flag[this.execute_type]) {
+    if (checkCookie()) {
       this.loaded = schedule[this.execute_type];
     } else {
       this.loaded = 100;
