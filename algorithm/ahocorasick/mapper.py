@@ -4,6 +4,7 @@
 import ahocorasick
 import pymongo
 import jieba
+import json
 
 def get_collection(name):
     conn = pymongo.Connection("localhost", 27017)
@@ -13,6 +14,7 @@ def run():
     collection = get_collection("keywords")
     textcollection = get_collection("text")
     tree = ahocorasick.KeywordTree()
+
     for i in collection.find():
         tree.add(i["word"].encode("utf-8"))
     tree.make()
@@ -22,19 +24,22 @@ def run():
             words = jieba.cut(item, cut_all=False)
         except:
             continue
-        tmp = list()
-        flag = 0
+        ac = list()
+        cutwords = list()
         for match in tree.findall(item):
             word = item[match[0]:match[1]]
-            if word.decode("utf-8") in words:
-                print word
-                tmp.append(word)
-                flag = 1
+            ac.append(word.decode("utf-8"))
+        if(len(ac)==0):
+            continue
+        for word in words:
+            cutwords.append(word)
+        string = str(i["_id"])+"\t"+json.dumps({"ac": ac, "cutwords": cutwords})
+        print string
 
-        if flag==0:continue
-        tmp = list(set(tmp))
-        i["kwords"] = tmp
-        textcollection.save(i)
+        # if flag==0:continue
+        # ac = list(set(ac))
+        # i["kwords"] = ac
+        # textcollection.save(i)
 
 if __name__ == '__main__':
     run()

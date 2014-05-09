@@ -13,7 +13,7 @@ $(document).ready(function() {
     if (result == true) {
       // $(this).parent().children("#block").show(700);
       $("button").attr("disabled", "true");
-      $("div#" + this.name + "bar").html("");
+      $(".mapreduce").html("");
       $("span#" + this.name).text("Running");
       setCookie("execute_state", this.name);
       var now = new Date();

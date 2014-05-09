@@ -253,6 +253,7 @@ exports.execute = function(req, res) {
   var str = fs.realpathSync('.');
   var location = path.dirname(str);
   location += "/algorithm/" + req.query.execute_type + "/run.sh";
+  console.log(location);
   exec(location, function(error, stdout, stderr) {
     var pattern = new RegExp('completed successfully');
     res.cookie("execute_state", "");
