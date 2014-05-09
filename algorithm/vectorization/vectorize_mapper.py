@@ -6,7 +6,7 @@ import sys
 
 
 def get_collection():
-    mongo = pymongo.Connection("192.168.40.161", 27017)["weibo"]
+    mongo = pymongo.Connection("localhost", 27017)["weibo"]
     return mongo["text"]
 
 def run():
@@ -16,7 +16,6 @@ def run():
     tf = dict()
     for blogText in collection.find():
         if str(type(blogText['tf'])) == "<type 'dict'>":#过滤一些类型不合法的tf
-            # print type(tf)
             blogId = blogText['_id']
             tf = blogText['tf']
             for i in range(len(tf)):
