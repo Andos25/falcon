@@ -255,6 +255,7 @@ exports.execute = function(req, res) {
   location += "/algorithm/" + req.query.execute_type + "/run.sh";
   exec(location, function(error, stdout, stderr) {
     var pattern = new RegExp('completed successfully');
+    res.cookie("execute_state", "");
     if (pattern.test(stdout) || pattern.test(stderr)) {
       res.json(true);
     } else {

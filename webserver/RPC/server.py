@@ -14,7 +14,7 @@ class CrawlerRPC(object):
         for i in info:
             if i != "100.0":
                 return i
-        return "0"
+        return "-1"
 
 if __name__ == '__main__':
     s = zerorpc.Server(CrawlerRPC())
