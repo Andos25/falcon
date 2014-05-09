@@ -8,78 +8,52 @@
   <meta name="robots" content="" />
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="css/style.css" media="all" />
-<script src="public/js/jquery.min.js"></script>
-<script type="text/javascript">
- function check(){
-    var pwd = $("#pwd").val();
-    if (pwd=="" || pwd.length<6) {
-      var msg = "Please enter the 6 digit password";
-      alert(msg);
-    }
-  }
-  function verify(){
-    var pwd2 = $("#pwd2").val();
-    if(pwd2 != pwd){
-      var email = $("#email").val();
-      alert("Different  with first enter!")
-    }else{
-      $.getJSON("/ajax/dashboard_select_sexinfo/",{"email":email,"password":pwd2},function(result){
-      alert(result);
-      }
-    }
-}
-</script>>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="controljs/user.js"></script>
 </head>
 <body class="login">
   <section>
-    <h1><strong>Basic&nbsp;&nbsp;</strong>Information</h1>
-    <form method="link" action="dashboard">
-
-      <input type="text" id="email" value="Email" />
-      <input type="text" id="name" value="Name" />
-      <input type="password" id="oldpwd" placeholder="Old password" onblur="check()" />
-      <input type="password" id="pwd" placeholder="New password" onblur="check()" />
-      <input type="password"  id="pwd2" placeholder="Enter password again" onblur="verify()" />
-      <button type="blue" class="blue">Commit</button>
-    </form>
+    <h1><strong>Personal&nbsp;</strong>setting</h1>
+    <table>
+      <tr>
+          <td  style="min-width:300px;max-width=300px">
+            <input type="text" id="name" placeholder="name" onblur="user_checkname()" />
+          </td>
+          <td  style="min-width:150px;max-width=150px">
+            <div id="checkname"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="password" id="old" placeholder="old password" onblur="user_checkpasswd(id)" />
+          </td>
+          <td>
+            <div id="oldcheck"></div>
+          </td>
+        </tr>
+      <tr>
+        <td>
+          <input type="password" id="new" placeholder="new password " onblur="user_checkpasswd(id)" />
+        </td>
+        <td>
+          <div id="newcheck"></div>
+        </td>
+      </tr>
+      <tr>
+          <td>
+            <input type="password" id="again" placeholder="password again" onblur="checkpasswd(id)" />
+          </td>
+          <td>
+            <div id="checkpasswd2"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button  class="blue"  onclick="user_verify()" href="index">Commit</button>
+          </td>
+          <td></td>
+       </tr>
+      </table>
   </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-<script type="text/javascript">
-// Page load delay by Curtis Henson - http://curtishenson.com/articles/quick-tip-delay-page-loading-with-jquery/
-$(function(){
-  $('.login button').click(function(e){ 
-    // Get the url of the link 
-    var toLoad = $(this).attr('href');  
- 
-    // Do some stuff 
-    $(this).addClass("loading"); 
- 
-      // Stop doing stuff  
-      // Wait 700ms before loading the url 
-      setTimeout(function(){window.location = toLoad}, 10000);    
- 
-    // Don't let the link do its natural thing 
-    e.preventDefault
-  });
-  
-  $('input').each(function() {
-
-       var default_value = this.value;
-
-       $(this).focus(function(){
-               if(this.value == default_value) {
-                       this.value = '';
-               }
-       });
-
-       $(this).blur(function(){
-               if(this.value == '') {
-                       this.value = default_value;
-               }
-       });
-
-});
-});
-</script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 /**
  * Module dependencies.
  */
-
 var express = require('express');
+var MongoStore = require('connect-mongo')(express);
 var routes = require('./routes');
 var user = require('./routes/user');
-var ajax = require('./routes/ajax')
+var ajax = require('./routes/ajax');
 var http = require('http');
 var path = require('path');
 var nunjucks = require('nunjucks');
@@ -20,6 +20,13 @@ nunjucks.configure('views', {
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.cookieParser());
+app.use(express.session({
+  secret: "falcon",
+  store: new MongoStore({
+    db: "falcon"
+  })
+}));
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
@@ -41,16 +48,31 @@ app.get('^/index$', routes.index);
 app.get('^/dashboard', routes.dashboard);
 app.get('^/files', routes.files);
 app.get('^/blog-new', routes.blog);
-app.get('^/users', routes.users);
+app.get('^/sensitive', routes.sensitive);
 app.get('^/topology', routes.topology);
-app.get('^/page-new', routes.page);
+app.get('^/page-new', routes.panel);
 app.get('^/retrieve', routes.retrieve);
+app.get('^/register', routes.register);
+app.get('^/userboard', routes.userboard);
 
 //ajax request
 
 //dashboard
 app.get('^/ajax/dashboard_select_sexinfo/', ajax.select_sexinfo);
 app.get('^/ajax/dashboard_select_popinfo/', ajax.select_popinfo);
+//sensitive
+app.get('^/ajax/sensitiveinfo/', ajax.sensitiveinfo);
+//panel
+app.get('^/ajax/panel_execute/', ajax.execute);
+app.get('^/ajax/panel_checkschedule/', ajax.checkschedule);
+
+//user basic operate
+app.get('^/ajax/user_register', ajax.user_register);
+app.get('^/ajax/user_login', ajax.user_login);
+app.get('^/ajax/user_old_passwd', ajax.user_old_passwd);
+app.get('^/ajax/user_passwd_change', ajax.user_passwd_change);
+app.get('^/ajax/user_name', ajax.user_name);
+app.get('^/ajax/user_logout', ajax.user_logout);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

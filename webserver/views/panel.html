@@ -1,0 +1,89 @@
+{% extends "base.html" %} {% block title %}分析结果查看{% endblock %} {% block head%}
+<script type="text/javascript" src="controljs/panel.js"></script>
+<script src="js/prefixfree.min.js"></script>
+{% endblock %} {% block body %}
+<section class="alert">
+  <div class="green">
+    <p>分析模块分析运算量十分巨大，请耐心等待分析结果,<a href="http://127.0.0.1:8088">点击此处可以进入集群管理页面</a></p>
+    <span class="close">&#10006;</span>
+  </div>
+</section>
+<p id="execute_state" hidden="hidden">{{execute_state}}</p>
+<section class="content">
+  <section class="widget">
+    <header>
+      <span class="icon">&#59168;</span>
+      <hgroup>
+        <h1>分析测试</h1>
+        <h2>请提交分析请求</h2>
+      </hgroup>
+      <aside>
+      </aside>
+    </header>
+    <div class="content no-padding timeline">
+      <div class="tl-post comments">
+        <button type="button" class="btn btn-Leisure btn-lg" name="statistics">BaseInfo Statistics</button>
+        <div class="null" id="block">
+          <br></br>
+          <div class="controls controls-row">
+            <span class="span8">
+              <div id="statisticsbar" class="mapreduce">
+              </div>
+            </span>
+            <span class="span2">
+              <span class="label" id="statistics">Leisure</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-post comments">
+        <button type="button" class="btn btn-Leisure btn-lg" name="ahocorasick">AhoCorasick</button>
+        <div id="block">
+          <br></br>
+          <div class="controls controls-row">
+            <span class="span8">
+              <div id="ahocorasickbar" class="mapreduce">
+              </div>
+            </span>
+            <span class="span2">
+              <span class="label" id="ahocorasick">Leisure</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-post comments">
+        <button type="button" class="btn btn-Leisure btn-lg" name="tfidf">TF-IDF</button>
+        <div id="block">
+          <br></br>
+          <div class="controls controls-row">
+            <span class="span8">
+              <div id="tfidfbar" class="mapreduce">
+              </div>
+            </span>
+            <span class="span2">
+              <span class="label" id="tfidf">Leisure</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-post comments">
+        <button type="button" class="btn btn-Leisure btn-lg" name="kmeans">Kmeans</button>
+        <div id="block">
+          <br></br>
+          <div class="controls controls-row">
+            <span class="span8">
+              <div id="kmeansbar" class="mapreduce">
+              </div>
+            </span>
+            <span class="span2">
+              <span class="label" id="kmeans">Leisure</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+
+{% endblock %}

@@ -13,6 +13,7 @@ def run():
 	print collection.find().count()
 	for text in collection.find():
 		text["id"] = wordId
+		# collection.update({"wordId":text["wordId"]}, {"$unset":{"wordId": 1}})
 		collection.save(text)
 		wordId += 1
 

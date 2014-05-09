@@ -40,6 +40,7 @@ def run():
     tmpOut = ""
     for i in range(len(res)):
         key = int(float(res.keys()[i]))
+<<<<<<< HEAD
         value = res.values()[i]
         tmpOut = tmpOut + "{0}\t{1}\n".format(key, value)
         if i%2000 == 0:
@@ -47,6 +48,11 @@ def run():
             tmpOut = ""
     f.write(tmpOut)
     f.close()
+=======
+        # print key, res.values()[i]
+        value = json.dumps(res.values()[i])
+        outCollection.update({"_id": key}, {"$set": {"v": value}}, upsert = True)
+>>>>>>> 48e440be02a44c1172ee8d33eae00c59665cb34a
 
 
 if __name__ == '__main__':

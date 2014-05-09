@@ -18,4 +18,4 @@ def wordMark(ip, dbName, collectionName):
 
 
 if __name__ == '__main__':
-	wordMark('localhost', 'weibo', 'idf_test', )
+	wordMark('localhost', 'weibo', 'idf', )

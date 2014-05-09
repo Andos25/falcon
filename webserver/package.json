@@ -8,6 +8,8 @@
   "dependencies": {
     "express": "3.4.8",
     "mongodb": "*",
-    "mongoose": "*"
+    "mongoose": "*",
+    "connect-mongo": ">= 0.1.7",
+      "zerorpc": "*"
   }
 }
