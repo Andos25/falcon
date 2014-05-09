@@ -7,12 +7,15 @@ exports.index = function(req, res) {
 };
 
 exports.dashboard = function(req, res) {
-  var user = req.session.user;
+  if (!req.session.user) {
+    return res.redirect('/');
+  }
   mongoclient.open(function(err, mongoclient) {
     var db = mongoclient.db("weibo");
     var selectitems = new Array();
     var textcount;
     var userscount;
+      // var user = req.session.user;
     var username = req.session.user["name"];
     db.collection('provinces').find().toArray(function(err, data) {
 
@@ -28,9 +31,6 @@ exports.dashboard = function(req, res) {
         db.collection('users').count(function(err, data) {
           userscount = data;
           mongoclient.close();
-          if (!req.session.user) {
-            return res.redirect('/');
-          }
           res.render('dashboard.html', {
             "selectitems": selectitems,
             "textcount": textcount,
