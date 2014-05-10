@@ -14,9 +14,8 @@ def run():
     sys.setdefaultencoding('utf-8')
     collection = get_collection()
     tf = dict()
-    for blogText in collection.find({"tf": {"$exists": True}}):
+    for blogText in collection.find({"_id": {"$lt": 40960000}}):
         if str(type(blogText['tf'])) == "<type 'dict'>":#过滤一些类型不合法的tf
-            # print type(tf)
             blogId = blogText['_id']
             tf = blogText['tf']
             for i in range(len(tf)):

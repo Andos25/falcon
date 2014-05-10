@@ -13,39 +13,40 @@ def get_outcollection():
     mongo = pymongo.Connection("localhost", 27017)["weibo"]
     return mongo["text"]
 
+def get_file():
+    return open("/home/hadoop/python/smallvector.txt", 'w')
+
 def run():
-    inCollection = get_incollection()#weibo.idf
-    outCollection = get_outcollection()#weibo.text
-    count = 0
-    newline = list()
-    res = dict()#针对一条微博blogId:[vector]
-    for n in inCollection.find().sort('id', -1).limit(1):
-        n = n['id']+1#向量长度
-    for line in sys.stdin:#针对一条微博的一个单词
-        newline = line.strip().split('\t') #blogId@word\ttf
-        # print newline
-        tf = newline[1]
-        blogWord = newline[0].split('@')
-        blogId = blogWord[0]
-        word = blogWord[1]
-        wordId = inCollection.find_one({"word": word})['id']#start from 0
-        wordIdf = inCollection.find_one({"word": word})['idf']
-        tfIdf = float(tf) * float(wordIdf)
-        if res.has_key(blogId):#res[key]:blogId;res[value]:{wordId:word_tfidf;wordId:word_tfidf}
-            res[blogId][wordId] = tfIdf
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+    res = dict()#针对一条微博blogId:{vector}
+    f = get_file()
+    print "get idf"
+    inCollection = get_incollection()
+    cIdf = {}
+    for record in inCollection.find():
+        cIdf[record['word']] = [record['id'], record['idf']]
+    print "get text"
+    for line in sys.stdin:#针对一条微博的一个单词#blogId@word\ttf
+        tf = line.strip().split('\t')[1]
+        blogId = line.strip().split('\t')[0].split('@')[0]
+        word = line.strip().split('\t')[0].split('@')[1].decode('utf-8')
+        if res.has_key(blogId):
+            res[blogId][cIdf[word][0]] = float(tf) * float(cIdf[word][1])
         else:
-            # res[blogId] = [0 for i in range(n+1)]
             res[blogId] = {}
-            res[blogId][wordId] = tfIdf
-        # print "ok"
-    # print "for finished,len(res)=", len(res)
+            res[blogId][cIdf[word][0]] = float(tf) * float(cIdf[word][1])
+    print "write res"
+    tmpOut = ""
     for i in range(len(res)):
-        # print i
-        # print int(float(res.keys()[i])), res.values()[i]
         key = int(float(res.keys()[i]))
-        # print key, res.values()[i]
-        value = json.dumps(res.values()[i])
-        outCollection.update({"_id": key}, {"$set": {"v": value}}, upsert = True)
+        value = res.values()[i]
+        tmpOut = tmpOut + "{0}\t{1}\n".format(key, value)
+        if i%2000 == 0:
+            f.write(tmpOut)
+            tmpOut = ""
+    f.write(tmpOut)
+    f.close()
 
 
 if __name__ == '__main__':
