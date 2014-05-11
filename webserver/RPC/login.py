@@ -95,7 +95,17 @@ def weiboLogin():
     postdata['su'] = get_user(username)
     postdata['sp'] = get_pwd(pwd, servertime, nonce,pubkey)
     postdata = urllib.urlencode(postdata)
-    headers = {'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0'}
+    headers = {          
+          "domain": "widget.weibo.com",
+          "hostOnly": "true",
+          "httpOnly": "false",
+          "name": "HAVAR",
+          "path": "/",
+          "secure": "false",
+          "session": "true",
+          "storeId": "0",
+          "value": "wbvt_13182",
+          'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0'}
     # print postdata;
     #其实到了这里，已经能够使用urllib2请求新浪任何的内容了，这里已经登陆成功了
     req  = urllib2.Request(
