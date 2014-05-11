@@ -270,3 +270,28 @@ exports.checkschedule = function(req, res) {
     res.json(response);
   });
 }
+
+//emotion
+exports.emotion = function(req, res) {
+  mongoclient.open(function(err, mongoclient) {
+    var db = mongoclient.db("weibo");
+    var collection = db.collection("text");
+    var result = [];
+    collection.find({
+      "em": 1
+    }).count(function(err, data) {
+      result.push(["positive", data]);
+      collection.find({
+        "em": 0
+      }).count(function(err, data) {
+        result.push(["mid", data]);
+        collection.find({
+          "em": -1
+        }).count(function(err, data) {
+          result.push(["negtive", data]);
+          res.json(result);
+        })
+      })
+    });
+  });
+}

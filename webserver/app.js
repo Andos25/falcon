@@ -47,7 +47,7 @@ app.get('^/$', routes.index);
 app.get('^/index$', routes.index);
 app.get('^/dashboard', routes.dashboard);
 app.get('^/files', routes.files);
-app.get('^/blog-new', routes.blog);
+app.get('^/blog-new', routes.emotion);
 app.get('^/sensitive', routes.sensitive);
 app.get('^/topology', routes.topology);
 app.get('^/page-new', routes.panel);
@@ -65,6 +65,8 @@ app.get('^/ajax/sensitiveinfo/', ajax.sensitiveinfo);
 //panel
 app.get('^/ajax/panel_execute/', ajax.execute);
 app.get('^/ajax/panel_checkschedule/', ajax.checkschedule);
+//emotion
+app.get('^/ajax/emotion/', ajax.emotion);
 
 //user basic operate
 app.get('^/ajax/user_register', ajax.user_register);

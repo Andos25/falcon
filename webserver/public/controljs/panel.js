@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+  $("li#6").addClass('section');
+
   if (checkCookie()) {
     $("button").attr("disabled", true);
     var execute_state = getCookie("execute_state");
