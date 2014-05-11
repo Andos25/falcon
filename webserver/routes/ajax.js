@@ -292,6 +292,8 @@ exports.emotion = function(req, res) {
           res.json(result);
         });
       });
+    });
+  });
 }
 
 exports.topologydata = function(req, res) {
@@ -310,9 +312,6 @@ exports.topologydata = function(req, res) {
         res.json(data);
       } else {
       cilent.invoke("weibocrawler", name,function(error, response, more) {
-      // console.log(response);
-      // console.log(error);
-      // console.log(more);
       res.json(response);
       collection.insert({
           "name": name,
@@ -326,6 +325,26 @@ exports.topologydata = function(req, res) {
           });
       });
       }
+    });
+  });
+}
+
+exports.cluster_data = function(req, res) {
+  mongoclient.open(function(err, mongoclient) {
+    var db = mongoclient.db("weibo");
+    var collection = db.collection("cluster");
+    collection.find({
+    }).toArray(function(err, cluster) {
+        var categories = new Array(); 
+        var data = new Array(); 
+        for(var i=0;i<cluster.length;i++){
+          console.log(cluster[i]);
+          categories.push(cluster[i]["keyword"].toString());
+          data.push(cluster[i]["blogsum"]);
+        }
+        result = {"categories":categories,"data":data};
+        mongoclient.close();
+        res.json(result);
     });
   });
 }

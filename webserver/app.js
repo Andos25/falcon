@@ -67,7 +67,8 @@ app.get('^/ajax/panel_execute/', ajax.execute);
 app.get('^/ajax/panel_checkschedule/', ajax.checkschedule);
 //emotion
 app.get('^/ajax/emotion/', ajax.emotion);
-
+//cluster 
+app.get('^/ajax/cluster_data/', ajax.cluster_data);
 //user basic operate
 app.get('^/ajax/user_register', ajax.user_register);
 app.get('^/ajax/user_login', ajax.user_login);

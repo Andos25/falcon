@@ -2,68 +2,7 @@
 
 {% block title %}时间-流量分析{% endblock%}
 {% block head%}
-<script type="text/javascript">
-$(document).ready(function(){
-	getnodecount();
-	$("li#2").addClass('section');
-})
-function getnodecount(){
-    $.getJSON("/ajax/files_getnodecount/", {"selectinfo":$("select#multiSelect").val()}, function(data) {
-        showchart(data, "container");
-    }
-)}
-function showchart(data, container) {
-        $("#"+container+"").highcharts({
-            chart: {
-                type: 'spline'
-            },
-            title: {
-                text: '安全事件流量与时间关系图'
-            },
-            credits: {
-                enabled: false
-            },
-            xAxis: {
-                categories: data['categories']
-            },
-            yAxis: {
-                title: {
-                    text: 'flow count'
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value
-                    }
-                }
-            },
-            tooltip: {
-                crosshairs: true,
-                shared: true
-            },
-            plotOptions: {
-                spline: {
-                    marker: {
-                        radius: 4,
-                        lineColor: '#666666',
-                        lineWidth: 1
-                    }
-                }
-            },
-            series: [{
-                name: 'Botnet',
-                data: data['Botnet']
-    
-            }, {
-                name: 'Worm',
-                data: data['Worm']
-            }, {
-                name: 'Ddos',
-                data: data['Ddos']
-            }
-            ]
-        });
-    };
-</script>
+<script type="text/javascript" src="controljs/cluster.js"></script>
 {% endblock %}
 {% block body %}
 <section class="alert">
@@ -80,19 +19,9 @@ function showchart(data, container) {
 				<h1>流量时间关系图</h1>
 				<h2>点击右侧下拉菜单选择不同事件id进行查看</h2>
 			</hgroup>
-			<aside>
-              <select id="multiSelect" onchange="getnodecount()">
-                
-                {% for item in local['count'] %}
-                <option>{{item}}</option>
-                {% endfor %}
-              </select>
-			</aside>
 		</header>
 		<div class="content">
-			<div id="dropzone" class="dropzone gallery">
 				<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-			</div>
 		</div>
 	</section>
 {% endblock %}
