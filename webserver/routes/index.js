@@ -47,7 +47,8 @@ exports.files = function(req, res) {
   if (!req.session.user) {
     return res.redirect('/');
   }
-  res.render('files.html');
+  var username = req.session.user["name"];
+  res.render('files.html',{"username":username});
 };
 
 exports.emotion = function(req, res) {
@@ -61,21 +62,23 @@ exports.sensitive = function(req, res) {
   if (!req.session.user) {
     return res.redirect('/');
   }
-
-  res.render('sensitive.html');
+  var username = req.session.user["name"];
+  res.render('sensitive.html',{"username":username});
 };
 
 exports.topology = function(req, res) {
   if (!req.session.user) {
     return res.redirect('/');
   }
-  res.render('topology.html');
+  var username = req.session.user["name"];
+  res.render('topology.html',{"username":username});
 };
 exports.panel = function(req, res) {
   if (!req.session.user) {
     return res.redirect('/');
   }
-  res.render('panel.html');
+  var username = req.session.user["name"];
+  res.render('panel.html',{"username":username});
 };
 
 exports.retrieve = function(req, res) {
@@ -91,5 +94,6 @@ exports.userboard = function(req, res) {
   if (!req.session.user) {
     return res.redirect('/');
   }
+  var username = req.session.user["name"];
   res.render('userboard.html');
 };

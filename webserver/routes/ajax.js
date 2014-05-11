@@ -290,8 +290,42 @@ exports.emotion = function(req, res) {
         }).count(function(err, data) {
           result.push(["negtive", data]);
           res.json(result);
-        })
-      })
+        });
+      });
+}
+
+exports.topologydata = function(req, res) {
+    mongoclient.open(function(err, mongoclient) {
+    var db = mongoclient.db("falcon");
+    var collection = db.collection("craw");
+    var name = req.query.username;
+    collection.find({
+      "name": name
+    }).toArray(function(err, weibo) {
+      mongoclient.close();
+      if (weibo.length != 0 ) {
+        var data = weibo[0]["content"];
+        console.log(typeof(data));
+        console.log(data);
+        res.json(data);
+      } else {
+      cilent.invoke("weibocrawler", name,function(error, response, more) {
+      // console.log(response);
+      // console.log(error);
+      // console.log(more);
+      res.json(response);
+      collection.insert({
+          "name": name,
+          "format_info": response
+        }, {
+          w: 1,
+          safe: true
+        }, function(err, result) {
+            console.log(err);
+            mongoclient.close();
+          });
+      });
+      }
     });
   });
 }

@@ -7,44 +7,36 @@
 <script src="js/jquery.address-1.4.min.js"></script>
 <script src="js/parseur.js"></script>
 <script src="js/renderer.js"></script>
+<script src="js/io.js"></script>
+<script src="js/jquery-1.6.1.min.js"></script>
 <script type="text/javascript">
-  
+
   trace = arbor.etc.trace
   objmerge = arbor.etc.objmerge
   objcopy = arbor.etc.objcopy
-
+  sys = arbor.ParticleSystem(1000,500,0.95)
   //parse the input
   var parse = Parseur().parse
-
   //input the element pass in
   var DependGraph = function(elt, doc){
     //get the object of element
     var dom = $(elt)
     var _btn = dom.find('#btn')
-
     sys = arbor.ParticleSystem(1000,500,0.95)
     sys.renderer = Renderer("#viewport")
     sys.screenPadding(20)
-
-
     var that = {
-
       init:function(){
-
         $(window).resize(that.resize)
         that.resize() 
         that.getData()
         _btn.bind('click',that.btnclick)
-
         return that
       },//end of init
-
-
       // resize the 
       resize:function(){
         sys.renderer.redraw()
       },
-
       getData:function(){
          //set the system parameters is there is
          if (doc.sys){
@@ -53,7 +45,6 @@
 
          //parse the input network
          var network = parse(doc.src)
-
          //set the network information
          $.each(network.nodes, function(nname, ndata){
             if (ndata.label===undefined) ndata.label = nname
@@ -61,56 +52,56 @@
 
          //merge the network
          sys.merge(network)
+         console.log(network);
+          _updateTimeout = null
          // that.resize()
-
         //end of get json
-
       }//end of get data
-
     }//end of that
-
-    
     return that.init()
   }
   function gettopologydata(){
-    $.getJSON("/ajax/topology_gettopologydata/", {"selectinfo":$("select#multiSelect").val()}, function(data) {
+    $.getJSON("/ajax/topologydata/", {"username":"姚晨"}, function(data) {
+        data = JSON.parse(data);
         var mcp = DependGraph("#halfviz", data['graphinfo']);
-        $("img#static").attr("src", data['img_url'])
+        // $("img#static").attr("src", data['img_url'])
     })
   }
   $(document).ready(function(){
-    // var mcp = DependGraph("#halfviz");
+    var mcp = DependGraph("#halfviz");
     gettopologydata();
-    $("li#5").addClass('section');
+    // $("li#5").addClass('section');
   })
-  function change(){
-    $.getJSON("/ajax/topology_gettopologydata/", {"selectinfo":$("select#multiSelect").val()}, function(data) {
+  function search(){
+    $.getJSON("/ajax/topologydata/", {"username":$("input#username").val()}, function(data) {
+      //console.log(typeof data);
+      data = JSON.parse(data);
       doc = data['graphinfo'];
+      // console.log(doc);
+      //console.log(doc);
      if (doc.sys){
+      //alert("doc.sys");
         sys.parameters(doc.sys)
      }
-
      //parse the input network
      var network = parse(doc.src)
-
      //set the network information
      $.each(network.nodes, function(nname, ndata){
-        if (ndata.label===undefined) ndata.label = nname
-     })
-
+        if (ndata.label==undefined){
+          ndata.label = nname;
+          console.log(nname);
+        }           
+        // console.log(ndata.label);
+     });
      //merge the network
+     // sys = arbor.ParticleSystem(1000,500,0.95)
      sys.merge(network)
-    $("img#static").attr("src", data['img_url'])
-    })
+    // $("img#static").attr("src", data['img_url'])
+    });
      //set the system parameters is there is
-
      // that.resize()
-
     //end of get json
-
   }
-
-
 
 </script>
 {% endblock %}
@@ -118,23 +109,20 @@
 <section class="alert">
   <div class="green"> 
     <p>欢迎使用安全事件传导视图模块</p>
-    <span class="close">&#10006;</span>
+    <span class="close">✖</span>
   </div>
 </section>
 <section class="content">
   <section class="widget">
     <header>
-      <span class="icon">&#127748;</span>
+      <span class="icon">🌄</span>
       <hgroup>
         <h1>安全事件传导视图</h1>
         <h2>点击右侧下拉菜单选择不同事件id进行查看</h2>
       </hgroup>
       <aside>
-        <select id="multiSelect" onchange="change()">
-          {% for item in local['count'] %}
-          <option>{{item}}</option>
-          {% endfor %}
-        </select>
+        <input type="text" class="span2" id="username">
+        <button type="submit" class="btn" onclick="search()">Submit</button>
       </aside>
     </header>
     <div class="content">
@@ -146,13 +134,13 @@
       </div>
     </div>
   </section>
- <section class="widget">
+<!--  <section class="widget">
     <div class="content">
       <div id="dropzone" class="dropzone gallery">
         <img id="static" src="" width="900" height="400"/>
       </div>
     </div>
-  </section>
+  </section> -->
 
 </section>
 
