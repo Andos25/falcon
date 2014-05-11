@@ -17,6 +17,7 @@ class CrawlerRPC(object):
             if i != "100.0":
                 return i
         return "-1"
+        
     def weibocrawler(self,username,n):
         for i in range(1,3):
             thread = crawler.staff(i,username,n)

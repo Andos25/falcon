@@ -240,3 +240,80 @@ def svm_predict1(y, x, m, options=""):
 
 	return pred_labels, (ACC, MSE, SCC), pred_values
 
+def svm_predict2(x, m, options=""):
+	"""
+	svm_predict(y, x, m [, "options"]) -> (p_labels, p_acc, p_vals)
+
+	Predict data (y, x) with the SVM model m. 
+	"options": 
+	    -b probability_estimates: whether to predict probability estimates, 
+	        0 or 1 (default 0); for one-class SVM only 0 is supported.
+
+	The return tuple contains
+	p_labels: a list of predicted labels
+	p_acc: a tuple including  accuracy (for classification), mean-squared 
+	       error, and squared correlation coefficient (for regression).
+	p_vals: a list of decision values or probability estimates (if '-b 1' 
+	        is specified). If k is the number of classes, for decision values,
+	        each element includes results of predicting k(k-1)/2 binary-class
+	        SVMs. For probabilities, each element contains k values indicating
+	        the probability that the testing instance is in each class.
+	        Note that the order of classes here is the same as 'model.label'
+	        field in the model structure.
+	"""
+	predict_probability = 0
+	argv = options.split()
+	i = 0
+	while i < len(argv):
+		if argv[i] == '-b':
+			i += 1
+			predict_probability = int(argv[i])
+		else:
+			raise ValueError("Wrong options")
+		i+=1
+
+	svm_type = m.get_svm_type()
+	is_prob_model = m.is_probability_model()
+	nr_class = m.get_nr_class()
+	# pred_labels = []
+	# pred_values = []
+
+	if predict_probability:
+		if not is_prob_model:
+			raise ValueError("Model does not support probabiliy estimates")
+
+		if svm_type in [NU_SVR, EPSILON_SVR]:
+			print("Prob. model for test data: target value = predicted value + z,\n"
+			"z: Laplace distribution e^(-|z|/sigma)/(2sigma),sigma=%g" % m.get_svr_probability());
+			nr_class = 0
+
+		prob_estimates = (c_double * nr_class)()
+		xi, idx = gen_svm_nodearray(x)
+		label = libsvm.svm_predict_probability(m, xi, prob_estimates)
+		values = prob_estimates[:nr_class]
+		pred_labels = label
+		pred_values = values
+	else:
+		if is_prob_model:
+			print("Model supports probability estimates, but disabled in predicton.")
+		if svm_type in (ONE_CLASS, EPSILON_SVR, NU_SVC):
+			nr_classifier = 1
+		else:
+			nr_classifier = nr_class*(nr_class-1)//2
+		dec_values = (c_double * nr_classifier)()
+		xi, idx = gen_svm_nodearray(x)
+		label = libsvm.svm_predict_values(m, xi, dec_values)
+		values = dec_values[:nr_classifier]
+		pred_labels = label
+		pred_values = values
+
+	# ACC, MSE, SCC = evaluations(y, pred_labels)
+	# l = len(y)
+	# if svm_type in [EPSILON_SVR, NU_SVR]:
+	# 	print("Mean squared error = %g (regression)" % MSE)
+	# 	print("Squared correlation coefficient = %g (regression)" % SCC)
+	# else:
+	# 	print("Accuracy = %g%% (%d/%d) (classification)" % (ACC, int(l*ACC/100), l))
+
+	# return pred_labels, (ACC, MSE, SCC), pred_values
+	return pred_labels
