@@ -5,11 +5,11 @@ import sys
 import pymongo
 
 def get_inCollection():
-    mongo = pymongo.Connection("localhost", 27017)["weibo"]
+    mongo = pymongo.Connection("master", 27017)["weibo"]
     return mongo["text"]
 
 def get_outCollection():
-    mongo = pymongo.Connection("localhost", 27017)["weibo"]
+    mongo = pymongo.Connection("master", 27017)["weibo"]
     return mongo["cluster"]
 
 def run():
