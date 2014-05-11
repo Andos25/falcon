@@ -4,7 +4,7 @@
 import pymongo
 
 def get_collection():
-    mongo = pymongo.Connection("localhost", 27017)["weibo"]
+    mongo = pymongo.Connection("master", 27017)["weibo"]
     return mongo["idf"] 
 
 def run():

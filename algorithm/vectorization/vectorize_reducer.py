@@ -6,11 +6,11 @@ import sys
 import json
 
 def get_incollection():
-    mongo = pymongo.Connection("localhost", 27017)["weibo"]
+    mongo = pymongo.Connection("master", 27017)["weibo"]
     return mongo["idf"]
 
 def get_outcollection():
-    mongo = pymongo.Connection("localhost", 27017)["weibo"]
+    mongo = pymongo.Connection("master", 27017)["weibo"]
     return mongo["text"]
 
 def get_file():
