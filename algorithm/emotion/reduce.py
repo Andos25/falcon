@@ -17,6 +17,8 @@ def run():
     for i in sys.stdin:
         _id, value = i.split("\t")
         value = json.loads(value)
+        for key in value.keys():
+            value[int(key)] = value.pop(key)
         if value == False:
             collection.update({"_id": int(_id)}, {"$set": {"em": 0}})
         else:

@@ -11,7 +11,7 @@ def get_collection(name):
 def run():
     collection = get_collection("text")
     idfcollection = get_collection("idf")
-    for text in collection.find().limit(10):
+    for text in collection.find():
         tflist = text["tf"]
         if tflist == {}:
             print str(text["_id"]) + "\t" + json.dumps(False)
