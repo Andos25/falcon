@@ -14,7 +14,7 @@ def get_outcollection():
     return mongo["text"]
 
 def get_file():
-    return open("/home/hadoop/python/smallvector.txt", 'w')
+    return open("/home/hadoop/falcon/algorithm/vectorization/vector.txt", 'w')
 
 def run():
     reload(sys)
