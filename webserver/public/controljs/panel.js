@@ -1,17 +1,20 @@
 $(document).ready(function() {
 
+  $("li#6").addClass('section');
+
   if (checkCookie()) {
     $("button").attr("disabled", true);
     var execute_state = getCookie("execute_state");
     count(execute_state);
     checkschedule(execute_state);
     $("span#" + execute_state).text("Running");
+    document.getElementsByName(execute_state)[0].show(700);
   }
-  // $("div#block").hide();
+  $("div#block").hide();
   $("button").click(function() {
     var result = confirm("are you sure to begin this execute?");
     if (result == true) {
-      // $(this).parent().children("#block").show(700);
+      $(this).parent().children("#block").show(700);
       $("button").attr("disabled", "true");
       $(".mapreduce").html("");
       $("span#" + this.name).text("Running");
@@ -28,13 +31,15 @@ var state = {
   "statistics": true,
   "ahocorasick": true,
   "tfidf": true,
-  "kmeans": true
+  "kmeans": true,
+  "emotion": true
 }
 var schedule = {
   "statistics": 0,
   "ahocorasick": 0,
   "tfidf": 0,
-  "kmeans": 0
+  "kmeans": 0,
+  "emotion": 0
 }
 
   function getCookie(c_name) {
@@ -42,7 +47,7 @@ var schedule = {
       c_start = document.cookie.indexOf(c_name + "=")
       if (c_start != -1) {
         c_start = c_start + c_name.length + 1
-        c_end = document.cookie.indexOf("&", c_start)
+        c_end = document.cookie.indexOf(";", c_start)
         if (c_end == -1) c_end = document.cookie.length
         return unescape(document.cookie.substring(c_start, c_end))
       }
@@ -60,6 +65,7 @@ var schedule = {
 
   function checkCookie() {
     execute_state = getCookie('execute_state')
+    console.log(execute_state);
     if (execute_state != null && execute_state != "") {
       return true;
     } else {

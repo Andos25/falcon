@@ -15,7 +15,7 @@ exports.dashboard = function(req, res) {
     var selectitems = new Array();
     var textcount;
     var userscount;
-      // var user = req.session.user;
+    // var user = req.session.user;
     var username = req.session.user["name"];
     db.collection('provinces').find().toArray(function(err, data) {
 
@@ -50,11 +50,11 @@ exports.files = function(req, res) {
   res.render('files.html');
 };
 
-exports.blog = function(req, res) {
+exports.emotion = function(req, res) {
   if (!req.session.user) {
     return res.redirect('/');
   }
-  res.render('blog.html');
+  return res.render("emotion.html");
 };
 
 exports.sensitive = function(req, res) {

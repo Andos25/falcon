@@ -21,6 +21,7 @@ class CrawlerRPC(object):
             if i != "100.0":
                 return i
         return "-1"
+<<<<<<< HEAD
 
     def weibocrawler(self,username,n=4):
         graphinfo = dict()
@@ -40,6 +41,13 @@ class CrawlerRPC(object):
         print "finished!"
         return data
 
+=======
+        
+    def weibocrawler(self,username,n):
+        for i in range(1,3):
+            thread = crawler.staff(i,username,n)
+            thread.start()
+>>>>>>> 06d76d3ddc2bf685393cb8da6e904099b9e54b93
 
 if __name__ == '__main__':
     s = zerorpc.Server(CrawlerRPC())

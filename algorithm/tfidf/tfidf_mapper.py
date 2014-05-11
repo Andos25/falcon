@@ -10,7 +10,7 @@ import re
 from string import punctuation
 
 def get_collection():
-    mongo = pymongo.Connection("localhost", 27017)["weibo"]
+    mongo = pymongo.Connection("master", 27017)["weibo"]
     return mongo["text"] 
 
 def run():
