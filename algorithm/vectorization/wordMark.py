@@ -12,9 +12,9 @@ def run():
 	wordId = 0
 	print collection.find().count()
 	for text in collection.find():
-		text["id"] = wordId
-		# collection.update({"wordId":text["wordId"]}, {"$unset":{"wordId": 1}})
-		collection.save(text)
+		# text["id"] = wordId
+		collection.update({"_id":text["_id"]}, {"$set":{"id": wordId}}, True)
+		# collection.save(text)
 		wordId += 1
 
 
