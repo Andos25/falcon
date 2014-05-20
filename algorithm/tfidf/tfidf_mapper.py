@@ -7,7 +7,7 @@ sys.path.append("../../common/")
 import jieba
 import pymongo
 import re
-from string import punctuation
+# from string import punctuation
 
 def get_collection():
     mongo = pymongo.Connection("master", 27017)["weibo"]
@@ -16,11 +16,11 @@ def get_collection():
 def run():
     stopword = [i.rstrip() for i in open('/home/hadoop/falcon/algorithm/tfidf/stopword')]
     collection = get_collection()
+    pattern = re.compile(r'\w', re.S)
     cursor = collection.find()
-    pattern = re.compile(r'http[:\.\/a-zA-Z0-9]*', re.S)
     for item in cursor:
         info = pattern.sub('', item["text"])
-        info = "".join([i for i in info if i not in punctuation])
+        # info = "".join([i for i in info if i not in punctuation])
         try:
             words = jieba.cut(info, cut_all=False)
         except:
