@@ -21,18 +21,22 @@ class CrawlerRPC(object):
             if i != "100.0":
                 return i
         return "-1"
-<<<<<<< HEAD
 
     def weibocrawler(self,username,n=4):
         graphinfo = dict()
         format_str = ""
         result = crawler.crawler(username,n)
-        for i in result["fans"]:
+        for a in result["relation"]:
+            print a
+        for i in result["relation"]:
             format_str +=  i+"{ weight:1,name :""} \n"
             format_str += i.split('->')[0]+"{color:#ff0000}\n"+i.split('->')[1]+"{color:#00ffff}\n"
-        for j in result["follows"]:
-            format_str += "{ weight:1,name :""} \n"
-            format_str += i.split('->')[0]+"{color:#ff0000}\n"+i.split('->')[1]+"{color:#00ffff}\n"
+        # for i in result["fans"]:
+        #     format_str +=  i+"{ weight:1,name :""} \n"
+        #     format_str += i.split('->')[0]+"{color:#ff0000}\n"+i.split('->')[1]+"{color:#00ffff}\n"
+        # for j in result["follows"]:
+        #     format_str += "{ weight:1,name :""} \n"
+        #     format_str += i.split('->')[0]+"{color:#ff0000}\n"+i.split('->')[1]+"{color:#00ffff}\n"
         format_str +="\n; endings\n"
         graphinfo['src'] = format_str
         data = {"graphinfo": graphinfo, "img_url": ""}    
@@ -41,18 +45,11 @@ class CrawlerRPC(object):
         print "finished!"
         return data
 
-=======
-        
-    def weibocrawler(self,username,n):
-        for i in range(1,3):
-            thread = crawler.staff(i,username,n)
-            thread.start()
->>>>>>> 06d76d3ddc2bf685393cb8da6e904099b9e54b93
 
 if __name__ == '__main__':
-    s = zerorpc.Server(CrawlerRPC())
-    s.bind("tcp://0.0.0.0:4242")
-    s.run()
-    # a = CrawlerRPC()
-    # a.weibocrawler('周迅')
+    # s = zerorpc.Server(CrawlerRPC())
+    # s.bind("tcp://0.0.0.0:4242")
+    # s.run()
+    a = CrawlerRPC()
+    a.weibocrawler('周迅')
 

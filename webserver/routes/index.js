@@ -3,6 +3,9 @@
  */
 mongoclient = require('../dbengine');
 exports.index = function(req, res) {
+    if (req.session.user) {
+    return res.redirect('/dashboard');
+  }
   res.render('index.html');
 };
 

@@ -13,8 +13,12 @@ function buildcolumnchart(info) {
                 type: 'column',
                 margin: [ 50, 50, 100, 80]
             },
+            credits: 
+            {
+                enabled : false
+            },
             title: {
-                text: 'World\'s largest cities per 2008'
+                text: 'Topic cluster with k-means algorithm'
             },
             xAxis: {
                 categories:info["categories"] ,
@@ -30,7 +34,7 @@ function buildcolumnchart(info) {
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Population (millions)'
+                    text: 'microblogs '
                 }
             },
             legend: {

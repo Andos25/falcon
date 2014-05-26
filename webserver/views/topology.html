@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}安全事件传导视图{% endblock %}
+{% block title %}微博用户关系拓扑{% endblock %}
 {% block head%}
 <script src="js/arbor.js"></script>
 <script src="js/graphics.js"></script>
@@ -80,18 +80,16 @@
       // console.log(doc);
       //console.log(doc);
      if (doc.sys){
-      //alert("doc.sys");
         sys.parameters(doc.sys)
      }
      //parse the input network
      var network = parse(doc.src)
+     console.log(network);
      //set the network information
      $.each(network.nodes, function(nname, ndata){
         if (ndata.label==undefined){
           ndata.label = nname;
-          console.log(nname);
         }           
-        // console.log(ndata.label);
      });
      //merge the network
      // sys = arbor.ParticleSystem(1000,500,0.95)
@@ -108,27 +106,31 @@
 {% block body %}
 <section class="alert">
   <div class="green"> 
-    <p>欢迎使用安全事件传导视图模块</p>
+    <p>欢迎进入微博用户拓扑关系图</p>
     <span class="close">✖</span>
   </div>
 </section>
 <section class="content">
   <section class="widget">
     <header>
-      <span class="icon">🌄</span>
-      <hgroup>
-        <h1>用户拓扑关系查询</h1>
-        <h2>在搜索框输入用户名查看其粉丝及关注的拓扑关系</h2>
-      </hgroup>
-      <aside>
-        <input type="text" class="span2" id="username">
-        <button type="submit" class="btn" onclick="search()">Submit</button> 
-      </aside>
+     <table>
+      <tr>
+        <td>
+        <span class="icon">🌄</span>
+          <hgroup>
+            <h1>用户拓扑关系查询</h1>
+            <h2>在搜索框输入用户名查看其粉丝及关注的拓扑关系</h2>
+          </hgroup>
+          </td>
+          <td><span class="span5"></span></td>
+          <td style="float:right"><input type="text"  id="username" onkeypress="search()" placeholder="Type in nickname" style="height:30px;width:130px"></td>
+        </tr>
+      </table>
     </header>
     <div class="content">
       <div id="dropzone" class="dropzone gallery">
           <div id="halfviz">
-            <canvas id="viewport" width="1000" height="500"></canvas>
+            <canvas id="viewport" width="800" height="500"></canvas>
             <div id="grabber"></div>
           </div>  
       </div>

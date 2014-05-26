@@ -45,6 +45,10 @@ def  get_info(url,username,n):
         info_list.append(tmp)
     return info_list,pair_list
 
+def  display(object):
+    for i in object:
+        print i
+
 def crawler(username,n):
     # print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>fans_crawler"
     result = dir()
@@ -60,6 +64,7 @@ def crawler(username,n):
     fans_page,follow_page = create_url(uid,domain)
     fans_info_list,fans_pair_list = get_info(fans_page,username,n)
     follows_info_list,follow_pair_list = get_info(follow_page,username,n)
+    follow_pair_list.extend(fans_pair_list)
     for item in fans_info_list:
         new_fans_info = list()
         new_fans_pair = list()
@@ -70,8 +75,10 @@ def crawler(username,n):
         new_fans_page,new_follows_page = create_url(new_uid,new_domain)
         new_fans_info,new_fans_pair = get_info(new_fans_page,str(item["name"]),n)
         new_follows_info,new_follows_pair= get_info(new_follows_page,str(item["name"])  ,n)
-        fans_pair_list.extend(new_fans_pair)
-        new_follows.extend(new_follows_pair)
+        # fans_pair_list.extend(new_fans_pair)
+        follow_pair_list.extend(new_fans_pair)
+        # new_follows.extend(new_follows_pair)
+        follow_pair_list.extend(new_follows_pair)
     for item in follows_info_list:
         new_fans_info = list()
         new_fans_pair = list()
@@ -82,11 +89,14 @@ def crawler(username,n):
         new_fans_page,new_follows_page = create_url(new_uid,new_domain)
         new_fans_info,new_fans_pair = get_info(new_fans_page,str(item["name"]),n)
         new_follows_info,new_follows_pair= get_info(new_follows_page,str(item["name"])  ,n)
+        # follow_pair_list.extend(new_follows_pair)
+        # new_fans.extend(new_fans_pair)
+        follow_pair_list.extend(new_fans_pair)
         follow_pair_list.extend(new_follows_pair)
-        new_fans.extend(new_fans_pair)
-    fans_pair_list.extend(new_fans)
-    follow_pair_list.extend(new_follows)
-    result = {"fans":fans_pair_list,"follows":follow_pair_list}
+    # fans_pair_list.extend(new_fans)
+    # follow_pair_list.extend(new_follows)
+    # result = {"fans":fans_pair_list,"follows":follow_pair_list}
+    result = {"relation":follow_pair_list}
     return result
 
 
@@ -114,10 +124,6 @@ def crawler(username,n):
 #         new_fans.extend(new_fans_pair)
 #         # display(new_fans)
 #     return follow_pair_list,new_fans
-
-def  display(object):
-    for i in object:
-        print i
 
 # class staff (threading.Thread):
 #     def __init__(self, threadID, username, counter):
