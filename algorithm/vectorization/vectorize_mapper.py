@@ -1,4 +1,4 @@
-#!//usr/bin/env python
+#!/usr/bin/env python
 #coding=utf-8
 
 import pymongo
@@ -14,8 +14,8 @@ def run():
     sys.setdefaultencoding('utf-8')
     collection = get_collection()
     tf = dict()
-    for blogText in collection.find({"_id": {"$lt": 640000}}):
-        if str(type(blogText['tf'])) == "<type 'dict'>":#过滤一些类型不合法的tf
+    for blogText in collection.find({"tf":{"$exists":True}, "_id":{"$lt":400000}}):
+        if len(blogText['tf'])>0:#过滤一些类型不合法的tf
             blogId = blogText['_id']
             tf = blogText['tf']
             for i in range(len(tf)):
