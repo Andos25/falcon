@@ -15,7 +15,7 @@ def get_outcollection():
     return mongo["text"]
 
 def get_file():
-    return open("/home/hadoop/kmeansdata/vector913.txt", 'w')
+    return open("/home/hadoop/kmeansdata/vector40w.txt", 'w')
 
 def run():
     reload(sys)
