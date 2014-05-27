@@ -15,7 +15,7 @@ def get_outCollection():
 def run():
     inCollection = get_inCollection()#weibo.text
     outCollection = get_outCollection()#weibo.cluster
-    file = open("/home/hadoop/falcon/algorithm/kmeans/part-r-00000")#each line is a cluster,{}\tid@id@id@{}\n
+    file = open("/home/hadoop/kmeansdata/kmeansoutput32w.txt")#each line is a cluster,{}\tid@id@id@{}\n
     linelist = list()
     wordfre = dict()#all words in a cluster, key:word; value:word frequency
     keyword = list()
@@ -35,12 +35,12 @@ def run():
                     wordfre[tf.keys()[j]] = 1
         tmp = sorted(wordfre, key=wordfre.get)
         # print "tmp length:", len(tmp)
+        # if len(tmp) > 2:
+        # 	keyword.append(tmp[len(tmp)-1])
+        # 	keyword.append(tmp[len(tmp)-2])
+        # 	keyword.append(tmp[len(tmp)-3])
         if len(tmp) > 2:
-        	keyword.append(tmp[len(tmp)-1])
-        	keyword.append(tmp[len(tmp)-2])
         	keyword.append(tmp[len(tmp)-3])
-        elif len(tmp) > 0:
-        	keyword.append(tmp[len(tmp)-1])
         else:
         	keyword = []
         outCollection.save({"_id":clusterId, "blogsum":len(linelist), "blist":linelist, "keyword":keyword})

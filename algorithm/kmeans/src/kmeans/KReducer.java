@@ -21,11 +21,8 @@ public class KReducer extends Reducer<Text, Text, Text, Text> {
         String tfidf;
         String cvalue;
         String center="{";  
-//        System.out.println("start Reduce");  
-//        System.out.println("key|center==>"+key.toString());
         for(Text val:value)
         {  
-//            System.out.println("val:"+val.toString());
             String[] tmp = val.toString().split("@")[1].replace("{", "").replace("}", "").split(",");
             String blogId = val.toString().split("@")[0];
             outVal += blogId+"@"; 
@@ -54,8 +51,6 @@ public class KReducer extends Reducer<Text, Text, Text, Text> {
         	center += entry.getKey() + ":" + cvalue + ",";
         }  
         center  = center.substring(0, center.length()-1) + "}";
-//        System.out.println("reduce newcenter----------------"+center);
-//        System.out.println("写入part："+key+" "+outVal+center);  
         context.write(key, new Text(outVal+center));
     }
 }

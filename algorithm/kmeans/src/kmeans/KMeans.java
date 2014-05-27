@@ -13,19 +13,13 @@ public class KMeans {
     @SuppressWarnings("deprecation")
 	public static void main(String[] args) throws Exception  
     {
-    	//将console输出写入文件
-//    	FileOutputStream bos = new FileOutputStream("example_log.txt");  
-//    	System.setOut(new PrintStream(bos));
-    	
-//        CenterInitial centerInitial = new CenterInitial();  
-//        centerInitial.run(args);
         int times=0;  
-        double shold = 0.01;  
+        double shold = 1000;  
         float[] res={0, 0};
         do {  
         	System.out.println("*****************************************************************************************");
             Configuration conf = new Configuration();  
-            conf.set("fs.default.name", "hdfs://192.168.40.161:9000");  
+            conf.set("fs.default.name", "hdfs://master:9000");  
             Job job = new Job(conf,"KMeans");
             job.setJarByClass(KMeans.class);
             job.setOutputKeyClass(Text.class);
@@ -35,11 +29,10 @@ public class KMeans {
             job.setMapOutputValueClass(Text.class);
             job.setReducerClass(KReducer.class);  
             FileSystem fs = FileSystem.get(conf);  
-            fs.delete(new Path("hdfs://192.168.40.161:9000/kmeansoutput"),true);
-            FileInputFormat.addInputPath(job, new Path("hdfs://192.168.40.161:9000/kmeansinput/vector.txt"));  
-            FileOutputFormat.setOutputPath(job, new Path("hdfs://192.168.40.161:9000/kmeansoutput"));
+            fs.delete(new Path("hdfs://master:9000/kmeansoutput"),true);
+            FileInputFormat.addInputPath(job, new Path("hdfs://master:9000/kmeansinput/vector.txt"));  
+            FileOutputFormat.setOutputPath(job, new Path("hdfs://master:9000/kmeansoutput"));
             job.waitForCompletion(true);
-//            System.out.println("wait for complete");
             if(job.waitForCompletion(true))
             {  
                 NewCenter newCenter = new NewCenter();  
