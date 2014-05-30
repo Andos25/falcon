@@ -39,9 +39,9 @@
       },
       getData:function(){
          //set the system parameters is there is
-         if (doc.sys){
-            sys.parameters(doc.sys)
-         }
+         // if (doc.sys){
+         //    sys.parameters(doc.sys)
+         // }
 
          //parse the input network
          var network = parse(doc.src)
@@ -60,28 +60,31 @@
     }//end of that
     return that.init()
   }
-  function gettopologydata(){
-    $.getJSON("/ajax/topologydata/", {"username":"姚晨"}, function(data) {
-        data = JSON.parse(data);
-        var mcp = DependGraph("#halfviz", data['graphinfo']);
-        // $("img#static").attr("src", data['img_url'])
-    })
-  }
   $(document).ready(function(){
     var mcp = DependGraph("#halfviz");
-    gettopologydata();
+    var line = $("#username").text();
+    console.log(line);
+    var uname = line.split(" ").pop();
+    search(uname);
     // $("li#5").addClass('section');
   })
-  function search(){
-    $.getJSON("/ajax/topologydata/", {"username":$("input#username").val()}, function(data) {
-      //console.log(typeof data);
+  function search(value){
+    if (value.length==0) {
+      var line = $("#username").text();
+      console.log(line);
+      value = line.split(" ").pop();
+    };
+    $.getJSON("/ajax/topologydata/", {"username":value}, function(data) {
+      if (data=="0") {
+        alert("后台正在爬去，请稍侯");
+      };
       data = JSON.parse(data);
       doc = data['graphinfo'];
       // console.log(doc);
       //console.log(doc);
-     if (doc.sys){
-        sys.parameters(doc.sys)
-     }
+     // if (doc.sys){
+     //    sys.parameters(doc.sys)
+     // }
      //parse the input network
      var network = parse(doc.src)
      console.log(network);
@@ -123,7 +126,8 @@
           </hgroup>
           </td>
           <td><span class="span5"></span></td>
-          <td style="float:right"><input type="text"  id="username" onkeypress="search()" placeholder="Type in nickname" style="height:30px;width:130px"></td>
+          <td style="float:right"><input type="text"  id="username" onkeypress="search(value)" 
+          placeholder="Type in nickname" style="height:30px;width:130px"></td>
         </tr>
       </table>
     </header>

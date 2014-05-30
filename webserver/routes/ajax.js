@@ -108,6 +108,7 @@ exports.user_register = function(req, res) {
     }).toArray(function(err, data) {
       if (data.length != 0) {
         var result = null;
+         mongoclient.close();
         res.json(result);
       } else {
         collection.insert({
@@ -118,7 +119,6 @@ exports.user_register = function(req, res) {
           w: 1,
           safe: true
         }, function(err, result) {
-          console.log(result);
           if (email == result[0]["email"]) {
             mongoclient.close();
             res.json(0);
@@ -147,6 +147,7 @@ exports.user_login = function(req, res) {
         req.session.user = user[0];
         result = 0;
         res.json(result);
+        res.cookie("password", passwd);
       } else {
         result = 1;
         res.json(result);
@@ -289,6 +290,7 @@ exports.emotion = function(req, res) {
           "em": -1
         }).count(function(err, data) {
           result.push(["negtive", data]);
+          mongoclient.close();
           res.json(result);
         });
       });
@@ -301,29 +303,19 @@ exports.topologydata = function(req, res) {
     var db = mongoclient.db("falcon");
     var collection = db.collection("craw");
     var name = req.query.username;
+    console.log(name);
     collection.find({
       "name": name
     }).toArray(function(err, weibo) {
       mongoclient.close();
       if (weibo.length != 0 ) {
         var data = weibo[0]["content"];
-        console.log(typeof(data));
-        console.log(data);
         res.json(data);
       } else {
-      cilent.invoke("weibocrawler", name,function(error, response, more) {
-      res.json(response);
-      collection.insert({
-          "name": name,
-          "format_info": response
-        }, {
-          w: 1,
-          safe: true
-        }, function(err, result) {
-            console.log(err);
-            mongoclient.close();
-          });
-      });
+        console.log("crawling...........");
+        res.json("0");
+        cilent.invoke("weibocrawler", name,function(error, response, more) {
+        });
       }
     });
   });
@@ -333,12 +325,11 @@ exports.cluster_data = function(req, res) {
   mongoclient.open(function(err, mongoclient) {
     var db = mongoclient.db("weibo");
     var collection = db.collection("cluster");
-    collection.find({
+    collection.find({"blogsum":{$gt:20}
     }).toArray(function(err, cluster) {
         var categories = new Array(); 
         var data = new Array(); 
         for(var i=0;i<cluster.length;i++){
-          console.log(cluster[i]);
           categories.push(cluster[i]["keyword"].toString());
           data.push(cluster[i]["blogsum"]);
         }
