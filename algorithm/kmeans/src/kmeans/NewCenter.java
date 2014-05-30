@@ -26,7 +26,7 @@ public class NewCenter {
 	{
 		Configuration conf = new Configuration();
 		conf.set("hadoop.job.ugi", "hadoop,hadoop");
-		String inpath = "hdfs://192.168.40.161:9000/kmeansoutput/part-r-00000";
+		String inpath = "hdfs://master:9000/kmeansoutput/part-r-00000";
 		FileSystem fs = FileSystem.get(URI.create(inpath),conf);
 		FSDataInputStream in = null;
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -34,19 +34,14 @@ public class NewCenter {
 			in = fs.open( new Path(inpath)); 
 			IOUtils.copyBytes(in,out,50,false);
 			line = out.toString().split("\n");
-//			System.out.println("out:"+out);
 			} finally { 
 				IOUtils.closeStream(in);
 			}
-//		System.out.println("上一次的MapReduce结果："+out.toString());
-//		System.out.println("line.length="+line.length);//=k
 		for(int i=0;i<line.length;i++)
 		{
 			String[] l = line[i].replace("\t", "").split("}");
 			String[] startCenter = l[0].replace("{", "").split(",");
-//			System.out.println("oldcenter="+l[0]+"}");
 			String[] finalCenter = l[l.length-1].split("\\{")[1].split(",");
-//			System.out.println("newcenter="+"{"+l[l.length-1].split("\\{")[1]+"}");
 			Map oldCen = new HashMap<String,String>();
 			for(int o=0;o<startCenter.length;o++){
 				oldCen.put(startCenter[o].split(":")[0], startCenter[o].split(":")[1]);
@@ -73,12 +68,8 @@ public class NewCenter {
 			newcenter = newcenter + "{" + l[l.length - 1].split("\\{")[1] + "}";
 			if(shold <= tmp)
 				shold = tmp;
-//			System.out.println(i+"差异："+tmp);
 		}
-//		System.out.println("新中心点："+newcenter);
-		OutputStream out2 = fs.create(new Path("hdfs://192.168.40.161:9000/kmeansinput/clustercenter.txt"));
-//		System.out.println("newcenter**************"+newcenter);
-//		System.out.println("newCenter:::::::length::::::::"+newcenter.split("}").length);
+		OutputStream out2 = fs.create(new Path("hdfs://master:9000/kmeansinput/clustercenter.txt"));
 		IOUtils.copyBytes(new ByteArrayInputStream(newcenter.getBytes()), out2, 4096,true);
 		res[0] = shold;
 		res[1] = newcenter.split("}").length; 

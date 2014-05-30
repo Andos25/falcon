@@ -20,44 +20,12 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 
 public class KMapper extends Mapper<LongWritable, Text, Text, Text> {
-    
-//	private Map[] centerMap = null;
-//    private String[] center;
-//    protected void setup(Context context) throws IOException,InterruptedException
-//    {
-//    	String centerlist = "hdfs://192.168.40.161:9000/kmeansinput/clustercenter.txt";
-//        Configuration conf1 = new Configuration();
-//        conf1.set("hadoop.job.ugi", "hadoop-user,hadoop-user");
-//        FileSystem fs = FileSystem.get(URI.create(centerlist),conf1);
-//        FSDataInputStream in = null;
-//        ByteArrayOutputStream out = new ByteArrayOutputStream();
-//       try{
-//           in = fs.open( new Path(centerlist) );
-//           IOUtils.copyBytes(in,out,100,false);  
-//           center = out.toString().replace(" ", "").split("}");
-//           System.out.println("center.length="+center.length);
-//           for(int i=0;i<center.length;i++){
-//     		   centerMap[i] = new HashMap<String,String>();
-//     	   	}
-//           for(int i=0;i<center.length;i++){
-//        	   String[] tmp;
-//        	   tmp = center[i].replace("{", "").split(",");
-//        	   System.out.println("center["+i+"]="+center[i]);
-//        	   for(int j=0;j<tmp.length;j++){
-//        		   centerMap[i].put(tmp[j].split(":")[0], tmp[j].split(":")[1]);
-//        		   System.out.println("OK");
-//        		   }
-//           }
-//           }finally{
-//                IOUtils.closeStream(in);
-//            }
-//    }
-    
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void map(LongWritable key,Text value,Context context) throws IOException,InterruptedException
     {
     	String[] center;
-		String centerlist = "hdfs://192.168.40.161:9000/kmeansinput/clustercenter.txt";
+		String centerlist = "hdfs://master:9000/kmeansinput/clustercenter.txt";
         Configuration conf1 = new Configuration();
         conf1.set("hadoop.job.ugi", "hadoop-user,hadoop-user");
         FileSystem fs = FileSystem.get(URI.create(centerlist),conf1);
@@ -67,7 +35,6 @@ public class KMapper extends Mapper<LongWritable, Text, Text, Text> {
            in = fs.open( new Path(centerlist) );
            IOUtils.copyBytes(in,out,100,false);  
            center = out.toString().replace(" ", "").split("}");
-//           System.out.println("center.length="+center.length);
            }finally{
                 IOUtils.closeStream(in);
             }
@@ -76,22 +43,17 @@ public class KMapper extends Mapper<LongWritable, Text, Text, Text> {
     	   centerMap[i] = new HashMap<String,String>();
     	   String[] tmp;
     	   tmp = center[i].replace("{", "").split(",");
-//    	   System.out.println("center["+i+"]="+center[i]);
     	   for(int j=0;j<tmp.length;j++){
     		   centerMap[i].put(tmp[j].split(":")[0], tmp[j].split(":")[1]);
     		   }
        }
-//    	System.out.println("start mapper!");
         StringTokenizer itr = new StringTokenizer(value.toString(),"\n");
         while(itr.hasMoreTokens())
         {
             String outValue = new String(itr.nextToken());
             outValue = outValue.replace(" ", "");
-//            System.out.println("outValue="+outValue);
             String blogId = outValue.split("\t")[0];
             String vector = outValue.split("\t")[1];
-//            System.out.println("blogId="+blogId);
-//            System.out.println("vector="+vector);
             String[] list = vector.replace("{", "").replace("}", "").split(",");
             Map v = new HashMap<String,String>();
             for(int i =0; i<list.length; i++){
@@ -113,7 +75,6 @@ public class KMapper extends Mapper<LongWritable, Text, Text, Text> {
             		min += Math.pow(Float.parseFloat(entry.getValue()), 2);
             	}
             }  
-//        	System.out.println("min="+ min);
             for(int i=0;i<centerMap.length;i++){
                 float distance = 0;
                 for(Entry<String, String> entry : vsets) {
@@ -130,17 +91,12 @@ public class KMapper extends Mapper<LongWritable, Text, Text, Text> {
                 	}
                 }
                 
-//                System.out.println("distance"+i+"="+distance);
                 if(distance<min){
                 	min = distance;
                 	pos=i;
                 }
             }
-//            System.out.println("clusterId="+pos);
-//            System.out.println("final outValue"+blogId + "@{" + outValue.split("\\{")[1]);
             outValue = blogId + "@{" + outValue.split("\\{")[1];
-//            System.out.println("Mapper输出："+center[pos]+"}"+" "+outValue);
-//            System.out.println("KEY==>"+center[pos]+"}"+"VALUE==>"+outValue);
             context.write(new Text(center[pos]+"}"), new Text(outValue));
             
         }
