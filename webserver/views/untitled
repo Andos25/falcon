@@ -1,0 +1,3 @@
+    var line = $("#username").text();
+    console.log(line);
+    var uname = line.split(" ").pop();

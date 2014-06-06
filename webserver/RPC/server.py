@@ -47,9 +47,9 @@ class CrawlerRPC(object):
 
 
 if __name__ == '__main__':
-    # s = zerorpc.Server(CrawlerRPC())
-    # s.bind("tcp://0.0.0.0:4242")
-    # s.run()
-    a = CrawlerRPC()
-    a.weibocrawler('周迅')
+    s = zerorpc.Server(CrawlerRPC())
+    s.bind("tcp://0.0.0.0:4242")
+    s.run()
+    # a = CrawlerRPC()
+    # a.weibocrawler('周迅')
 

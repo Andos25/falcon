@@ -108,7 +108,7 @@ exports.user_register = function(req, res) {
     }).toArray(function(err, data) {
       if (data.length != 0) {
         var result = null;
-         mongoclient.close();
+        mongoclient.close();
         res.json(result);
       } else {
         collection.insert({
@@ -299,7 +299,7 @@ exports.emotion = function(req, res) {
 }
 
 exports.topologydata = function(req, res) {
-    mongoclient.open(function(err, mongoclient) {
+  mongoclient.open(function(err, mongoclient) {
     var db = mongoclient.db("falcon");
     var collection = db.collection("craw");
     var name = req.query.username;
@@ -308,14 +308,14 @@ exports.topologydata = function(req, res) {
       "name": name
     }).toArray(function(err, weibo) {
       mongoclient.close();
-      if (weibo.length != 0 ) {
+      if (weibo.length != 0) {
         var data = weibo[0]["content"];
+        console.log(data);
         res.json(data);
       } else {
         console.log("crawling...........");
         res.json("0");
-        cilent.invoke("weibocrawler", name,function(error, response, more) {
-        });
+        cilent.invoke("weibocrawler", name, function(error, response, more) {});
       }
     });
   });
@@ -325,17 +325,23 @@ exports.cluster_data = function(req, res) {
   mongoclient.open(function(err, mongoclient) {
     var db = mongoclient.db("weibo");
     var collection = db.collection("cluster");
-    collection.find({"blogsum":{$gt:20}
+    collection.find({
+      "blogsum": {
+        $gt: 20
+      }
     }).toArray(function(err, cluster) {
-        var categories = new Array(); 
-        var data = new Array(); 
-        for(var i=0;i<cluster.length;i++){
-          categories.push(cluster[i]["keyword"].toString());
-          data.push(cluster[i]["blogsum"]);
-        }
-        result = {"categories":categories,"data":data};
-        mongoclient.close();
-        res.json(result);
+      var categories = new Array();
+      var data = new Array();
+      for (var i = 0; i < cluster.length; i++) {
+        categories.push(cluster[i]["keyword"].toString());
+        data.push(cluster[i]["blogsum"]);
+      }
+      result = {
+        "categories": categories,
+        "data": data
+      };
+      mongoclient.close();
+      res.json(result);
     });
   });
 }

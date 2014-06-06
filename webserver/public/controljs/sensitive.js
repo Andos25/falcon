@@ -24,9 +24,9 @@ var getsensitiveinfo = function(pagecount) {
     nextpage = pagecount + 1;
     lastpage = pagecount - 1;
     if (pagecount == 0)
-      button = "<button class=\"btn\" onclick=\"getsensitiveinfo(nextpage)\">下一页</button>";
+      button = "<button class=\"btn\" onclick=\"getsensitiveinfo(" + nextpage + ")\">下一页</button>";
     else
-      button = "<button class=\"btn\" onclick=\"getsensitiveinfo(lastpage)\">上一页</button>&nbsp&nbsp&nbsp&nbsp&nbsp<button class=\"btn\" onclick=\"getsensitiveinfo(nextpage)\">下一页</button>";
+      button = "<button class=\"btn\" onclick=\"getsensitiveinfo(" + lastpage + ")\">上一页</button>&nbsp&nbsp&nbsp&nbsp&nbsp<button class=\"btn\" onclick=\"getsensitiveinfo(" + nextpage + ")\">下一页</button>";
     $('div#button').html(button);
   });
 }

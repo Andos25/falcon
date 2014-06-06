@@ -62,16 +62,15 @@
   }
   $(document).ready(function(){
     var mcp = DependGraph("#halfviz");
-    var line = $("#username").text();
-    console.log(line);
-    var uname = line.split(" ").pop();
-    search(uname);
+    // var line = $("#username").text();
+    // var uname = line.split(" ").pop();
+
+    // search(uname);
     // $("li#5").addClass('section');
   })
   function search(value){
     if (value.length==0) {
-      var line = $("#username").text();
-      console.log(line);
+      var line = $("#user").text();
       value = line.split(" ").pop();
     };
     $.getJSON("/ajax/topologydata/", {"username":value}, function(data) {

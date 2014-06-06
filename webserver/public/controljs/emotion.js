@@ -18,11 +18,16 @@ var buildchart = function(info) {
         alpha: 45
       }
     },
+    credits: 
+   {
+      enabled : false
+    },
+    
     title: {
-      text: 'Contents of Highsoft\'s weekly fruit delivery'
+      text: '情感倾向分析'
     },
     subtitle: {
-      text: '3D donut in Highcharts'
+      text: '根据分类算法，统计出微博情感倾向'
     },
     plotOptions: {
       pie: {
